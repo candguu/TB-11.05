@@ -1,0 +1,1453 @@
+/* ═══════════════════════════════════════════════════════════════
+   DARK THEME - PROFESSIONAL TRADING INTERFACE
+   Siyah-Beyaz-Gri Tema
+═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --binance-bg: #000000;
+  --binance-bg-secondary: #0a0a0a;
+  --binance-bg-tertiary: #141414;
+  --binance-border: #1a1a1a;
+  --binance-text: #ffffff;
+  --binance-text-secondary: #999999;
+  --binance-green: #0ecb81;
+  --binance-red: #f6465d;
+  --binance-yellow: #fcd535;
+  --binance-blue: #3861fb;
+}
+
+/* ─── Main Trading Layout ─── */
+.binance-trading-layout {
+  display: grid;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  grid-template-areas:
+    "header   header  header"
+    "orderbook chart  right"
+    "trading  trading right"
+    "bottom   bottom  bottom";
+  grid-template-columns: 280px 1fr 320px;
+  grid-template-rows: 56px minmax(500px, 60vh) minmax(380px, auto) minmax(280px, auto);
+  min-height: 100vh;
+  background: var(--binance-border);
+  gap: 1px;
+  overflow: visible;
+}
+
+/* Grid Area assignments */
+.binance-trading-layout>.binance-header {
+  grid-area: header;
+}
+
+.binance-trading-layout>.binance-orderbook {
+  grid-area: orderbook;
+}
+
+.binance-trading-layout>.binance-chart-area {
+  grid-area: chart;
+}
+
+.binance-trading-layout>div:nth-child(4) {
+  grid-area: right;
+}
+
+/* pair list + market trades wrapper */
+.binance-trading-layout>.binance-trading-panel {
+  grid-area: trading;
+}
+
+.binance-trading-layout>.binance-bottom-panel {
+  grid-area: bottom;
+}
+
+/* ─── Header Bar ─── */
+.binance-header {
+  grid-column: 1 / -1;
+  background: var(--binance-bg-secondary);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 28px;
+  border-bottom: 1px solid var(--binance-border);
+  height: 56px;
+}
+
+.binance-pair-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.binance-pair-selector:hover {
+  background: var(--binance-bg-tertiary);
+}
+
+.binance-pair-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--binance-text);
+  font-family: var(--mono);
+}
+
+.binance-pair-type {
+  font-size: 11px;
+  color: var(--binance-text-secondary);
+  background: var(--binance-bg-tertiary);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.binance-price-info {
+  display: flex;
+  gap: 32px;
+  flex: 1;
+}
+
+.binance-price-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.binance-price-label {
+  font-size: 11px;
+  color: var(--binance-text-secondary);
+}
+
+.binance-price-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--binance-text);
+  font-family: var(--mono);
+}
+
+.binance-price-value.green {
+  color: var(--binance-green);
+}
+
+.binance-price-value.red {
+  color: var(--binance-red);
+}
+
+/* ─── Order Book (Left Panel) ─── */
+.binance-orderbook {
+  background: var(--binance-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+  max-height: 100%;
+}
+
+.binance-orderbook-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--binance-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.binance-orderbook-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--binance-text);
+}
+
+.binance-orderbook-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.binance-orderbook-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: var(--binance-text-secondary);
+}
+
+.binance-orderbook-btn:hover {
+  background: var(--binance-bg-tertiary);
+  color: var(--binance-text);
+}
+
+.binance-orderbook-table {
+  flex: 1;
+  overflow-y: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.binance-orderbook-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 2px 16px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.binance-orderbook-row:hover {
+  background: var(--binance-bg-tertiary);
+}
+
+.binance-orderbook-row::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--depth-color);
+  opacity: 0.1;
+  width: var(--depth-width);
+  z-index: 0;
+}
+
+.binance-orderbook-cell {
+  padding: 3px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.binance-orderbook-cell:nth-child(2) {
+  text-align: right;
+}
+
+.binance-orderbook-cell:nth-child(3) {
+  text-align: right;
+  color: var(--binance-text-secondary);
+}
+
+.binance-orderbook-asks .binance-orderbook-cell:first-child {
+  color: #ff1744;
+}
+
+.binance-orderbook-bids .binance-orderbook-cell:first-child {
+  color: #00e676;
+}
+
+.binance-orderbook-spread {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--binance-bg);
+  border-top: 1px solid var(--binance-border);
+  border-bottom: 1px solid var(--binance-border);
+}
+
+.binance-orderbook-spread-price {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--mono);
+}
+
+.binance-orderbook-spread-change {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ─── Chart Area (Center) ─── */
+.binance-chart-area {
+  background: var(--binance-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.binance-chart-toolbar {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--binance-border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.binance-chart-tabs {
+  display: flex;
+  gap: 2px;
+}
+
+.binance-chart-tab {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--binance-text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.binance-chart-tab:hover {
+  color: var(--binance-text);
+  background: var(--binance-bg-tertiary);
+}
+
+.binance-chart-tab.active {
+  color: var(--binance-text);
+  background: var(--binance-bg-tertiary);
+}
+
+.binance-chart-timeframes {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.binance-timeframe-btn {
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--binance-text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  font-family: var(--mono);
+}
+
+.binance-timeframe-btn:hover {
+  color: var(--binance-text);
+  background: var(--binance-bg-tertiary);
+}
+
+.binance-timeframe-btn.active {
+  color: #fff;
+  background: #333333;
+  font-weight: 600;
+}
+
+.binance-chart-container {
+  flex: 1;
+  position: relative;
+  background: var(--binance-bg);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ─── Trading Panel (Below Chart) ─── */
+.binance-trading-panel {
+  background: var(--binance-bg-secondary);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--binance-border);
+  overflow: visible;
+}
+
+.binance-trade-form {
+  background: var(--binance-bg-secondary);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: visible;
+}
+
+.binance-trade-tabs {
+  display: flex;
+  gap: 1px;
+  background: var(--binance-bg);
+  border-radius: 4px;
+  padding: 2px;
+}
+
+.binance-trade-tab {
+  flex: 1;
+  padding: 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  color: var(--binance-text-secondary);
+}
+
+.binance-trade-tab:hover {
+  color: var(--binance-text);
+}
+
+.binance-trade-tab.active {
+  background: var(--binance-bg-tertiary);
+  color: var(--binance-text);
+}
+
+.binance-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.binance-input-label {
+  font-size: 12px;
+  color: var(--binance-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.binance-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--binance-bg);
+  border: 1px solid var(--binance-border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  transition: border-color 0.2s;
+  min-height: 36px;
+}
+
+.binance-input-wrapper:hover {
+  border-color: var(--binance-text-secondary);
+}
+
+.binance-input-wrapper:focus-within {
+  border-color: #555555;
+}
+
+.binance-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--binance-text);
+  font-size: 14px;
+  font-family: var(--mono);
+  font-weight: 500;
+}
+
+.binance-input-suffix {
+  font-size: 12px;
+  color: var(--binance-text-secondary);
+  margin-left: 8px;
+}
+
+.binance-slider {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--binance-bg);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.binance-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.binance-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  border: none;
+}
+
+.binance-size-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #ffffff 0%, #ffffff var(--slider-progress, 0%), var(--binance-bg) var(--slider-progress, 0%), var(--binance-bg) 100%);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.binance-size-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--binance-bg-secondary);
+}
+
+.binance-size-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  border: 2px solid var(--binance-bg-secondary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.binance-size-slider-container {
+  position: relative;
+  margin-top: 8px;
+}
+
+.binance-size-tooltip {
+  position: absolute;
+  top: -32px;
+  left: 0;
+  transform: translateX(-50%);
+  background: var(--binance-bg-secondary);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+.binance-size-tooltip.show {
+  opacity: 1;
+}
+
+.binance-size-marks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 0 2px;
+  position: relative;
+}
+
+.binance-size-mark {
+  font-size: 10px;
+  color: var(--binance-text-secondary);
+  position: relative;
+}
+
+.binance-size-mark::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.binance-leverage-tabs {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.binance-leverage-tab {
+  padding: 4px 2px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--binance-text-secondary);
+  background: var(--binance-bg);
+  border: 1px solid var(--binance-border);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.binance-leverage-tab:hover {
+  border-color: #555555;
+  color: var(--binance-text);
+}
+
+.binance-leverage-tab.active {
+  background: var(--binance-bg-tertiary);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.binance-percentage-btns {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.binance-percentage-btn {
+  padding: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--binance-text-secondary);
+  background: var(--binance-bg);
+  border: 1px solid var(--binance-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.binance-percentage-btn:hover {
+  border-color: #555555;
+  color: var(--binance-text);
+}
+
+.binance-buy-btn {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  background: #00e676;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  margin-top: 8px;
+  min-height: 40px;
+}
+
+.binance-buy-btn:hover {
+  background: #00c853;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 230, 118, 0.3);
+}
+
+.binance-buy-btn:active {
+  transform: translateY(0);
+}
+
+.binance-sell-btn {
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  background: #ff1744;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  margin-top: 8px;
+  min-height: 40px;
+}
+
+.binance-sell-btn:hover {
+  background: #d50000;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 23, 68, 0.3);
+}
+
+.binance-sell-btn:active {
+  transform: translateY(0);
+}
+
+/* ─── Market Trades (Right Panel) ─── */
+.binance-market-trades {
+  background: var(--binance-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  min-height: 567px;
+  max-height: 567px;
+  overflow: hidden;
+}
+
+.binance-market-trades-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--binance-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.binance-market-trades-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--binance-text);
+}
+
+.binance-market-trades-table {
+  flex: 1;
+  overflow-y: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+/* ─── Account Info Panel (Right Bottom) ─── */
+.binance-account-info {
+  background: var(--binance-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.binance-account-header {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--binance-text);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--binance-border);
+}
+
+.binance-account-section {
+  margin-bottom: 14px;
+}
+
+.binance-account-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--binance-text-secondary);
+  margin-bottom: 8px;
+}
+
+.binance-account-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 12px;
+}
+
+.binance-account-label {
+  color: var(--binance-text-secondary);
+}
+
+.binance-account-value {
+  color: var(--binance-text);
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+.binance-account-value.green {
+  color: var(--binance-green);
+}
+
+.binance-account-value.red {
+  color: var(--binance-red);
+}
+
+.binance-margin-ratio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.binance-margin-gauge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--binance-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.binance-account-button {
+  width: 100%;
+  padding: 10px;
+  background: var(--binance-bg-tertiary);
+  border: 1px solid var(--binance-border);
+  border-radius: 4px;
+  color: var(--binance-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.binance-account-button:hover {
+  background: var(--binance-bg);
+  border-color: var(--binance-text-secondary);
+}
+
+.binance-market-trades-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 3px 16px;
+  transition: background 0.1s;
+}
+
+.binance-market-trades-row:hover {
+  background: var(--binance-bg-tertiary);
+}
+
+.binance-market-trades-cell {
+  padding: 2px 0;
+}
+
+.binance-market-trades-cell:nth-child(2) {
+  text-align: right;
+}
+
+.binance-market-trades-cell:nth-child(3) {
+  text-align: right;
+  color: var(--binance-text-secondary);
+  font-size: 11px;
+}
+
+/* ─── Pair List (Right Top) ─── */
+.binance-pair-list {
+  background: var(--binance-bg-secondary);
+  display: none;
+  flex-direction: column;
+  min-height: 280px;
+  max-height: 280px;
+  overflow: hidden;
+}
+
+.binance-pair-list-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--binance-border);
+}
+
+.binance-pair-search {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--binance-bg);
+  border: 1px solid var(--binance-border);
+  border-radius: 4px;
+  color: var(--binance-text);
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.binance-pair-search:focus {
+  border-color: var(--binance-yellow);
+}
+
+.binance-pair-list-tabs {
+  display: flex;
+  gap: 16px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--binance-border);
+}
+
+.binance-pair-list-tab {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--binance-text-secondary);
+  cursor: pointer;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.binance-pair-list-tab:hover {
+  color: var(--binance-text);
+}
+
+.binance-pair-list-tab.active {
+  color: #2196f3;
+  border-bottom-color: #2196f3;
+}
+
+.binance-pair-list-table {
+  flex: 1;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+.binance-pair-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.1s;
+  align-items: center;
+  gap: 8px;
+}
+
+.binance-pair-row:hover {
+  background: var(--binance-bg-tertiary);
+}
+
+.binance-pair-row.active {
+  background: var(--binance-bg-tertiary);
+}
+
+.binance-pair-symbol {
+  font-weight: 600;
+  color: var(--binance-text);
+  font-family: var(--mono);
+}
+
+.binance-pair-price {
+  font-family: var(--mono);
+  color: var(--binance-text);
+  text-align: right;
+}
+
+.binance-pair-change {
+  font-family: var(--mono);
+  font-weight: 600;
+  text-align: right;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.binance-pair-change.positive {
+  color: #00e676;
+  background: rgba(0, 230, 118, 0.1);
+}
+
+.binance-pair-change.negative {
+  color: #ff1744;
+  background: rgba(255, 23, 68, 0.1);
+}
+
+/* ─── Bottom Tabs (Orders, History, etc) ─── */
+.binance-bottom-panel {
+  grid-column: 1 / -1;
+  background: var(--binance-bg-secondary);
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--binance-border);
+  min-height: 280px;
+  max-height: 400px;
+}
+
+.binance-bottom-tabs {
+  display: flex;
+  gap: 24px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--binance-border);
+  position: sticky;
+  top: 0;
+  background: var(--binance-bg-secondary);
+  z-index: 10;
+}
+
+.binance-bottom-tab {
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--binance-text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.binance-bottom-tab:hover {
+  color: var(--binance-text);
+}
+
+.binance-bottom-tab.active {
+  color: #2196f3;
+  border-bottom-color: #2196f3;
+}
+
+.binance-bottom-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  min-height: 220px;
+  max-height: 340px;
+}
+
+.fut-bottom-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 0 4px;
+}
+
+.fut-refresh-all-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 32px;
+  color: var(--binance-text-secondary);
+  background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+  border: 1px solid var(--binance-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.fut-refresh-all-btn:hover {
+  color: var(--binance-text);
+  border-color: rgba(33, 150, 243, 0.5);
+  background: rgba(33, 150, 243, 0.08);
+  transform: translateY(-1px);
+}
+
+.fut-refresh-all-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  transform: none;
+}
+
+.fut-refresh-all-btn.is-loading .fut-refresh-icon {
+  animation: futRefreshSpin 0.75s linear infinite;
+}
+
+@keyframes futRefreshSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.binance-orders-table {
+  width: 100%;
+  font-size: 12px;
+  font-family: var(--mono);
+}
+
+.binance-orders-table thead {
+  position: sticky;
+  top: 0;
+  background: var(--binance-bg-secondary);
+  z-index: 10;
+}
+
+.binance-orders-table th {
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--binance-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.binance-orders-table td {
+  padding: 12px;
+  color: var(--binance-text);
+  border-bottom: 1px solid var(--binance-border);
+  font-weight: 500;
+}
+
+.binance-orders-table th {
+  color: #cccccc;
+  font-weight: 600;
+}
+
+.binance-orders-table tr:hover {
+  background: var(--binance-bg-tertiary);
+}
+
+/* PnL ve yön renkleri - belirgin */
+.binance-orders-table .fut-pnl-green {
+  color: var(--binance-green) !important;
+  font-weight: 700;
+}
+.binance-orders-table .fut-pnl-red {
+  color: var(--binance-red) !important;
+  font-weight: 700;
+}
+.binance-orders-table .fut-cell-long {
+  color: var(--binance-green) !important;
+  font-weight: 600;
+}
+.binance-orders-table .fut-cell-short {
+  color: var(--binance-red) !important;
+  font-weight: 600;
+}
+
+/* ─── Scrollbar ─── */
+.binance-orderbook-table::-webkit-scrollbar,
+.binance-market-trades-table::-webkit-scrollbar,
+.binance-pair-list-table::-webkit-scrollbar,
+.binance-bottom-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.binance-orderbook-table::-webkit-scrollbar-track,
+.binance-market-trades-table::-webkit-scrollbar-track,
+.binance-pair-list-table::-webkit-scrollbar-track,
+.binance-bottom-content::-webkit-scrollbar-track {
+  background: var(--binance-bg);
+}
+
+.binance-orderbook-table::-webkit-scrollbar-thumb,
+.binance-market-trades-table::-webkit-scrollbar-thumb,
+.binance-pair-list-table::-webkit-scrollbar-thumb,
+.binance-bottom-content::-webkit-scrollbar-thumb {
+  background: var(--binance-bg-tertiary);
+  border-radius: 3px;
+}
+
+.binance-orderbook-table::-webkit-scrollbar-thumb:hover,
+.binance-market-trades-table::-webkit-scrollbar-thumb:hover,
+.binance-pair-list-table::-webkit-scrollbar-thumb:hover,
+.binance-bottom-content::-webkit-scrollbar-thumb:hover {
+  background: var(--binance-text-secondary);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1400px) {
+  .binance-trading-layout {
+    grid-template-columns: 240px 1fr 280px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .binance-trading-layout {
+    grid-template-columns: 220px 1fr 260px;
+    grid-template-rows: 56px minmax(400px, 50vh) auto minmax(260px, auto);
+  }
+}
+
+/* Remove responsive hiding - always show all panels */
+
+
+/* ─── Override dash-sub-page for Binance pages ─── */
+#dash-futures {
+  padding: 0 !important;
+  overflow: visible !important;
+  background: var(--binance-bg) !important;
+}
+
+#dash-futures::before {
+  display: none !important;
+}
+
+
+/* ─── Leverage Modal ─── */
+.leverage-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}
+
+.leverage-modal.open {
+  display: flex;
+}
+
+.leverage-modal-content {
+  background: var(--binance-bg-secondary);
+  border: 1px solid var(--binance-border);
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.leverage-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--binance-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leverage-modal-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--binance-text);
+  margin: 0;
+}
+
+.leverage-modal-close {
+  background: none;
+  border: none;
+  color: var(--binance-text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.leverage-modal-close:hover {
+  background: var(--binance-bg-tertiary);
+  color: var(--binance-text);
+}
+
+.leverage-modal-body {
+  padding: 24px;
+}
+
+.leverage-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+}
+
+.leverage-btn-minus,
+.leverage-btn-plus {
+  width: 40px;
+  height: 40px;
+  background: var(--binance-bg-tertiary);
+  border: 1px solid var(--binance-border);
+  border-radius: 4px;
+  color: var(--binance-text);
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.leverage-btn-minus:hover,
+.leverage-btn-plus:hover {
+  background: var(--binance-bg);
+  border-color: #555555;
+}
+
+.leverage-display-value {
+  font-size: 48px;
+  font-weight: 700;
+  color: #ffffff;
+  min-width: 150px;
+  text-align: center;
+}
+
+.leverage-modal-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--binance-bg);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.leverage-modal-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  border: 3px solid var(--binance-bg-secondary);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+}
+
+.leverage-modal-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
+  border: 3px solid var(--binance-bg-secondary);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
+}
+
+.leverage-marks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--binance-text-secondary);
+}
+
+.leverage-info {
+  background: var(--binance-bg);
+  border: 1px solid var(--binance-border);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.leverage-modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--binance-border);
+}
+
+.leverage-confirm-btn {
+  width: 100%;
+  padding: 12px;
+  background: #ffffff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.leverage-confirm-btn:hover {
+  background: #e8e8e8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+.leverage-confirm-btn:active {
+  transform: translateY(0);
+}
+
+/* ─── Fut Confirm Modals (Cancel / Close) ─── */
+.fut-confirm-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 10001;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.fut-confirm-modal.open {
+  display: flex;
+}
+.fut-confirm-modal-content {
+  background: var(--binance-bg-secondary);
+  border: 1px solid var(--binance-border);
+  border-radius: 8px;
+  min-width: 320px;
+  max-width: 96vw;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.fut-close-modal-wide {
+  min-width: 400px;
+  max-width: 480px;
+}
+.fut-confirm-modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--binance-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fut-confirm-modal-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--binance-text);
+  margin: 0;
+}
+.fut-confirm-modal-close {
+  background: none;
+  border: none;
+  color: var(--binance-text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  border-radius: 4px;
+}
+.fut-confirm-modal-close:hover {
+  background: var(--binance-bg-tertiary);
+  color: var(--binance-text);
+}
+.fut-confirm-modal-body {
+  padding: 20px;
+  color: var(--binance-text);
+  font-size: 14px;
+}
+.fut-confirm-modal-body p {
+  margin: 0;
+  color: var(--binance-text-secondary);
+}
+.fut-close-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  font-size: 13px;
+}
+.fut-close-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.fut-close-detail-label {
+  color: var(--binance-text-secondary);
+}
+.fut-close-detail-value {
+  font-weight: 600;
+  color: var(--binance-text);
+}
+.fut-close-detail-value.pnl-positive {
+  color: var(--binance-green) !important;
+  font-weight: 700;
+}
+.fut-close-detail-value.pnl-negative {
+  color: var(--binance-red) !important;
+  font-weight: 700;
+}
+.fut-confirm-modal .fut-cell-long {
+  color: var(--binance-green) !important;
+}
+.fut-confirm-modal .fut-cell-short {
+  color: var(--binance-red) !important;
+}
+.fut-confirm-modal-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--binance-border);
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+.fut-confirm-btn-secondary {
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--binance-text-secondary);
+  border: 1px solid var(--binance-border);
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fut-confirm-btn-secondary:hover {
+  background: var(--binance-bg-tertiary);
+  color: var(--binance-text);
+}
+.fut-confirm-btn-primary {
+  padding: 10px 20px;
+  background: #ffffff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fut-confirm-btn-primary:hover {
+  background: #e8e8e8;
+}
+.fut-confirm-btn-danger {
+  padding: 10px 20px;
+  background: var(--binance-red);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.fut-confirm-btn-danger:hover {
+  background: #e03550;
+}

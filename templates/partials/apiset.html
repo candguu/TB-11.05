@@ -1,0 +1,163 @@
+<div class="dash-sub-page" id="dash-apiset" style="display:none">
+    <div class="dash-inner" style="max-width:1200px;margin:0 auto">
+        <div class="dash-header" style="margin-bottom:32px">
+            <div>
+                <h2 class="dash-title">API</h2>
+                <p class="dash-sub">Binance Futures Testnet API bağlantı yönetimi</p>
+            </div>
+        </div>
+
+        <!-- Bağlantı Durumu -->
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;margin-bottom:32px">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px">
+                <div style="display:flex;align-items:center;gap:20px">
+                    <div id="api-conn-dot"
+                        style="width:16px;height:16px;border-radius:50%;background:var(--red);box-shadow:0 0 16px rgba(255,23,68,0.5);transition:all .3s">
+                    </div>
+                    <div>
+                        <div style="font-size:16px;font-weight:600;margin-bottom:6px;color:#fff" id="api-conn-text">Bağlı Değil</div>
+                        <div style="font-size:13px;color:var(--t2);font-family:var(--mono)" id="api-conn-hint">API anahtarı kaydedilmemiş</div>
+                    </div>
+                </div>
+                <div id="api-conn-actions" style="display:none;gap:12px">
+                    <button class="btn" style="font-size:13px;padding:11px 24px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#fff"
+                        onclick="testApiConnection()">Bağlantıyı Test Et</button>
+                    <button class="btn"
+                        style="font-size:13px;padding:11px 24px;background:transparent;border:1px solid rgba(255,23,68,0.3);color:var(--red)"
+                        onclick="deleteApiKeys()">Anahtarları Sil</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:32px">
+            
+            <!-- Sol: Kurulum Rehberi -->
+            <div>
+                <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:24px;height:100%">
+                    <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:20px">Kurulum Adımları</div>
+                    
+                    <div style="font-size:12px;color:var(--t2);line-height:1.7">
+                        <div style="margin-bottom:18px">
+                            <div style="font-weight:600;color:#fff;margin-bottom:8px;font-size:12px">1. Testnet Hesabı</div>
+                            <div style="color:var(--t2);margin-bottom:6px">
+                                <a href="https://demo.binance.com" target="_blank" 
+                                   style="color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.2)">
+                                    demo.binance.com
+                                </a> adresinden hesap oluşturun
+                            </div>
+                            <div style="color:var(--t2);margin-bottom:6px">Email ile kayıt olun ve doğrulayın</div>
+                            <div style="color:var(--t2)">10,000 USDT test bakiyesi otomatik yüklenir</div>
+                        </div>
+
+                        <div style="margin-bottom:18px">
+                            <div style="font-weight:600;color:#fff;margin-bottom:8px;font-size:12px">2. API Anahtarı Oluşturma</div>
+                            <div style="color:var(--t2);margin-bottom:6px">Profil menüsünden API Management bölümüne gidin</div>
+                            <div style="color:var(--t2);margin-bottom:6px">Create API butonuna tıklayın</div>
+                            <div style="color:var(--t2);margin-bottom:6px">Enable Futures iznini aktif edin</div>
+                            <div style="color:var(--t2)">API Key ve Secret Key değerlerini kopyalayın</div>
+                        </div>
+
+                        <div style="margin-bottom:18px">
+                            <div style="font-weight:600;color:#fff;margin-bottom:8px;font-size:12px">3. Bağlantı</div>
+                            <div style="color:var(--t2);margin-bottom:6px">Anahtarları sağ taraftaki forma yapıştırın</div>
+                            <div style="color:var(--t2);margin-bottom:6px">Kaydet ve Doğrula butonuna tıklayın</div>
+                            <div style="color:var(--t2)">Sistem otomatik olarak bağlantıyı kurar</div>
+                        </div>
+
+                        <div style="background:rgba(255,255,255,0.02);border-left:3px solid rgba(255,255,255,0.2);padding:12px;border-radius:4px">
+                            <div style="font-weight:600;color:#fff;font-size:11px;margin-bottom:4px">Önemli Bilgi</div>
+                            <div style="font-size:11px;line-height:1.5;color:var(--t2)">
+                                Bu bir test ortamıdır. Gerçek para kullanılmaz. Tüm işlemler sanal bakiye ile yapılır.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sağ: API Key Formu -->
+            <div>
+                <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:24px;height:100%">
+                    <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:20px">API</div>
+                    
+                    <div style="margin-bottom:16px">
+                        <label style="display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:8px">API İsmi (Opsiyonel)</label>
+                        <input type="text" class="form-input" id="api-label-input"
+                            placeholder="Örn: Ana Hesap, Test Hesabı" 
+                            style="font-size:12px;padding:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;width:100%;color:#fff">
+                    </div>
+                    
+                    <div style="margin-bottom:16px">
+                        <label style="display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:8px">API Key</label>
+                        <input type="text" class="form-input mono" id="api-key-input"
+                            placeholder="Binance Futures Testnet API Key" 
+                            style="font-size:12px;padding:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;width:100%;color:#fff">
+                    </div>
+                    
+                    <div style="margin-bottom:20px">
+                        <label style="display:block;font-size:12px;font-weight:500;color:var(--t2);margin-bottom:8px">API Secret</label>
+                        <div style="position:relative">
+                            <input type="password" class="form-input mono" id="api-secret-input"
+                                placeholder="Binance Futures Testnet API Secret" 
+                                style="font-size:12px;padding:12px;padding-right:45px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;width:100%;color:#fff">
+                            <button class="toggle-pw-btn"
+                                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--t2);cursor:pointer;font-size:16px"
+                                onclick="const i=document.getElementById('api-secret-input');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'👁‍🗨'">👁</button>
+                        </div>
+                    </div>
+                    
+                    <button id="api-save-btn" onclick="saveApiKeys()"
+                        style="width:100%;background:#fff;color:#000;border:none;border-radius:8px;padding:12px;font-size:13px;font-weight:600;cursor:pointer;transition:opacity 0.2s;margin-bottom:16px"
+                        onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        Kaydet ve Doğrula
+                    </button>
+
+                    <div style="padding:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;font-size:11px;color:var(--t2);line-height:1.6">
+                        API anahtarlarınız şifrelenmiş olarak saklanır. Kaydettiğinizde otomatik doğrulama yapılır ve geçerliyse bağlantı kurulur.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kayıtlı API'ler -->
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px;margin-bottom:32px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+                <div style="font-size:15px;font-weight:600;color:#fff">Kayıtlı API</div>
+                <div style="font-size:12px;color:var(--t2)">Aktif API'yi seçmek için tıklayın</div>
+            </div>
+            
+            <div id="saved-apis-list" style="display:flex;flex-direction:column;gap:12px">
+                <!-- API listesi buraya yüklenecek -->
+                <div style="text-align:center;padding:40px;color:var(--t2);font-size:13px">
+                    Henüz kayıtlı API anahtarı yok
+                </div>
+            </div>
+        </div>
+
+        <!-- Hızlı Erişim -->
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:28px">
+            <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:20px">Hızlı Erişim</div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+                <a href="https://demo.binance.com" target="_blank"
+                    style="display:block;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:18px;text-align:center;text-decoration:none;color:var(--t2);font-size:13px;transition:all 0.2s"
+                    onmouseover="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.12)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.02)';this.style.borderColor='rgba(255,255,255,0.08)'">
+                    Futures Testnet
+                </a>
+                <a href="https://demo.binance.com/en/my/settings/api-management" target="_blank"
+                    style="display:block;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:18px;text-align:center;text-decoration:none;color:var(--t2);font-size:13px;transition:all 0.2s"
+                    onmouseover="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.12)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.02)';this.style.borderColor='rgba(255,255,255,0.08)'">
+                    API Management
+                </a>
+                <a href="https://developers.binance.com/docs/derivatives/usds-margined-futures" target="_blank"
+                    style="display:block;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:18px;text-align:center;text-decoration:none;color:var(--t2);font-size:13px;transition:all 0.2s"
+                    onmouseover="this.style.background='rgba(255,255,255,0.04)';this.style.borderColor='rgba(255,255,255,0.12)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.02)';this.style.borderColor='rgba(255,255,255,0.08)'">
+                    API Documentation
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── PORTFÖY ─── -->

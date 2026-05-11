@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+{% block content %}
+<div id="api-referans" class="page active">
+    <div class="page-inner">
+        <!-- Hero Section -->
+        <div class="panel" style="margin-top:20px; padding: 40px;">
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                <div style="width: 48px; height: 48px; background: var(--s2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🔌</div>
+                <div>
+                    <h1 style="font-size:28px; font-weight:700; margin:0; color: #fff;">API Referansı</h1>
+                    <p style="color:var(--t2); font-size:14px; margin:4px 0 0 0;">Teknik entegrasyon dokümantasyonu</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Overview -->
+        <div class="panel" style="margin-top:20px; padding: 30px;">
+            <h2 style="font-size:20px; font-weight:600; margin-bottom:16px; color: #fff;">Genel Bakış</h2>
+            <p style="color:var(--t2); font-size:14px; margin-bottom:20px; line-height:1.6;">
+                TB Trading Bot, WebSocket ve REST API altyapısını kullanarak Binance Futures ile entegre çalışır.
+                <code style="background: var(--s1); padding: 2px 6px; border-radius: 4px; font-family: var(--mono);">fapi/v1</code> endpoint'lerini kullanır.
+            </p>
+        </div>
+
+        <!-- Supported Exchanges -->
+        <div class="panel" style="margin-top:20px; padding: 30px;">
+            <h2 style="font-size:20px; font-weight:600; margin-bottom:16px; color: #fff;">Desteklenen Borsalar</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #fff;">Binance Futures</h3>
+                    <ul style="color: var(--t2); font-size: 13px; margin: 0; padding-left: 16px; line-height: 1.6;">
+                        <li>USD-M ve Coin-M sözleşmeler</li>
+                        <li>WebSocket gerçek zamanlı veri</li>
+                        <li>Otomatik rate limit koruması</li>
+                    </ul>
+                </div>
+                
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 20px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #fff;">CoinGecko API</h3>
+                    <ul style="color: var(--t2); font-size: 13px; margin: 0; padding-left: 16px; line-height: 1.6;">
+                        <li>Piyasa hakimiyeti verileri</li>
+                        <li>Gainers/Losers listeleri</li>
+                        <li>Genel piyasa istatistikleri</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Endpoints -->
+        <div class="panel" style="margin-top:20px; padding: 30px;">
+            <h2 style="font-size:20px; font-weight:600; margin-bottom:16px; color: #fff;">Ana API Endpoint'leri</h2>
+            
+            <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                <div style="background: var(--s2); padding: 12px 16px; border-bottom: 1px solid var(--b1);">
+                    <code style="font-family: var(--mono); font-size: 13px; color: #fff;">Base URL: https://fapi.binance.com</code>
+                </div>
+                <div style="padding: 16px;">
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                            <span style="background: var(--s2); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">GET</span>
+                            <code style="font-family: var(--mono); font-size: 12px;">/fapi/v1/ticker/24hr</code>
+                        </div>
+                        <p style="color: var(--t3); font-size: 11px; margin: 0; margin-left: 40px;">24 saatlik fiyat istatistikleri</p>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                            <span style="background: var(--s2); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">POST</span>
+                            <code style="font-family: var(--mono); font-size: 12px;">/fapi/v1/order</code>
+                        </div>
+                        <p style="color: var(--t3); font-size: 11px; margin: 0; margin-left: 40px;">Yeni emir oluşturma</p>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                            <span style="background: var(--s2); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">GET</span>
+                            <code style="font-family: var(--mono); font-size: 12px;">/fapi/v2/account</code>
+                        </div>
+                        <p style="color: var(--t3); font-size: 11px; margin: 0; margin-left: 40px;">Hesap bilgileri ve bakiyeler</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size:16px; font-weight:500; margin-bottom:12px; color: var(--t2);">WebSocket Streams</h3>
+            <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px;">
+                <code style="font-family: var(--mono); font-size: 12px; background: var(--s2); padding: 8px; border-radius: 4px; display: block; margin-bottom: 8px;">wss://fstream.binance.com/ws/btcusdt@ticker</code>
+                <p style="color: var(--t3); font-size: 11px; margin: 0;">Gerçek zamanlı fiyat güncellemeleri</p>
+            </div>
+        </div>
+
+        <!-- Rate Limits -->
+        <div class="panel" style="margin-top:20px; padding: 30px; margin-bottom: 40px;">
+            <h2 style="font-size:20px; font-weight:600; margin-bottom:16px; color: #fff;">Rate Limits</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; text-align: center;">
+                    <div style="font-size: 24px; font-weight: 700; color: #fff; font-family: var(--mono); margin-bottom: 4px;">1200</div>
+                    <div style="font-size: 12px; color: var(--t2);">Request/Dakika</div>
+                </div>
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; text-align: center;">
+                    <div style="font-size: 24px; font-weight: 700; color: #fff; font-family: var(--mono); margin-bottom: 4px;">50ms</div>
+                    <div style="font-size: 12px; color: var(--t2);">Ortalama Gecikme</div>
+                </div>
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; text-align: center;">
+                    <div style="font-size: 24px; font-weight: 700; color: #fff; font-family: var(--mono); margin-bottom: 4px;">99.9%</div>
+                    <div style="font-size: 12px; color: var(--t2);">Uptime</div>
+                </div>
+            </div>
+
+            <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin-top: 20px;">
+                <p style="color: var(--t2); font-size: 13px; margin: 0; text-align: center;">
+                    📌 Bot otomatik rate limit koruması ile gelir ve API anahtarları şifrelenmiş olarak saklanır.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

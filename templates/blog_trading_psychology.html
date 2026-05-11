@@ -1,0 +1,444 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Floating particles background -->
+<div class="floating-particles">
+  <div class="particle" style="left: 7%; animation-delay: 0.5s;"></div>
+  <div class="particle" style="left: 17%; animation-delay: 1.5s;"></div>
+  <div class="particle" style="left: 27%; animation-delay: 2.5s;"></div>
+  <div class="particle" style="left: 37%; animation-delay: 3.5s;"></div>
+  <div class="particle" style="left: 47%; animation-delay: 4.5s;"></div>
+  <div class="particle" style="left: 57%; animation-delay: 5.5s;"></div>
+  <div class="particle" style="left: 67%; animation-delay: 6.5s;"></div>
+  <div class="particle" style="left: 77%; animation-delay: 7.5s;"></div>
+  <div class="particle" style="left: 87%; animation-delay: 8.5s;"></div>
+</div>
+
+<!-- Floating Action Buttons -->
+<div class="floating-actions">
+  <button class="floating-btn scroll-top" onclick="scrollToTop()" title="Yukarı Çık">↑</button>
+  <button class="floating-btn" onclick="toggleTOC()" title="İçindekiler">📋</button>
+</div>
+
+<div class="page active" style="min-height: 100vh; padding: 60px 0 40px; position: relative; z-index: 2;">
+  <div class="blog-container">
+    
+    <!-- Left Sidebar -->
+    <div class="blog-sidebar blog-sidebar-left">
+      
+      <!-- Table of Contents -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📋</span>
+          İçindekiler
+        </div>
+        <div class="toc">
+          <ul class="toc-list">
+            <li class="toc-item"><a href="#insan-vs-algoritma" class="toc-link">İnsan vs Algoritma</a></li>
+            <li class="toc-item"><a href="#psikolojik-tuzaklar" class="toc-link">Yaygın Psikolojik Tuzaklar</a></li>
+            <li class="toc-item"><a href="#fomo" class="toc-link">FOMO (Fear of Missing Out)</a></li>
+            <li class="toc-item"><a href="#revenge-trading" class="toc-link">Revenge Trading</a></li>
+            <li class="toc-item"><a href="#confirmation-bias" class="toc-link">Confirmation Bias</a></li>
+            <li class="toc-item"><a href="#algoritma-ustunluk" class="toc-link">Algoritmaların Üstünlükleri</a></li>
+            <li class="toc-item"><a href="#hibrit-yaklasim" class="toc-link">İnsan + Algoritma Hibrit</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Reading Progress -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📊</span>
+          Okuma İlerlemesi
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;" id="reading-progress"></div>
+        </div>
+        <div style="font-size: 12px; color: var(--t3); margin-top: 8px;">
+          <span id="progress-text">0%</span> tamamlandı • <span id="reading-time">8 dk</span> kaldı
+        </div>
+      </div>
+
+      <!-- Psychology Test -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🧠</span>
+          Trading Psikolojisi Testi
+        </div>
+        <div style="space-y: 12px;">
+          <div style="margin-bottom: 12px;">
+            <div style="font-size: 13px; color: var(--text); margin-bottom: 8px;">Kayıp sonrası ne yaparsınız?</div>
+            <div style="space-y: 4px;">
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--t2); cursor: pointer;">
+                <input type="radio" name="loss-reaction" value="revenge" style="accent-color: var(--blue);">
+                Daha büyük pozisyon alırım
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--t2); cursor: pointer;">
+                <input type="radio" name="loss-reaction" value="analyze" style="accent-color: var(--blue);">
+                Analiz eder, öğrenirim
+              </label>
+              <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--t2); cursor: pointer;">
+                <input type="radio" name="loss-reaction" value="break" style="accent-color: var(--blue);">
+                Mola veririm
+              </label>
+            </div>
+          </div>
+          <div style="padding: 10px; background: var(--s1); border-radius: 6px; border: 1px solid var(--b1); text-align: center;">
+            <div style="font-size: 12px; color: var(--t3);" id="psychology-result">Seçiminizi yapın</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="blog-main-content">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 40px;">
+      <div style="margin-bottom: 16px;">
+        <a href="/blog" style="color: var(--blue); text-decoration: none; font-size: 14px;">← Blog'a Dön</a>
+      </div>
+      <span style="color: var(--amber); font-size: 10px; font-weight: 600; letter-spacing: 1px; font-family: var(--mono);">PSİKOLOJİ</span>
+      <h1 style="font-size: 36px; font-weight: 800; margin: 16px 0 20px; letter-spacing: -0.8px; line-height: 1.2; color: #fff;">
+        Trading Psikolojisi: Algoritmalar Neden Daha Başarılı?
+      </h1>
+      <div style="color: var(--t2); font-size: 18px; line-height: 1.6; margin-bottom: 24px;">
+        İnsan psikolojisinin trading'deki etkisi ve algoritmaların duygusal kararlardan nasıl kaçındığını keşfedin.
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; color: var(--t3); font-size: 14px; font-family: var(--mono);">
+        <div style="width: 32px; height: 32px; border-radius: 16px; background: var(--green); color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold;">TB</div>
+        TB Ekibi • 8 dk okuma • 29 Oca 2025
+      </div>
+    </div>
+
+    <!-- Featured Image -->
+    <div style="height: 300px; background: url('/static/images/blog_trading_psychology.png') center/cover; border-radius: 12px; margin-bottom: 40px;"></div>
+
+    <!-- Content -->
+    <div class="blog-content" style="color: var(--t1); line-height: 1.8; font-size: 16px;">
+      
+      <h2 id="insan-vs-algoritma" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">İnsan vs Algoritma: Duygusal Karar Verme</h2>
+      <p>Trading'de en büyük düşman piyasa değil, kendi duygularımızdır. Korku, açgözlülük, FOMO ve revenge trading gibi duygusal tepkiler, mantıklı kararlar almamızı engeller. Algoritmalar ise bu duygusal tuzaklardan tamamen uzaktır.</p>
+
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <h4 style="color: var(--red); margin: 0 0 12px;">İnsan Trader'ın Zayıflıkları:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">Korku ve açgözlülük</li>
+          <li style="margin-bottom: 8px;">FOMO (Fear of Missing Out)</li>
+          <li style="margin-bottom: 8px;">Revenge trading</li>
+          <li style="margin-bottom: 8px;">Confirmation bias</li>
+          <li style="margin-bottom: 8px;">Overconfidence</li>
+        </ul>
+      </div>
+
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <h4 style="color: var(--green); margin: 0 0 12px;">Algoritmanın Avantajları:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">Duygusuz karar verme</li>
+          <li style="margin-bottom: 8px;">Tutarlı strateji uygulama</li>
+          <li style="margin-bottom: 8px;">7/24 piyasa takibi</li>
+          <li style="margin-bottom: 8px;">Hızlı reaksiyon süresi</li>
+          <li style="margin-bottom: 8px;">Objektif analiz</li>
+        </ul>
+      </div>
+
+      <h2 id="psikolojik-tuzaklar" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Yaygın Psikolojik Tuzaklar</h2>
+      
+      <h3 id="fomo" style="color: var(--amber); font-size: 20px; font-weight: 600; margin: 24px 0 12px;">1. FOMO (Fear of Missing Out)</h3>
+      <p>Piyasa yükselirken "treni kaçırma" korkusu ile yüksek fiyatlardan alım yapmak. Algoritmalar önceden belirlenmiş seviyelerde işlem yapar, FOMO'ya kapılmaz.</p>
+
+      <h3 id="revenge-trading" style="color: var(--amber); font-size: 20px; font-weight: 600; margin: 24px 0 12px;">2. Revenge Trading</h3>
+      <p>Kayıp sonrası "parayı geri kazanma" isteği ile büyük riskler almak. Algoritmalar her işlemi bağımsız değerlendirir, geçmiş kayıplardan etkilenmez.</p>
+
+      <h3 id="confirmation-bias" style="color: var(--amber); font-size: 20px; font-weight: 600; margin: 24px 0 12px;">3. Confirmation Bias</h3>
+      <p>Sadece kendi görüşünü destekleyen bilgileri dikkate almak. Algoritmalar tüm veriyi objektif olarak analiz eder.</p>
+
+      <h2 id="algoritma-ustunluk" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Algoritmaların Psikolojik Üstünlükleri</h2>
+      
+      <div style="background: rgba(68, 138, 255, 0.1); border: 1px solid rgba(68, 138, 255, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--blue);">💡 Anahtar Nokta:</strong> Algoritmalar duygusal kararlar vermez, sadece veri ve mantığa dayalı işlemler yapar.
+      </div>
+
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 12px;"><strong>Disiplin:</strong> Belirlenen kurallara %100 uyum</li>
+        <li style="margin-bottom: 12px;"><strong>Tutarlılık:</strong> Her durumda aynı mantıkla karar verme</li>
+        <li style="margin-bottom: 12px;"><strong>Hız:</strong> Milisaniyeler içinde analiz ve işlem</li>
+        <li style="margin-bottom: 12px;"><strong>Çoklu Analiz:</strong> Aynı anda yüzlerce veri noktasını değerlendirme</li>
+      </ul>
+
+      <h2 id="hibrit-yaklasim" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">İnsan + Algoritma Hibrit Yaklaşım</h2>
+      <p>En iyi sonuçlar, insan zekası ile algoritma disiplininin birleştirilmesiyle elde edilir:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;"><strong>İnsan:</strong> Strateji geliştirme, piyasa analizi</li>
+          <li style="margin-bottom: 8px;"><strong>Algoritma:</strong> Strateji uygulama, risk yönetimi</li>
+          <li style="margin-bottom: 8px;"><strong>İnsan:</strong> Makro ekonomik değerlendirme</li>
+          <li style="margin-bottom: 8px;"><strong>Algoritma:</strong> Teknik analiz ve işlem yürütme</li>
+        </ul>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Sonuç: Duygusuz Trading'in Gücü</h2>
+      <p>Başarılı trading, duygularınızı kontrol etmek ve disiplinli olmakla ilgilidir. Algoritmalar bu konuda doğal olarak üstündür çünkü duygulara sahip değillerdir. İnsan trader'lar için en iyi yaklaşım, algoritmaların disiplinini kendi stratejilerine entegre etmektir.</p>
+      
+      <div class="public-only-btn" style="background: rgba(68, 138, 255, 0.1); border: 1px solid rgba(68, 138, 255, 0.3); border-radius: 8px; padding: 20px; margin: 32px 0; text-align: center;">
+        <h3 style="color: var(--blue); margin: 0 0 12px;">Duygusuz Trading Deneyimi</h3>
+        <p style="margin: 0 0 16px; color: var(--t2);">TB Trading Bot ile algoritmaların disiplinini keşfedin.</p>
+        <a href="javascript:void(0)" onclick="openAuth('register')" style="background: var(--blue); color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer;">Hemen Başla</a>
+      </div>
+
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="blog-sidebar blog-sidebar-right">
+      
+      <!-- Emotion Tracker -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">😊</span>
+          Duygu Durumu
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+          <div style="text-align: center; padding: 12px; background: var(--s1); border-radius: 8px; cursor: pointer; transition: all 0.3s;" onclick="selectEmotion('confident')" class="emotion-btn">
+            <div style="font-size: 24px; margin-bottom: 4px;">😎</div>
+            <div style="font-size: 11px; color: var(--text);">Güvenli</div>
+          </div>
+          <div style="text-align: center; padding: 12px; background: var(--s1); border-radius: 8px; cursor: pointer; transition: all 0.3s;" onclick="selectEmotion('fearful')" class="emotion-btn">
+            <div style="font-size: 24px; margin-bottom: 4px;">😰</div>
+            <div style="font-size: 11px; color: var(--text);">Korkulu</div>
+          </div>
+          <div style="text-align: center; padding: 12px; background: var(--s1); border-radius: 8px; cursor: pointer; transition: all 0.3s;" onclick="selectEmotion('greedy')" class="emotion-btn">
+            <div style="font-size: 24px; margin-bottom: 4px;">🤑</div>
+            <div style="font-size: 11px; color: var(--text);">Açgözlü</div>
+          </div>
+          <div style="text-align: center; padding: 12px; background: var(--s1); border-radius: 8px; cursor: pointer; transition: all 0.3s;" onclick="selectEmotion('calm')" class="emotion-btn">
+            <div style="font-size: 24px; margin-bottom: 4px;">😌</div>
+            <div style="font-size: 11px; color: var(--text);">Sakin</div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; padding: 10px; background: var(--s1); border-radius: 6px; text-align: center;">
+          <div style="font-size: 12px; color: var(--t3);" id="emotion-advice">Duygu durumunuzu seçin</div>
+        </div>
+      </div>
+
+      <!-- Trading Biases -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🧠</span>
+          Yaygın Önyargılar
+        </div>
+        <div style="space-y: 8px;">
+          <div style="padding: 10px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--red); margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--red);">Overconfidence</div>
+            <div style="font-size: 11px; color: var(--t3); line-height: 1.4;">Aşırı güven, risk almaya iter</div>
+          </div>
+          <div style="padding: 10px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--amber); margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--amber);">Anchoring</div>
+            <div style="font-size: 11px; color: var(--t3); line-height: 1.4;">İlk bilgiye aşırı bağlılık</div>
+          </div>
+          <div style="padding: 10px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--blue); margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--blue);">Loss Aversion</div>
+            <div style="font-size: 11px; color: var(--t3); line-height: 1.4;">Kayıptan aşırı kaçınma</div>
+          </div>
+          <div style="padding: 10px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--green);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--green);">Herd Mentality</div>
+            <div style="font-size: 11px; color: var(--t3); line-height: 1.4;">Kalabalığı takip etme</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Algorithm Benefits -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🤖</span>
+          Algoritma Avantajları
+        </div>
+        <div style="space-y: 6px;">
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--s1); border-radius: 4px; margin-bottom: 6px;">
+            <div class="pulse-enhanced" style="width: 8px; height: 8px; background: var(--green); border-radius: 50%;"></div>
+            <span style="font-size: 12px; color: var(--text);">%100 Disiplin</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--s1); border-radius: 4px; margin-bottom: 6px;">
+            <div class="pulse-enhanced" style="width: 8px; height: 8px; background: var(--blue); border-radius: 50%; animation-delay: 0.5s;"></div>
+            <span style="font-size: 12px; color: var(--text);">Duygusuz Karar</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--s1); border-radius: 4px; margin-bottom: 6px;">
+            <div class="pulse-enhanced" style="width: 8px; height: 8px; background: var(--amber); border-radius: 50%; animation-delay: 1s;"></div>
+            <span style="font-size: 12px; color: var(--text);">7/24 Çalışma</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--s1); border-radius: 4px;">
+            <div class="pulse-enhanced" style="width: 8px; height: 8px; background: var(--purple); border-radius: 50%; animation-delay: 1.5s;"></div>
+            <span style="font-size: 12px; color: var(--text);">Hızlı Reaksiyon</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meditation Timer -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🧘</span>
+          Meditasyon Zamanlayıcı
+        </div>
+        <div style="text-align: center;">
+          <div style="font-size: 24px; font-weight: 700; color: var(--blue); font-family: var(--mono); margin: 12px 0;" id="meditation-timer">05:00</div>
+          <div style="display: flex; gap: 8px; justify-content: center;">
+            <button onclick="startMeditation()" style="background: var(--green); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;">Başla</button>
+            <button onclick="stopMeditation()" style="background: var(--red); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer;">Durdur</button>
+          </div>
+          <div style="font-size: 11px; color: var(--t3); margin-top: 8px;">Trading öncesi sakinleşin</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Enhanced reading progress and TOC
+function updateReadingProgress() {
+  const article = document.querySelector('.blog-content');
+  const progressBar = document.getElementById('reading-progress');
+  const progressText = document.getElementById('progress-text');
+  const readingTime = document.getElementById('reading-time');
+  
+  if (!article || !progressBar) return;
+  
+  const articleTop = article.offsetTop;
+  const articleHeight = article.offsetHeight;
+  const windowHeight = window.innerHeight;
+  const scrollTop = window.pageYOffset;
+  
+  const progress = Math.min(100, Math.max(0, 
+    ((scrollTop - articleTop + windowHeight/2) / articleHeight) * 100
+  ));
+  
+  progressBar.style.width = progress + '%';
+  progressText.textContent = Math.round(progress) + '%';
+  
+  const totalReadingTime = 8;
+  const remainingTime = Math.max(0, Math.round(totalReadingTime * (100 - progress) / 100));
+  readingTime.textContent = remainingTime > 0 ? remainingTime + ' dk' : 'Tamamlandı';
+}
+
+function updateActiveTOC() {
+  const sections = document.querySelectorAll('h2[id], h3[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  
+  let activeSection = null;
+  const scrollTop = window.pageYOffset + 100;
+  
+  sections.forEach(section => {
+    if (section.offsetTop <= scrollTop) {
+      activeSection = section;
+    }
+  });
+  
+  tocLinks.forEach(link => {
+    link.classList.remove('active');
+    if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+      link.classList.add('active');
+    }
+  });
+}
+
+// Psychology test
+document.querySelectorAll('input[name="loss-reaction"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    const result = document.getElementById('psychology-result');
+    const advice = {
+      'revenge': 'Risk: Revenge trading eğilimi var. Algoritma kullanın.',
+      'analyze': 'İyi: Analitik yaklaşım. Hibrit strateji uygun.',
+      'break': 'Mükemmel: Duygusal kontrol var. Manuel trading yapabilirsiniz.'
+    };
+    result.textContent = advice[this.value];
+    result.style.color = this.value === 'revenge' ? 'var(--red)' : 
+                        this.value === 'analyze' ? 'var(--amber)' : 'var(--green)';
+  });
+});
+
+// Emotion tracker
+function selectEmotion(emotion) {
+  const advice = document.getElementById('emotion-advice');
+  const emotions = {
+    'confident': 'Güven iyi ama aşırı güvenden kaçının',
+    'fearful': 'Korku riskli kararlar aldırır, sakin olun',
+    'greedy': 'Açgözlülük tehlikeli, risk yönetimi yapın',
+    'calm': 'Mükemmel! En iyi trading durumu'
+  };
+  
+  advice.textContent = emotions[emotion];
+  advice.style.color = emotion === 'calm' ? 'var(--green)' : 
+                      emotion === 'confident' ? 'var(--blue)' : 
+                      emotion === 'fearful' ? 'var(--amber)' : 'var(--red)';
+  
+  // Visual feedback
+  document.querySelectorAll('.emotion-btn').forEach(btn => {
+    btn.style.background = 'var(--s1)';
+    btn.style.transform = 'scale(1)';
+  });
+  event.target.closest('.emotion-btn').style.background = 'var(--b1)';
+  event.target.closest('.emotion-btn').style.transform = 'scale(1.05)';
+}
+
+// Meditation timer
+let meditationInterval;
+let meditationTime = 300; // 5 minutes
+
+function startMeditation() {
+  clearInterval(meditationInterval);
+  meditationInterval = setInterval(() => {
+    meditationTime--;
+    const minutes = Math.floor(meditationTime / 60);
+    const seconds = meditationTime % 60;
+    document.getElementById('meditation-timer').textContent = 
+      `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (meditationTime <= 0) {
+      clearInterval(meditationInterval);
+      alert('Meditasyon tamamlandı! Artık trading yapabilirsiniz.');
+      meditationTime = 300;
+      document.getElementById('meditation-timer').textContent = '05:00';
+    }
+  }, 1000);
+}
+
+function stopMeditation() {
+  clearInterval(meditationInterval);
+  meditationTime = 300;
+  document.getElementById('meditation-timer').textContent = '05:00';
+}
+
+// Smooth scroll and floating buttons
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTOC() {
+  const sidebar = document.querySelector('.blog-sidebar-left');
+  sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+}
+
+window.addEventListener('scroll', () => {
+  updateReadingProgress();
+  updateActiveTOC();
+});
+
+window.addEventListener('load', () => {
+  updateReadingProgress();
+  updateActiveTOC();
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,319 @@
+{% extends "layout.html" %}
+{% block content %}
+<div id="home" class="page active">
+  <section class="hero fade-in">
+    <canvas class="particle-canvas" id="particle-canvas"></canvas>
+    <div>
+
+      <h1 class="hero-title">Kripto Piyasalarında<br><span>Algoritmik Üstünlük</span></h1>
+      <p class="hero-desc">Binance API entegrasyonu ile 7/24 otomatik kaldıraçlı işlem yapan botumuz, makine öğrenmesi
+        destekli sinyallerle pasif gelir üretir.</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary public-only-btn" onclick="openAuth('register')">Ücretsiz Başla</button>
+        <button class="btn btn-ghost" onclick="switchTab('strateji')">Stratejiyi İncele</button>
+      </div>
+    </div>
+    <div>
+      <div class="hcard">
+        <div class="hcard-head"><span class="hcard-title">BTC / USDT — Spot</span><span class="hcard-live">●
+            CANLI</span></div>
+        <div class="hcard-price-row">
+          <div class="hcard-price" id="btc-price">$97,420.00</div>
+          <div class="hcard-chg" id="btc-chg">▲ +$2,341.00 &nbsp;(+2.41%)</div>
+        </div>
+        <div class="mini-chart">
+          <svg viewBox="0 0 380 64" width="100%" height="64" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#fff" stop-opacity=".1" />
+                <stop offset="100%" stop-color="#fff" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <path id="mini-area" fill="url(#hg)" />
+            <path id="mini-line" fill="none" stroke="#fff" stroke-width="1.5" />
+          </svg>
+        </div>
+        <div class="hcard-stats">
+          <div class="hcs">
+            <div class="hcs-l">24s Yüksek</div>
+            <div class="hcs-v" id="btc-high">$98,140</div>
+          </div>
+          <div class="hcs">
+            <div class="hcs-l">24s Düşük</div>
+            <div class="hcs-v" id="btc-low">$94,820</div>
+          </div>
+          <div class="hcs">
+            <div class="hcs-l">24s Hacim</div>
+            <div class="hcs-v" id="btc-vol">$42.1B</div>
+          </div>
+          <div class="hcs">
+            <div class="hcs-l">Piyasa Değeri</div>
+            <div class="hcs-v" id="btc-mc">$1.92T</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-strip">
+    <div class="stats-strip-inner">
+      <div class="sc">
+        <div class="sc-l">Toplam Piyasa Değeri</div>
+        <div class="sc-v" id="strip-cap">$—</div>
+        <div class="sc-s" id="strip-cap-chg">Yükleniyor...</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">BTC Dominansı</div>
+        <div class="sc-v" id="strip-dom">—</div>
+        <div class="sc-s">Piyasa payı</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">24s Kripto Hacmi</div>
+        <div class="sc-v" id="strip-vol">$—</div>
+        <div class="sc-s">Tüm piyasa</div>
+      </div>
+      <div class="sc">
+        <div class="sc-l">BTC 24s Değişim</div>
+        <div class="sc-v" id="strip-btc-chg">—</div>
+        <div class="sc-s" id="strip-btc-price">Yükleniyor...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker-strip">
+    <div class="ticker-inner" id="ticker-inner">
+      <span class="t-item"><span class="t-sym">BTC</span><span class="t-price">Yükleniyor...</span><span class="t-up">—
+          %</span></span>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="ph">
+          <div class="ph-title">
+            <div class="ph-icon">📈</div>ETH/USDT Fiyat Grafiği
+          </div>
+          <div class="tab-row" id="chart-tabs">
+            <button class="tbtn" data-interval="5m" data-limit="144">5D</button>
+            <button class="tbtn" data-interval="15m" data-limit="96">15D</button>
+            <button class="tbtn active" data-interval="1h" data-limit="168">1S</button>
+            <button class="tbtn" data-interval="4h" data-limit="180">4S</button>
+            <button class="tbtn" data-interval="1d" data-limit="90">1G</button>
+            <button class="tbtn" data-interval="1w" data-limit="52">1H</button>
+          </div>
+        </div>
+        <div class="chart-wrap" style="position:relative;padding:8px 18px 6px">
+          <div id="chart-loading"
+            style="position:absolute;inset:0;background:rgba(0,0,0,.6);align-items:center;justify-content:center;font-size:12px;color:var(--t3);font-family:var(--mono);z-index:10;display:none;border-radius:0 0 9px 9px">
+            Yükleniyor...</div>
+          <canvas id="btc-chart-canvas" style="width:100%;height:165px;display:block"></canvas>
+        </div>
+        <div
+          style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-top:1px solid var(--b1)">
+          <div style="display:flex;gap:18px">
+            <div><span style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Yüksek</span>
+              <div style="font-family:var(--mono);font-size:12px;font-weight:500;margin-top:2px" id="chart-high">—
+              </div>
+            </div>
+            <div><span style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Düşük</span>
+              <div style="font-family:var(--mono);font-size:12px;font-weight:500;margin-top:2px" id="chart-low">—
+              </div>
+            </div>
+            <div><span
+                style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px">Değişim</span>
+              <div style="font-family:var(--mono);font-size:12px;font-weight:500;margin-top:2px" id="chart-chg">—
+              </div>
+            </div>
+          </div>
+          <div style="font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:-.3px" id="chart-price-tag">
+            —</div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:0">
+        <div class="ph">
+          <div class="ph-title">
+            <div class="ph-icon">🔥</div>En Çok Yükselenler
+          </div><span style="font-family:var(--mono);font-size:10px;color:var(--t3)" id="top-gainers-ts">—</span>
+        </div>
+        <div id="top-gainers-list">
+          <div style="padding:20px;text-align:center;color:var(--t3);font-size:12px">Yükleniyor...</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-title">
+            <div class="ph-icon">❄️</div>En Çok Düşenler
+          </div>
+        </div>
+        <div id="top-losers-list">
+          <div style="padding:20px;text-align:center;color:var(--t3);font-size:12px">Yükleniyor...</div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:16px">
+        <div class="ph">
+          <div class="ph-title">
+            <div class="ph-icon">🌡️</div>Piyasa Isı Haritası
+          </div><span style="font-family:var(--mono);font-size:10px;color:var(--t3)">24s değişim</span>
+        </div>
+        <div id="heatmap-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:12px 14px">
+          <div style="color:var(--t3);font-size:11px;grid-column:1/-1;text-align:center;padding:16px">Yükleniyor...
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="perf-section">
+    <div class="perf-inner">
+      <div class="sec-ey">Performans</div>
+      <div class="sec-title">Bot İstatistikleri</div>
+      <div class="perf-grid">
+        <div class="perf-card">
+          <div class="donut-wrap"><canvas id="donut-winrate" width="240" height="240"></canvas>
+            <div class="donut-label">
+              <div class="donut-val" style="color:var(--green)" id="perf-winrate">—</div>
+              <div class="donut-sub">Başarı</div>
+            </div>
+          </div>
+          <div class="perf-title">Win Rate</div>
+          <div class="perf-desc">Kazanan işlem oranı</div>
+        </div>
+        <div class="perf-card">
+          <div class="donut-wrap"><canvas id="donut-roi" width="240" height="240"></canvas>
+            <div class="donut-label">
+              <div class="donut-val" style="color:var(--green)" id="perf-roi">—</div>
+              <div class="donut-sub">Toplam</div>
+            </div>
+          </div>
+          <div class="perf-title">Toplam Getiri</div>
+          <div class="perf-desc">Başlangıçtan bu yana toplam getiri</div>
+        </div>
+        <div class="perf-card">
+          <div class="donut-wrap"><canvas id="donut-trades" width="240" height="240"></canvas>
+            <div class="donut-label">
+              <div class="donut-val" style="color:var(--blue)" id="perf-trades">—</div>
+              <div class="donut-sub">İşlem</div>
+            </div>
+          </div>
+          <div class="perf-title">Toplam İşlem</div>
+          <div class="perf-desc">Gerçekleştirilen toplam işlem sayısı</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="feat-section">
+    <div class="feat-inner">
+      <div class="sec-ey">Özellikler</div>
+      <div class="sec-title">Neden TB Trading Bot?</div>
+      <div class="feat-grid">
+        <div class="fc">
+          <div class="fc-ico">🧠</div>
+          <div class="fc-t">AI Destekli Sinyal</div>
+          <div class="fc-d">ML modelleriyle piyasa örüntülerini tanır, yüksek olasılıklı giriş-çıkış noktalarını
+            tespit eder.</div>
+        </div>
+        <div class="fc">
+          <div class="fc-ico">⚡</div>
+          <div class="fc-t">Düşük Gecikmeli Yürütme</div>
+          <div class="fc-d">Sub-millisecond order execution ile fiyat kayması minimuma iner, arbitraj fırsatları
+            kaçırılmaz.</div>
+        </div>
+        <div class="fc">
+          <div class="fc-ico">🛡</div>
+          <div class="fc-t">Akıllı Risk Yönetimi</div>
+          <div class="fc-d">Dinamik stop-loss, otomatik pozisyon boyutlandırma ve günlük zarar limiti ile sermaye
+            korunur.</div>
+        </div>
+        <div class="fc">
+          <div class="fc-ico">🔄</div>
+          <div class="fc-t">Multi-Exchange</div>
+          <div class="fc-d">Binance, Bybit, OKX ve 20+ borsada eş zamanlı koordineli işlem yürütme imkânı.</div>
+        </div>
+        <div class="fc">
+          <div class="fc-ico">📉</div>
+          <div class="fc-t">Backtesting</div>
+          <div class="fc-d">3 yıllık tick verisi üzerinde strateji testi, Monte Carlo simülasyonu ve parametre
+            optimizasyonu.</div>
+        </div>
+        <div class="fc">
+          <div class="fc-ico">📊</div>
+          <div class="fc-t">Gerçek Zamanlı Analitik</div>
+          <div class="fc-d">Canlı P&L takibi, Sharpe ve Sortino rasyoları ile kapsamlı performans raporlaması.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- CTA BANNER -->
+  <div class="cta-banner">
+    <div class="cta-inner">
+      <div class="cta-title">Kazanmaya Şimdi Başlayın</div>
+      <div class="cta-sub">Binance API'nizi bağlayın, strateji seçin ve botunuz 7/24 sizin için çalışsın. Kurulum
+        sadece 5 dakika.</div>
+      <button class="btn btn-primary public-only-btn" style="padding:14px 36px;font-size:15px"
+        onclick="openAuth('register')">Ücretsiz
+        Hesap Oluştur</button>
+    </div>
+  </div>
+
+
+  <!-- FAQ -->
+  <div class="faq-section">
+    <div class="sec-ey" style="text-align:center">SSS</div>
+    <div class="sec-title" style="text-align:center;margin-bottom:24px">Sıkça Sorulan Sorular</div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">Trading bot nasıl çalışır?<span class="faq-arrow">▼</span></div>
+      <div class="faq-a">
+        <div class="faq-a-inner">TB Trading Bot, Binance Futures API'ye bağlanarak piyasa verilerini analiz eder. ML
+          modelleri ile yüksek olasılıklı giriş-çıkış noktalarını tespit eder ve otomatik olarak kaldıraçlı işlemler
+          açar.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">Minimum ne kadar sermaye gerekli?<span class="faq-arrow">▼</span>
+      </div>
+      <div class="faq-a">
+        <div class="faq-a-inner">Alt limit yoktur - Binance'ın izin verdiği en düşük bakiye kadar başlayabilirsiniz (yaklaşık $10-20 USDT). Ancak daha iyi risk yönetimi ve karlılık için $500+ önerilir. Bot, sermayenize göre pozisyon boyutunu otomatik ayarlar.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">Paramı kaybedebilir miyim?<span class="faq-arrow">▼</span></div>
+      <div class="faq-a">
+        <div class="faq-a-inner">Kaldıraçlı işlemler risk içerir. TB Bot akıllı stop-loss ile sermayenizi korur, ancak
+          geçmiş performans gelecekteki sonuçları garanti etmez.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">API anahtarım güvende mi?<span class="faq-arrow">▼</span></div>
+      <div class="faq-a">
+        <div class="faq-a-inner">AES-256 şifreleme ile saklanır. Sadece Futures işlem iznini aktif edin, para çekme
+          iznini asla vermeyin. IP kısıtlaması ekleyin.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">Hangi stratejiler mevcut?<span class="faq-arrow">▼</span></div>
+      <div class="faq-a">
+        <div class="faq-a-inner">Üç strateji: <strong>Hibrit</strong> (Grid+Trend), <strong>Grid Trading</strong>
+          (yatay piyasa) ve <strong>Trend Takip</strong> (momentum). Hibrit en yüksek başarı oranına sahiptir.</div>
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFAQ(this)">7/24 çalışıyor mu?<span class="faq-arrow">▼</span></div>
+      <div class="faq-a">
+        <div class="faq-a-inner">Evet, bot sunucularımızda 7/24 kesintisiz çalışır. Kripto piyasaları hiç
+          kapanmadığından bot her an fırsatları değerlendirir.</div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+{% endblock %}

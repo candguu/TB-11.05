@@ -1,0 +1,173 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="page active" style="min-height:100vh;">
+  <div class="page-inner" style="max-width:800px;margin:0 auto;padding:60px 24px;">
+
+    <div style="text-align:center;margin-bottom:52px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:50px;padding:8px 20px;margin-bottom:20px;">
+        <span style="font-size:13px;color:var(--green);">🔒 Yasal Belgeler</span>
+      </div>
+      <h1 style="font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:12px;">Gizlilik Politikası</h1>
+      <p style="color:var(--t2);font-size:15px;">Son güncelleme: 1 Ocak 2025</p>
+    </div>
+
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:20px 24px;margin-bottom:32px;">
+      <p style="color:#69f0ae;font-size:14px;line-height:1.7;margin:0;">
+        <strong>Özet:</strong> Kişisel verilerinizi üçüncü taraflarla satmıyor veya pazarlama amacıyla paylaşmıyoruz. Yalnızca hizmeti sağlamak için gerekli minimum veriyi topluyoruz.
+      </p>
+    </div>
+
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:16px;overflow:hidden;">
+
+      <div style="padding:28px 32px;border-bottom:1px solid var(--b1);background:var(--s2);">
+        <p style="color:var(--t2);font-size:13px;margin-bottom:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;">İçindekiler</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          {% for item in [
+            ('1','Topladığımız Veriler'),('2','Verilerin Kullanım Amacı'),
+            ('3','Veri Paylaşımı'),('4','API Anahtarı Güvenliği'),
+            ('5','Çerezler'),('6','Veri Saklama Süresi'),
+            ('7','Haklarınız'),('8','Güvenlik'),('9','İletişim')
+          ] %}
+          <a href="#g{{item[0]}}" style="color:var(--green);font-size:14px;text-decoration:none;">{{item[0]}}. {{item[1]}}</a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div style="padding:40px 32px;display:flex;flex-direction:column;gap:40px;">
+
+        <section id="g1">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">01</span>
+            Topladığımız Veriler
+          </h2>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            {% for item in [
+              ('👤', 'Kimlik Bilgileri', 'Ad, soyad, e-posta adresi ve telefon numaranız (telefon opsiyoneldir).'),
+              ('🔑', 'API Anahtarları', 'Binance API anahtarınızın yalnızca ilk karakterleri görüntülenir; tam anahtar şifreli saklanır.'),
+              ('📊', 'Kullanım Verileri', 'Bot konfigürasyonunuz, seçtiğiniz stratejiler ve işlem tercihleri.'),
+              ('🖥️', 'Teknik Veriler', 'IP adresi, tarayıcı türü ve oturum bilgileri (güvenlik amacıyla).')
+            ] %}
+            <div style="background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:16px 20px;display:flex;gap:14px;align-items:flex-start;">
+              <span style="font-size:20px;">{{item[0]}}</span>
+              <div>
+                <div style="font-weight:600;font-size:14px;margin-bottom:4px;">{{item[1]}}</div>
+                <div style="color:var(--t2);font-size:13px;line-height:1.6;">{{item[2]}}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="g2">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">02</span>
+            Verilerin Kullanım Amacı
+          </h2>
+          <ul style="color:var(--t2);font-size:14px;line-height:2;padding-left:20px;">
+            <li>Hesabınızın oluşturulması ve yönetilmesi,</li>
+            <li>Otomatik trading botunuzun çalıştırılması,</li>
+            <li>Hesap güvenliğinizin sağlanması (2FA, şüpheli giriş bildirimleri),</li>
+            <li>Teknik destek ve sistem bildirimleri,</li>
+            <li>Yasal yükümlülüklerimizin yerine getirilmesi.</li>
+          </ul>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="g3">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">03</span>
+            Veri Paylaşımı
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;margin-bottom:16px;">Kişisel verilerinizi aşağıdaki durumlar dışında kimseyle paylaşmıyoruz:</p>
+          <ul style="color:var(--t2);font-size:14px;line-height:2;padding-left:20px;">
+            <li><strong style="color:#fff;">Hizmet sağlayıcılar:</strong> Sunucu barındırma (Render.com) gibi teknik altyapı için minimum veri,</li>
+            <li><strong style="color:#fff;">Yasal zorunluluk:</strong> Mahkeme kararı veya resmi makam talebi,</li>
+            <li><strong style="color:#fff;">Güvenlik:</strong> Dolandırıcılık veya siber saldırıların önlenmesi.</li>
+          </ul>
+          <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:16px 20px;margin-top:16px;">
+            <p style="color:#69f0ae;font-size:13px;margin:0;">✅ Verilerinizi <strong>asla satmıyoruz</strong> ve reklam amaçlı kullanmıyoruz.</p>
+          </div>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="g4">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">04</span>
+            API Anahtarı Güvenliği
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Binance API anahtarlarınız veritabanında şifreli olarak saklanır. Sisteme yalnızca ilk birkaç karakteri gösterilir. API anahtarlarınızı yalnızca <strong style="color:#fff;">Futures işlem yetkisi</strong> ile ve <strong style="color:#fff;">Para Çekme yetkisi kapalı</strong> olarak oluşturmanızı kesinlikle tavsiye ederiz. Bu sayede, olası bir güvenlik ihlalinde fonlarınız korunur.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="g5">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">05</span>
+            Çerezler (Cookies)
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Platform, oturum yönetimi için LocalStorage kullanmaktadır (geleneksel çerezler değil). Bu veriler tarayıcınızda yerel olarak saklanır ve sunucumuzla otomatik olarak paylaşılmaz. Tarayıcı ayarlarınızdan bu verileri istediğiniz zaman temizleyebilirsiniz.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="g6">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">06</span>
+            Veri Saklama Süresi
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Hesabınız aktif olduğu sürece verileriniz saklanır. Hesabınızı sildiğinizde, kişisel verileriniz 30 gün içinde sistemden kalıcı olarak silinir. Yasal yükümlülük gerektiren finansal kayıtlar ilgili mevzuata uygun süre boyunca saklanabilir.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="g7">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">07</span>
+            Haklarınız
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;margin-bottom:12px;">KVKK ve GDPR kapsamında aşağıdaki haklara sahipsiniz:</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            {% for right in ['Verilerinize erişim hakkı','Düzeltme hakkı','Silme hakkı','Taşınabilirlik hakkı','İtiraz hakkı','İşlemi kısıtlama hakkı'] %}
+            <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--t2);">
+              <span style="color:var(--green);margin-right:6px;">✓</span> {{right}}
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="g8">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">08</span>
+            Güvenlik
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Verilerinizi korumak için PBKDF2+HMAC şifreleme, HTTPS bağlantısı, oturum token doğrulaması ve hız sınırlama (rate limiting) gibi önlemler alıyoruz. Bununla birlikte, internet üzerinden hiçbir iletimin %100 güvenli olmadığını belirtmek gerekir.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="g9">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(255,255,255,.1);color:var(--green);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">09</span>
+            İletişim
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Gizlilik ile ilgili talepleriniz için <a href="/destek" style="color:var(--green);">destek sayfamızı</a> kullanabilirsiniz. Taleplerinizi en geç 30 gün içinde yanıtlıyoruz.</p>
+        </section>
+
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <a href="/kullanim-sartlari" style="color:var(--blue);font-size:14px;text-decoration:none;">← Kullanım Şartları</a>
+      <span style="color:var(--t3);margin:0 16px;">·</span>
+      <a href="/" style="color:var(--t2);font-size:14px;text-decoration:none;">Ana Sayfaya Dön →</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

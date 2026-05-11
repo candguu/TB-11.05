@@ -1,0 +1,128 @@
+<!-- Simple blog template for quick updates -->
+{% extends "layout.html" %}
+{% block content %}
+<!-- Floating particles background -->
+<div class="floating-particles">
+  <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+  <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+  <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+  <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+  <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+  <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+  <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+  <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+</div>
+
+<div class="page active" style="min-height: 100vh; padding: 60px 0 40px; position: relative; z-index: 2;">
+  <div class="blog-container">
+    
+    <!-- Left Sidebar -->
+    <div class="blog-sidebar blog-sidebar-left">
+      
+      <!-- Reading Progress -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📊</span>
+          Okuma İlerlemesi
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;" id="reading-progress"></div>
+        </div>
+        <div style="font-size: 12px; color: var(--t3); margin-top: 8px;">
+          <span id="progress-text">0%</span> tamamlandı
+        </div>
+      </div>
+
+      <!-- Quick Navigation -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🧭</span>
+          Hızlı Navigasyon
+        </div>
+        <div style="space-y: 8px;">
+          <a href="/blog" style="display: block; padding: 8px 12px; background: var(--s1); border-radius: 6px; text-decoration: none; color: var(--text); font-size: 13px; transition: background 0.2s; margin-bottom: 6px;" onmouseover="this.style.background='var(--b1)'" onmouseout="this.style.background='var(--s1)'">
+            ← Tüm Makaleler
+          </a>
+          <a href="javascript:void(0)" onclick="openAuth('register')" style="display: block; padding: 8px 12px; background: var(--blue); color: #fff; border-radius: 6px; text-decoration: none; font-size: 13px; text-align: center; transition: transform 0.2s; cursor: pointer;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            🚀 Hemen Başla
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="blog-main-content">
+      <!-- CONTENT PLACEHOLDER -->
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="blog-sidebar blog-sidebar-right">
+      
+      <!-- Author Info -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">👨‍💻</span>
+          Yazar
+        </div>
+        <div style="text-align: center;">
+          <div style="width: 50px; height: 50px; border-radius: 25px; background: var(--green); color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; margin: 0 auto 12px;">TB</div>
+          <div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">TB Ekibi</div>
+          <div style="font-size: 12px; color: var(--t2);">Trading uzmanları</div>
+        </div>
+      </div>
+
+      <!-- Related Articles -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📚</span>
+          İlgili Makaleler
+        </div>
+        <div style="space-y: 8px;">
+          <a href="/blog/ml-trading" style="display: block; padding: 10px; background: var(--s1); border-radius: 6px; text-decoration: none; color: inherit; transition: background 0.2s; margin-bottom: 6px;" onmouseover="this.style.background='var(--b1)'" onmouseout="this.style.background='var(--s1)'">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text);">ML Trading</div>
+            <div style="font-size: 11px; color: var(--t3);">Algoritmik bot geliştirme</div>
+          </a>
+          <a href="/blog/risk-management" style="display: block; padding: 10px; background: var(--s1); border-radius: 6px; text-decoration: none; color: inherit; transition: background 0.2s; margin-bottom: 6px;" onmouseover="this.style.background='var(--b1)'" onmouseout="this.style.background='var(--s1)'">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text);">Risk Yönetimi</div>
+            <div style="font-size: 11px; color: var(--t3);">Sermayenizi koruyun</div>
+          </a>
+          <a href="/blog/grid-trading" style="display: block; padding: 10px; background: var(--s1); border-radius: 6px; text-decoration: none; color: inherit; transition: background 0.2s;" onmouseover="this.style.background='var(--b1)'" onmouseout="this.style.background='var(--s1)'">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text);">Grid Trading</div>
+            <div style="font-size: 11px; color: var(--t3);">Pasif gelir stratejisi</div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Reading progress tracker
+function updateReadingProgress() {
+  const article = document.querySelector('.blog-content');
+  const progressBar = document.getElementById('reading-progress');
+  const progressText = document.getElementById('progress-text');
+  
+  if (!article || !progressBar) return;
+  
+  const articleTop = article.offsetTop;
+  const articleHeight = article.offsetHeight;
+  const windowHeight = window.innerHeight;
+  const scrollTop = window.pageYOffset;
+  
+  const progress = Math.min(100, Math.max(0, 
+    ((scrollTop - articleTop + windowHeight/2) / articleHeight) * 100
+  ));
+  
+  progressBar.style.width = progress + '%';
+  progressText.textContent = Math.round(progress) + '%';
+}
+
+window.addEventListener('scroll', updateReadingProgress);
+window.addEventListener('load', updateReadingProgress);
+</script>
+
+{% endblock %}

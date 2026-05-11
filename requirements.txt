@@ -1,0 +1,15 @@
+Flask>=3.0,<4
+flask-cors>=4.0,<5
+requests>=2.31,<3
+python-dotenv>=1.0,<2
+cryptography>=42,<47
+pandas>=2.2,<4
+numpy>=1.26,<3
+
+# Testing
+pytest>=7.4,<9
+pytest-cov>=4.1,<6
+
+# Code Quality
+flake8>=6.1,<8
+black>=23.0,<25

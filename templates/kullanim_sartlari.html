@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="page active" style="min-height:100vh;">
+  <div class="page-inner" style="max-width:800px;margin:0 auto;padding:60px 24px;">
+
+    <div style="text-align:center;margin-bottom:52px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(68,138,255,.1);border:1px solid rgba(68,138,255,.2);border-radius:50px;padding:8px 20px;margin-bottom:20px;">
+        <span style="font-size:13px;color:var(--blue);">📋 Yasal Belgeler</span>
+      </div>
+      <h1 style="font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:12px;">Kullanım Şartları</h1>
+      <p style="color:var(--t2);font-size:15px;">Son güncelleme: 1 Ocak 2025</p>
+    </div>
+
+    <div style="background:var(--s1);border:1px solid var(--b1);border-radius:16px;overflow:hidden;">
+
+      <!-- TOC -->
+      <div style="padding:28px 32px;border-bottom:1px solid var(--b1);background:var(--s2);">
+        <p style="color:var(--t2);font-size:13px;margin-bottom:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;">İçindekiler</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          {% for item in [
+            ('1','Hizmetin Tanımı'),('2','Kabul Koşulları'),('3','Hesap Yükümlülükleri'),
+            ('4','Finansal Risk Uyarısı'),('5','Yasaklı Kullanımlar'),('6','Fikri Mülkiyet'),
+            ('7','Sorumluluk Sınırlaması'),('8','Hizmet Değişiklikleri'),('9','Fesih'),('10','İletişim')
+          ] %}
+          <a href="#s{{item[0]}}" style="color:var(--blue);font-size:14px;text-decoration:none;">{{item[0]}}. {{item[1]}}</a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div style="padding:40px 32px;display:flex;flex-direction:column;gap:40px;">
+
+        <!-- Section 1 -->
+        <section id="s1">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">01</span>
+            Hizmetin Tanımı
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">TB Trading Bot ("Platform", "Hizmet"), kullanıcıların kripto para borsalarında otomatik alım-satım stratejileri oluşturmasına ve yönetmesine olanak tanıyan bir yazılım hizmetidir. Platform, kullanıcının kendi Binance API anahtarları aracılığıyla işlem gerçekleştiren bir aracı katman olarak çalışır ve kullanıcıların fonlarını doğrudan bünyesinde barındırmaz.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <!-- Section 2 -->
+        <section id="s2">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">02</span>
+            Kabul Koşulları
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;margin-bottom:12px;">Platformu kullanarak aşağıdaki koşulları kabul etmiş sayılırsınız:</p>
+          <ul style="color:var(--t2);font-size:14px;line-height:2;padding-left:20px;">
+            <li>18 yaşından büyük olduğunuzu,</li>
+            <li>Kripto para işlemlerinin yasal olduğu bir yargı bölgesinde ikamet ettiğinizi,</li>
+            <li>Bu şartları okuduğunuzu ve anladığınızı,</li>
+            <li>Platformu yalnızca kendi adınıza kullandığınızı beyan edersiniz.</li>
+          </ul>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <!-- Section 3 -->
+        <section id="s3">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">03</span>
+            Hesap Yükümlülükleri
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Hesap bilgilerinizin güvenliğinden yalnızca siz sorumlusunuz. Şifrenizi kimseyle paylaşmamanız ve güçlü bir şifre kullanmanız tavsiye edilir. Hesabınızda gerçekleşen her türlü işlemden kullanıcı sorumludur. Hesabınızın yetkisiz kullanıldığını tespit ettiğinizde derhal <a href="/destek" style="color:var(--blue);">destek ekibimizle</a> iletişime geçin.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <!-- Section 4 -->
+        <section id="s4">
+          <div style="background:rgba(136,136,136,.08);border:1px solid rgba(136,136,136,.2);border-radius:12px;padding:20px 24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <span style="font-size:16px;">⚠️</span>
+              <span style="color:var(--red);font-weight:700;font-size:14px;">Önemli Risk Uyarısı</span>
+            </div>
+            <p style="color:#ff8a80;font-size:13px;line-height:1.7;margin:0;">Kripto para piyasaları son derece volatildir. Geçmiş performans, gelecekteki kazançları garanti etmez. Yatırım yaptığınız tutarı kaybedebilirsiniz.</p>
+          </div>
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:rgba(136,136,136,.15);color:var(--red);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">04</span>
+            Finansal Risk Uyarısı
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">TB Trading Bot bir yatırım danışmanı değildir. Platform tarafından sunulan hiçbir bilgi, strateji veya otomatik işlem finansal tavsiye niteliği taşımaz. Kullanıcılar, tüm yatırım kararlarını bilinçli biçimde alır ve sonuçlarından tamamen kendileri sorumludur. Kaldıraçlı işlemler ek risk barındırır.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <!-- Section 5 -->
+        <section id="s5">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">05</span>
+            Yasaklı Kullanımlar
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;margin-bottom:12px;">Platformu aşağıdaki amaçlarla kullanamazsınız:</p>
+          <ul style="color:var(--t2);font-size:14px;line-height:2;padding-left:20px;">
+            <li>Kara para aklamak veya yasadışı finansal faaliyetlerde bulunmak,</li>
+            <li>Piyasaları manipüle etmek amacıyla koordineli işlemler yapmak,</li>
+            <li>Platformun altyapısına zarar verecek saldırılar gerçekleştirmek,</li>
+            <li>Başkalarının hesaplarına izinsiz erişim sağlamak,</li>
+            <li>Yanlış veya yanıltıcı bilgilerle kayıt oluşturmak.</li>
+          </ul>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="s6">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">06</span>
+            Fikri Mülkiyet
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Platform üzerindeki tüm içerik, yazılım, algoritma, grafik ve tasarımlar TB Trading Bot'un münhasır mülkiyetindedir. Kaynak kodun kopyalanması, tersine mühendislik uygulanması veya dağıtılması yasaktır. Kullanıcılara yalnızca kişisel ve ticari olmayan sınırlı bir kullanım lisansı tanınmaktadır.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="s7">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">07</span>
+            Sorumluluk Sınırlaması
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">TB Trading Bot, otomatik işlemler nedeniyle oluşan finansal kayıplardan, teknik arızalardan, API bağlantı kesintilerinden veya üçüncü taraf borsaların sorunlarından kaynaklanan zararlardan sorumlu tutulamaz. Platform, mümkün olan en yüksek hizmet kalitesini sunmayı hedefler; ancak %100 kesintisiz çalışma garantisi vermez.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="s8">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">08</span>
+            Hizmet Değişiklikleri
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">TB Trading Bot, bu kullanım şartlarını önceden bildirerek veya bildirmeksizin değiştirme hakkını saklı tutar. Değişiklikler yayımlandıktan sonra platformu kullanmaya devam etmeniz, yeni şartları kabul ettiğiniz anlamına gelir. Önemli değişiklikler için kayıtlı e-posta adresinize bildirim yapılır.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="s9">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">09</span>
+            Fesih
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Kullanıcı, hesabını istediği zaman silebilir. TB Trading Bot, bu şartların ihlali durumunda önceden bildirim yapmaksızın hesabı askıya alma veya kalıcı olarak kapatma hakkını saklı tutar. Fesih sonrasında aktif işlemler durdurulur ve API anahtarları sistemden kaldırılır.</p>
+        </section>
+
+        <div style="height:1px;background:var(--b1);"></div>
+
+        <section id="s10">
+          <h2 style="font-size:18px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;">
+            <span style="background:var(--bg2);color:var(--blue);border-radius:8px;padding:4px 10px;font-size:13px;font-family:var(--mono);">10</span>
+            İletişim
+          </h2>
+          <p style="color:var(--t2);font-size:14px;line-height:1.8;">Bu şartlarla ilgili sorularınız için <a href="/destek" style="color:var(--blue);">destek sayfamızı</a> ziyaret edebilirsiniz.</p>
+        </section>
+
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <a href="/" style="color:var(--t2);font-size:14px;text-decoration:none;">← Ana Sayfaya Dön</a>
+      <span style="color:var(--t3);margin:0 16px;">·</span>
+      <a href="/gizlilik-politikasi" style="color:var(--blue);font-size:14px;text-decoration:none;">Gizlilik Politikası →</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

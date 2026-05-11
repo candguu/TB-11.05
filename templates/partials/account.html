@@ -1,0 +1,184 @@
+<div class="dash-sub-page" id="dash-account" style="display:none">
+    <div class="dash-inner" style="max-width:1000px;margin:0 auto;padding:24px">
+        
+        <!-- Profil Başlığı -->
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:12px;padding:32px;margin-bottom:32px">
+            <div style="display:flex;align-items:center;gap:24px">
+                <div style="width:80px;height:80px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#000;box-shadow:0 4px 12px rgba(0,0,0,0.3)" id="acc-avatar-main">A</div>
+                <div style="flex:1">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap">
+                        <h1 style="font-size:28px;font-weight:700;color:#fff;margin:0" id="acc-fullname-main">—</h1>
+                        <span style="background:var(--green);color:#000;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase" id="acc-role-badge-main">Kullanıcı</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        <span style="color:var(--t2);font-size:14px" id="acc-email-main">—</span>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px">
+                        <div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>
+                        <span style="color:var(--green);font-size:12px;font-weight:600">E-posta Doğrulandı</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hesap Bilgileri -->
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin-bottom:24px">
+            <div style="padding:20px 24px;border-bottom:1px solid var(--b1)">
+                <h2 style="font-size:18px;font-weight:700;color:#fff;margin:0">Hesap Bilgileri</h2>
+            </div>
+            
+            <div class="acc-row">
+                <div class="acc-row-label">Ad Soyad</div>
+                <div class="acc-row-value">
+                    <input type="text" id="acc-fullname-input" placeholder="Ad Soyad" class="acc-input" />
+                </div>
+            </div>
+
+            <div class="acc-row">
+                <div class="acc-row-label">E-posta Adresi</div>
+                <div class="acc-row-value">
+                    <input type="email" id="acc-email-input" placeholder="email@example.com" class="acc-input" />
+                    <div style="background:rgba(0,230,118,0.1);color:var(--green);padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;white-space:nowrap">Doğrulandı</div>
+                </div>
+            </div>
+
+            <div class="acc-row">
+                <div class="acc-row-label">Telefon Numarası</div>
+                <div class="acc-row-value">
+                    <input type="tel" id="acc-phone-input" placeholder="05XX XXX XX XX" class="acc-input" />
+                </div>
+            </div>
+
+            <div class="acc-row">
+                <div class="acc-row-label">Ülke</div>
+                <div class="acc-row-value">
+                    <select id="acc-country-select" class="acc-select">
+                        <option value="TR">🇹🇷 Türkiye</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="acc-row">
+                <div class="acc-row-label">Dil</div>
+                <div class="acc-row-value">
+                    <select id="acc-language-select" class="acc-select">
+                        <option value="tr">🇹🇷 Türkçe</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="acc-row">
+                <div class="acc-row-label">Kullanıcı ID</div>
+                <div style="font-size:14px;color:#fff;font-weight:600;font-family:var(--mono)" id="acc-user-id">#—</div>
+            </div>
+
+            <div class="acc-row" style="border-bottom:none">
+                <div class="acc-row-label">Kayıt Tarihi</div>
+                <div style="font-size:14px;color:#fff;font-weight:600" id="acc-created-date">—</div>
+            </div>
+
+            <!-- Kaydet Butonu -->
+            <div style="padding:16px 24px;border-top:1px solid var(--b1);background:rgba(255,255,255,0.01)">
+                <button onclick="saveAccountInfo()" style="background:#fff;color:#000;border:none;padding:10px 24px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;width:100%" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#fff'">Bilgileri Kaydet</button>
+            </div>
+        </div>
+
+        <!-- Güvenlik -->
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin-bottom:24px">
+            <div style="padding:20px 24px;border-bottom:1px solid var(--b1)">
+                <h2 style="font-size:18px;font-weight:700;color:#fff;margin:0">Güvenlik</h2>
+            </div>
+
+            <div class="acc-row">
+                <div>
+                    <div style="font-size:14px;color:#fff;font-weight:600;margin-bottom:4px">Şifre</div>
+                    <div style="font-size:12px;color:var(--t3)">Son değiştirilme: Bilinmiyor</div>
+                </div>
+                <button onclick="changePassword()" style="background:#fff;color:#000;border:none;padding:6px 16px;border-radius:6px;font-size:13px;cursor:pointer;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#fff'">Şifre Değiştir</button>
+            </div>
+
+            <div class="acc-row">
+                <div>
+                    <div style="font-size:14px;color:#fff;font-weight:600;margin-bottom:4px">E-posta Doğrulama</div>
+                    <div style="font-size:12px;color:var(--t3)">Hesap güvenliği için aktif</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px">
+                    <div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>
+                    <span style="color:var(--green);font-size:13px;font-weight:600">Aktif</span>
+                </div>
+            </div>
+
+            <div class="acc-row">
+                <div>
+                    <div style="font-size:14px;color:#fff;font-weight:600;margin-bottom:4px">SMS Doğrulama</div>
+                    <div style="font-size:12px;color:var(--t3)">Ekstra güvenlik katmanı</div>
+                </div>
+                <button style="background:rgba(255,255,255,0.1);border:none;color:var(--t2);padding:6px 16px;border-radius:6px;font-size:13px;cursor:not-allowed;white-space:nowrap">Yakında</button>
+            </div>
+
+            <div class="acc-row" style="border-bottom:none">
+                <div>
+                    <div style="font-size:14px;color:#fff;font-weight:600;margin-bottom:4px">2FA Authenticator</div>
+                    <div style="font-size:12px;color:var(--t3)">Google Authenticator ile güvenlik</div>
+                </div>
+                <button style="background:rgba(255,255,255,0.1);border:none;color:var(--t2);padding:6px 16px;border-radius:6px;font-size:13px;cursor:not-allowed;white-space:nowrap">Yakında</button>
+            </div>
+        </div>
+
+        <!-- API Yönetimi -->
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin-bottom:24px">
+            <div style="padding:20px 24px;border-bottom:1px solid var(--b1)">
+                <h2 style="font-size:18px;font-weight:700;color:#fff;margin:0">API Yönetimi</h2>
+            </div>
+
+            <div class="acc-row">
+                <div class="acc-row-label">API Key</div>
+                <div class="acc-row-value">
+                    <input type="text" id="acc-api-key" placeholder="API Key giriniz" class="acc-api-input" />
+                </div>
+            </div>
+
+            <div class="acc-row" style="border-bottom:none">
+                <div class="acc-row-label">Secret Key</div>
+                <div class="acc-row-value">
+                    <input type="password" id="acc-secret-key" placeholder="Secret Key giriniz" class="acc-api-input" />
+                </div>
+            </div>
+
+            <!-- Kaydet Butonu -->
+            <div style="padding:16px 24px;border-top:1px solid var(--b1);background:rgba(255,255,255,0.01)">
+                <button onclick="saveApiKeys()" style="background:#fff;color:#000;border:none;padding:10px 24px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;width:100%" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#fff'">API Anahtarlarını Kaydet</button>
+            </div>
+        </div>
+
+        <!-- Hesap Aktiviteleri -->
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin-bottom:24px">
+            <div style="padding:20px 24px;border-bottom:1px solid var(--b1)">
+                <h2 style="font-size:18px;font-weight:700;color:#fff;margin:0">Son Aktiviteler</h2>
+            </div>
+            <div id="acc-activity-list">
+                <!-- JavaScript ile doldurulacak -->
+            </div>
+        </div>
+
+        <!-- Tehlikeli İşlemler -->
+        <div style="background:var(--s2);border:1px solid rgba(255,23,68,0.3);border-radius:12px;overflow:hidden">
+            <div style="padding:20px 24px;border-bottom:1px solid rgba(255,23,68,0.2);background:rgba(255,23,68,0.05)">
+                <h2 style="font-size:18px;font-weight:700;color:var(--red);margin:0">Tehlikeli İşlemler</h2>
+            </div>
+
+            <div class="acc-row" style="border-bottom:none">
+                <div>
+                    <div style="font-size:14px;color:#fff;font-weight:600;margin-bottom:4px">Hesabı Sil</div>
+                    <div style="font-size:12px;color:var(--t3)">Bu işlem geri alınamaz</div>
+                </div>
+                <button onclick="deleteAccount()" style="background:rgba(255,23,68,0.1);border:1px solid rgba(255,23,68,0.3);color:var(--red);padding:6px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;white-space:nowrap" onmouseover="this.style.background='rgba(255,23,68,0.2)'" onmouseout="this.style.background='rgba(255,23,68,0.1)'">Hesabı Sil</button>
+            </div>
+        </div>
+
+    </div>
+</div>

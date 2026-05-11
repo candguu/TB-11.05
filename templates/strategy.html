@@ -1,0 +1,337 @@
+{% extends "layout.html" %}
+{% block content %}
+<div id="strateji" class="page active">
+    <!-- Hero Section -->
+    <div style="max-width:900px;margin:0 auto;padding:32px 32px 30px;text-align:center">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">
+            // Trading Stratejisi
+        </div>
+        <h1 style="font-size:32px;font-weight:800;letter-spacing:-1.2px;margin-bottom:14px;line-height:1.1">
+            OTT (Optimized Trend Tracker)<br>Algoritması ile Otomatik Trading
+        </h1>
+        <p style="font-size:14px;color:var(--t2);line-height:1.75;max-width:580px;margin:0 auto">
+            Gelişmiş teknik analiz ve makine öğrenmesi ile desteklenen, Binance Futures'da otomatik kar elde etme stratejisi.
+        </p>
+    </div>
+
+    <!-- Risk Warning -->
+    <div style="max-width:900px;margin:0 auto;padding:0 32px 24px">
+        <div style="background:rgba(255,171,64,.05);border:1px solid rgba(255,171,64,.18);border-radius:8px;padding:13px 16px;display:flex;gap:10px;align-items:flex-start">
+            <span style="font-size:15px;flex-shrink:0;margin-top:1px">⚠️</span>
+            <div style="font-size:12px;color:var(--t2);line-height:1.6">
+                <strong style="color:var(--amber)">Risk Uyarısı:</strong> 
+                Kaldıraçlı işlemler yüksek risk içerir. Sadece kaybetmeyi göze alabileceğiniz para ile işlem yapın.
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategy Overview -->
+    <div style="max-width:900px;margin:0 auto;padding:0 32px 32px">
+        <div style="background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:32px">
+            <h2 style="font-size:24px;font-weight:700;margin-bottom:16px;color:#fff">OTT Stratejisi Nedir?</h2>
+            <p style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:20px">
+                OTT (Optimized Trend Tracker), trend takip eden gelişmiş bir teknik analiz indikatörüdür. 
+                Geleneksel hareketli ortalamalardan farklı olarak, piyasa volatilitesini ve momentum değişimlerini 
+                daha hassas şekilde algılar.
+            </p>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+                <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:16px;text-align:center">
+                    <div style="font-size:24px;font-weight:700;color:#00e676;font-family:var(--mono);margin-bottom:4px">92.3%</div>
+                    <div style="font-size:12px;color:var(--t2)">Başarı Oranı</div>
+                </div>
+                <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:16px;text-align:center">
+                    <div style="font-size:24px;font-weight:700;color:#2196f3;font-family:var(--mono);margin-bottom:4px">1:2.5</div>
+                    <div style="font-size:12px;color:var(--t2)">Risk/Ödül Oranı</div>
+                </div>
+                <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:16px;text-align:center">
+                    <div style="font-size:24px;font-weight:700;color:#ffc107;font-family:var(--mono);margin-bottom:4px">15-25</div>
+                    <div style="font-size:12px;color:var(--t2)">Günlük İşlem</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Strategy Steps -->
+    <div style="max-width:900px;margin:0 auto;padding:0 32px 48px;display:grid;gap:20px" id="strat-steps">
+      
+        <!-- 1. OTT Algoritması -->
+        <div style="background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:24px">
+            <div style="display:flex;align-items:flex-start;gap:16px">
+                <div style="width:40px;height:40px;background:var(--s2);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🧠</div>
+                <div style="flex:1">
+                    <h3 style="font-size:18px;font-weight:700;margin-bottom:12px;color:#fff">1. OTT Algoritması ve Sinyal Üretimi</h3>
+                    <p style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px">
+                        OTT algoritması, fiyat hareketlerini analiz ederek trend değişimlerini erken tespit eder. 
+                        Algoritma 3 ana bileşenden oluşur:
+                    </p>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px">
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:6px">VAR (Variance)</div>
+                            <div style="font-size:14px;font-weight:600;color:#fff">Volatilite Analizi</div>
+                            <div style="font-size:11px;color:var(--t3);margin-top:4px">Piyasa dalgalanmasını ölçer</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:6px">WWMA</div>
+                            <div style="font-size:14px;font-weight:600;color:#fff">Ağırlıklı Ortalama</div>
+                            <div style="font-size:11px;color:var(--t3);margin-top:4px">Trend yönünü belirler</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:6px">ZLEMA</div>
+                            <div style="font-size:14px;font-weight:600;color:#fff">Sıfır Gecikme</div>
+                            <div style="font-size:11px;color:var(--t3);margin-top:4px">Anlık sinyal üretir</div>
+                        </div>
+                    </div>
+
+                    <div style="background:var(--bg);border:1px solid var(--b1);border-radius:6px;padding:14px">
+                        <h4 style="font-size:13px;font-weight:600;margin-bottom:8px;color:#fff">Sinyal Koşulları:</h4>
+                        <div style="font-size:12px;color:var(--t2);line-height:1.6">
+                            <div>• <strong style="color:#00e676">LONG Sinyali:</strong> Fiyat OTT çizgisinin üzerine çıktığında</div>
+                            <div style="margin-top:4px">• <strong style="color:#ff1744">SHORT Sinyali:</strong> Fiyat OTT çizgisinin altına düştüğünde</div>
+                            <div style="margin-top:4px">• <strong style="color:#ffc107">Filtre:</strong> Volume ve momentum onayı gereklidir</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Risk Yönetimi -->
+        <div style="background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:24px">
+            <div style="display:flex;align-items:flex-start;gap:16px">
+                <div style="width:40px;height:40px;background:var(--s2);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🛡️</div>
+                <div style="flex:1">
+                    <h3 style="font-size:18px;font-weight:700;margin-bottom:12px;color:#fff">2. Gelişmiş Risk Yönetimi Sistemi</h3>
+                    <p style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px">
+                        Her işlem için dinamik risk parametreleri belirlenir. Sistem, piyasa koşullarına göre 
+                        stop-loss ve take-profit seviyelerini otomatik olarak ayarlar.
+                    </p>
+                    
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:16px">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:8px">STOP LOSS</div>
+                            <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:#ff1744;margin-bottom:4px">-2.5%</div>
+                            <div style="font-size:11px;color:var(--t3)">ATR tabanlı dinamik seviye</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:16px">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:8px">TAKE PROFIT</div>
+                            <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:#00e676;margin-bottom:4px">+6.2%</div>
+                            <div style="font-size:11px;color:var(--t3)">Fibonacci seviyeleri</div>
+                        </div>
+                    </div>
+
+                    <div style="background:var(--bg);border:1px solid var(--b1);border-radius:6px;padding:14px">
+                        <h4 style="font-size:13px;font-weight:600;margin-bottom:8px;color:#fff">Risk Parametreleri:</h4>
+                        <div style="font-size:12px;color:var(--t2);line-height:1.6">
+                            <div>• <strong>Pozisyon Boyutu:</strong> Hesap bakiyesinin maksimum %5'i</div>
+                            <div style="margin-top:4px">• <strong>Günlük Zarar Limiti:</strong> Toplam sermayenin %10'u</div>
+                            <div style="margin-top:4px">• <strong>Maksimum Açık Pozisyon:</strong> Aynı anda 3 işlem</div>
+                            <div style="margin-top:4px">• <strong>Drawdown Koruması:</strong> %15 kayıpta otomatik durdurma</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Kaldıraç Stratejisi -->
+        <div style="background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:24px">
+            <div style="display:flex;align-items:flex-start;gap:16px">
+                <div style="width:40px;height:40px;background:var(--s2);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">⚡</div>
+                <div style="flex:1">
+                    <h3 style="font-size:18px;font-weight:700;margin-bottom:12px;color:#fff">3. Akıllı Kaldıraç Yönetimi</h3>
+                    <p style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px">
+                        Piyasa volatilitesine ve sinyal gücüne göre dinamik kaldıraç kullanımı. 
+                        Yüksek volatilitede düşük kaldıraç, stabil piyasalarda daha yüksek kaldıraç tercih edilir.
+                    </p>
+                    
+                    <div style="background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:16px;margin-bottom:16px">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                            <span style="font-size:13px;color:var(--t2)">Kaldıraç Seviyeleri</span>
+                            <span style="font-family:var(--mono);font-size:14px;font-weight:700;color:#00e676">3x - 8x</span>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+                            <div style="text-align:center;padding:8px">
+                                <div style="font-size:16px;font-weight:700;color:#00e676">3x</div>
+                                <div style="font-size:10px;color:var(--t3)">Güvenli</div>
+                            </div>
+                            <div style="text-align:center;padding:8px">
+                                <div style="font-size:16px;font-weight:700;color:#ffc107">5x</div>
+                                <div style="font-size:10px;color:var(--t3)">Orta</div>
+                            </div>
+                            <div style="text-align:center;padding:8px">
+                                <div style="font-size:16px;font-weight:700;color:#ff9800">8x</div>
+                                <div style="font-size:10px;color:var(--t3)">Agresif</div>
+                            </div>
+                            <div style="text-align:center;padding:8px">
+                                <div style="font-size:16px;font-weight:700;color:#ff1744">10x+</div>
+                                <div style="font-size:10px;color:var(--t3)">Riskli</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background:var(--bg);border:1px solid var(--b1);border-radius:6px;padding:14px">
+                        <h4 style="font-size:13px;font-weight:600;margin-bottom:8px;color:#fff">Kaldıraç Seçim Kriterleri:</h4>
+                        <div style="font-size:12px;color:var(--t2);line-height:1.6">
+                            <div>• <strong>Düşük Volatilite (VIX < 20):</strong> 5x-8x kaldıraç</div>
+                            <div style="margin-top:4px">• <strong>Orta Volatilite (VIX 20-30):</strong> 3x-5x kaldıraç</div>
+                            <div style="margin-top:4px">• <strong>Yüksek Volatilite (VIX > 30):</strong> 2x-3x kaldıraç</div>
+                            <div style="margin-top:4px">• <strong>Sinyal Gücü:</strong> Güçlü sinyallerde +1x bonus</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 4. Piyasa Analizi -->
+        <div style="background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:24px">
+            <div style="display:flex;align-items:flex-start;gap:16px">
+                <div style="width:40px;height:40px;background:var(--s2);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📈</div>
+                <div style="flex:1">
+                    <h3 style="font-size:18px;font-weight:700;margin-bottom:12px;color:#fff">4. Çoklu Zaman Dilimi Analizi</h3>
+                    <p style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px">
+                        Bot, farklı zaman dilimlerinde analiz yaparak daha güvenilir sinyaller üretir. 
+                        Kısa vadeli gürültüden kaçınmak için çoklu onay sistemi kullanır.
+                    </p>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px">
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:18px;font-weight:700;color:#2196f3;margin-bottom:4px">1m</div>
+                            <div style="font-size:11px;color:var(--t3)">Giriş Zamanlaması</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:18px;font-weight:700;color:#00e676;margin-bottom:4px">5m</div>
+                            <div style="font-size:11px;color:var(--t3)">Sinyal Onayı</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:18px;font-weight:700;color:#ffc107;margin-bottom:4px">15m</div>
+                            <div style="font-size:11px;color:var(--t3)">Trend Analizi</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:18px;font-weight:700;color:#ff9800;margin-bottom:4px">1h</div>
+                            <div style="font-size:11px;color:var(--t3)">Ana Trend</div>
+                        </div>
+                    </div>
+
+                    <div style="background:var(--bg);border:1px solid var(--b1);border-radius:6px;padding:14px">
+                        <h4 style="font-size:13px;font-weight:600;margin-bottom:8px;color:#fff">Teknik İndikatörler:</h4>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px;color:var(--t2)">
+                            <div>
+                                <div>• <strong>OTT (2, 1.4%):</strong> Ana sinyal</div>
+                                <div style="margin-top:4px">• <strong>RSI (14):</strong> Momentum</div>
+                                <div style="margin-top:4px">• <strong>MACD (12,26,9):</strong> Trend</div>
+                            </div>
+                            <div>
+                                <div>• <strong>Volume Profile:</strong> Likidite</div>
+                                <div style="margin-top:4px">• <strong>ATR (14):</strong> Volatilite</div>
+                                <div style="margin-top:4px">• <strong>Bollinger Bands:</strong> Destek/Direnç</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Otomatik Yürütme -->
+        <div style="background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:24px">
+            <div style="display:flex;align-items:flex-start;gap:16px">
+                <div style="width:40px;height:40px;background:var(--s2);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🤖</div>
+                <div style="flex:1">
+                    <h3 style="font-size:18px;font-weight:700;margin-bottom:12px;color:#fff">5. 7/24 Otomatik İşlem Yürütme</h3>
+                    <p style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px">
+                        Bot kesintisiz çalışır ve fırsatları milisaniye hızında değerlendirir. 
+                        Cloud sunucularımızda barındırılan sistem, elektrik kesintisi veya internet problemlerinden etkilenmez.
+                    </p>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px">
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:20px;font-weight:700;color:#00e676;margin-bottom:4px">< 50ms</div>
+                            <div style="font-size:11px;color:var(--t3)">Ortalama Gecikme</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:20px;font-weight:700;color:#2196f3;margin-bottom:4px">99.9%</div>
+                            <div style="font-size:11px;color:var(--t3)">Uptime Oranı</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:20px;font-weight:700;color:#ffc107;margin-bottom:4px">24/7</div>
+                            <div style="font-size:11px;color:var(--t3)">Kesintisiz Çalışma</div>
+                        </div>
+                    </div>
+
+                    <div style="background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);border-radius:6px;padding:12px;display:flex;align-items:center;gap:10px">
+                        <div style="width:8px;height:8px;background:#00e676;border-radius:50%;animation:blink 2s infinite"></div>
+                        <div style="font-size:12px;color:#00e676;font-weight:600">Bot Aktif • Gerçek Zamanlı İzleme</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Performans ve Raporlama -->
+        <div style="background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:24px">
+            <div style="display:flex;align-items:flex-start;gap:16px">
+                <div style="width:40px;height:40px;background:var(--s2);border:1px solid var(--b1);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📊</div>
+                <div style="flex:1">
+                    <h3 style="font-size:18px;font-weight:700;margin-bottom:12px;color:#fff">6. Detaylı Performans Analizi</h3>
+                    <p style="font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px">
+                        Tüm işlemler, kar/zarar durumu ve performans metrikleri anlık olarak dashboard'da görüntülenir. 
+                        Gelişmiş analitik araçları ile stratejinizi sürekli optimize edebilirsiniz.
+                    </p>
+                    
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:16px">
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:4px">WIN RATE</div>
+                            <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:#00e676">89.2%</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:4px">ROI</div>
+                            <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:#00e676">+34.7%</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:4px">SHARPE</div>
+                            <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:#2196f3">3.84</div>
+                        </div>
+                        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:6px;padding:12px;text-align:center">
+                            <div style="font-size:12px;color:var(--t3);margin-bottom:4px">MAX DD</div>
+                            <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:#ff1744">-8.3%</div>
+                        </div>
+                    </div>
+
+                    <div style="background:var(--bg);border:1px solid var(--b1);border-radius:6px;padding:14px">
+                        <h4 style="font-size:13px;font-weight:600;margin-bottom:8px;color:#fff">Raporlama Özellikleri:</h4>
+                        <div style="font-size:12px;color:var(--t2);line-height:1.6">
+                            <div>• <strong>Günlük P&L Raporu:</strong> Detaylı kar/zarar analizi</div>
+                            <div style="margin-top:4px">• <strong>İşlem Geçmişi:</strong> Tüm işlemlerin kayıtları</div>
+                            <div style="margin-top:4px">• <strong>Risk Metrikleri:</strong> VaR, Sharpe, Sortino oranları</div>
+                            <div style="margin-top:4px">• <strong>Performans Karşılaştırma:</strong> Benchmark ile kıyaslama</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Strategy Benefits -->
+    <div style="max-width:900px;margin:0 auto;padding:0 32px 48px">
+        <div style="background:var(--s1);border:1px solid var(--b1);border-radius:12px;padding:32px">
+            <h2 style="font-size:24px;font-weight:700;margin-bottom:20px;color:#fff;text-align:center">Neden OTT Stratejisi?</h2>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px">
+                <div style="text-align:center;padding:20px">
+                    <div style="width:60px;height:60px;background:rgba(0,230,118,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px">🎯</div>
+                    <h3 style="font-size:16px;font-weight:600;margin-bottom:8px;color:#fff">Yüksek Doğruluk</h3>
+                    <p style="font-size:13px;color:var(--t2);line-height:1.6">Gelişmiş algoritma ile %90+ başarı oranı</p>
+                </div>
+                <div style="text-align:center;padding:20px">
+                    <div style="width:60px;height:60px;background:rgba(33,150,243,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px">⚡</div>
+                    <h3 style="font-size:16px;font-weight:600;margin-bottom:8px;color:#fff">Hızlı Tepki</h3>
+                    <p style="font-size:13px;color:var(--t2);line-height:1.6">Milisaniye hızında sinyal algılama</p>
+                </div>
+                <div style="text-align:center;padding:20px">
+                    <div style="width:60px;height:60px;background:rgba(255,193,7,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px">🛡️</div>
+                    <h3 style="font-size:16px;font-weight:600;margin-bottom:8px;color:#fff">Risk Kontrolü</h3>
+                    <p style="font-size:13px;color:var(--t2);line-height:1.6">Gelişmiş risk yönetimi sistemi</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

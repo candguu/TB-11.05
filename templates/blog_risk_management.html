@@ -1,0 +1,296 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Floating particles background -->
+<div class="floating-particles">
+  <div class="particle" style="left: 15%; animation-delay: 1s;"></div>
+  <div class="particle" style="left: 25%; animation-delay: 3s;"></div>
+  <div class="particle" style="left: 35%; animation-delay: 5s;"></div>
+  <div class="particle" style="left: 45%; animation-delay: 7s;"></div>
+  <div class="particle" style="left: 55%; animation-delay: 9s;"></div>
+  <div class="particle" style="left: 65%; animation-delay: 11s;"></div>
+  <div class="particle" style="left: 75%; animation-delay: 13s;"></div>
+  <div class="particle" style="left: 85%; animation-delay: 15s;"></div>
+</div>
+
+<!-- Floating Action Buttons -->
+<div class="floating-actions">
+  <button class="floating-btn scroll-top" onclick="scrollToTop()" title="Yukarı Çık">↑</button>
+  <button class="floating-btn" onclick="toggleTOC()" title="İçindekiler">📋</button>
+</div>
+
+<div class="page active" style="min-height: 100vh; padding: 60px 0 40px; position: relative; z-index: 2;">
+  <div class="blog-container">
+    
+    <!-- Left Sidebar -->
+    <div class="blog-sidebar blog-sidebar-left">
+      
+      <!-- Table of Contents -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📋</span>
+          İçindekiler
+        </div>
+        <div class="toc">
+          <ul class="toc-list">
+            <li class="toc-item"><a href="#kaldirac" class="toc-link">Kaldıraç: İki Ucu Keskin Bıçak</a></li>
+            <li class="toc-item"><a href="#pozisyon-buyuklugu" class="toc-link">Pozisyon Büyüklüğü Hesaplama</a></li>
+            <li class="toc-item"><a href="#stop-loss" class="toc-link">Stop Loss Stratejileri</a></li>
+            <li class="toc-item"><a href="#risk-odul" class="toc-link">Risk/Ödül Oranı</a></li>
+            <li class="toc-item"><a href="#cesitlendirme" class="toc-link">Portföy Çeşitlendirmesi</a></li>
+            <li class="toc-item"><a href="#psikoloji" class="toc-link">Psikolojik Risk Yönetimi</a></li>
+            <li class="toc-item"><a href="#gunluk-limit" class="toc-link">Günlük Risk Limitleri</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Risk Calculator -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🧮</span>
+          Risk Hesaplayıcı
+        </div>
+        <div style="space-y: 12px;">
+          <div>
+            <label style="font-size: 12px; color: var(--t3); display: block; margin-bottom: 4px;">Hesap Bakiyesi ($)</label>
+            <input type="number" id="balance" placeholder="1000" style="width: 100%; padding: 8px; background: var(--s1); border: 1px solid var(--b1); border-radius: 6px; color: var(--text); font-size: 14px;">
+          </div>
+          <div>
+            <label style="font-size: 12px; color: var(--t3); display: block; margin-bottom: 4px;">Risk Yüzdesi (%)</label>
+            <input type="number" id="risk-percent" placeholder="2" style="width: 100%; padding: 8px; background: var(--s1); border: 1px solid var(--b1); border-radius: 6px; color: var(--text); font-size: 14px;">
+          </div>
+          <div style="padding: 12px; background: var(--s1); border-radius: 6px; border: 1px solid var(--b1);">
+            <div style="font-size: 12px; color: var(--t3); margin-bottom: 4px;">Maksimum Risk:</div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--red);" id="max-risk">$0</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="blog-main-content">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 40px;">
+      <div style="margin-bottom: 16px;">
+        <a href="/blog" style="color: var(--blue); text-decoration: none; font-size: 14px;">← Blog'a Dön</a>
+      </div>
+      <span style="color: var(--t2); font-size: 10px; font-weight: 600; letter-spacing: 1px; font-family: var(--mono);">STRATEJİ</span>
+      <h1 style="font-size: 36px; font-weight: 800; margin: 16px 0 20px; letter-spacing: -0.8px; line-height: 1.2; color: #fff;">
+        Kaldıraç Kullanırken Sermayeni Korumak: Risk Yönetimi
+      </h1>
+      <div style="color: var(--t2); font-size: 18px; line-height: 1.6; margin-bottom: 24px;">
+        Yüksek kaldıraçlı trading'de sermayenizi koruyacak kanıtlanmış risk yönetimi stratejileri ve pratik uygulamaları.
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; color: var(--t3); font-size: 14px; font-family: var(--mono);">
+        <div style="width: 32px; height: 32px; border-radius: 16px; background: var(--green); color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold;">TB</div>
+        TB Ekibi • 10 dk okuma • 5 Şub 2025
+      </div>
+    </div>
+
+    <!-- Featured Image -->
+    <div style="height: 300px; background: url('/static/images/blog_risk_management.png') center/cover; border-radius: 12px; margin-bottom: 40px;"></div>
+
+    <!-- Content -->
+    <div class="blog-content" style="color: var(--t1); line-height: 1.8; font-size: 16px;">
+      
+      <h2 id="kaldirac" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Kaldıraç: İki Ucu Keskin Bıçak</h2>
+      <p>Kaldıraçlı trading, kazançlarınızı büyütebileceği gibi kayıplarınızı da aynı oranda artırır. 10x kaldıraçla %10'luk bir hareket hesabınızı tamamen bitirebilir. Bu nedenle risk yönetimi, kaldıraçlı trading'de hayatta kalmanın tek yoludur.</p>
+
+      <div style="background: rgba(255, 82, 82, 0.1); border: 1px solid rgba(255, 82, 82, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--red);">⚠️ Kritik Uyarı:</strong> Kaldıraçlı trading'de kaybetmeyi göze alamayacağınız parayla işlem yapmayın. Sermayenizin sadece %1-2'sini risk altına alın.
+      </div>
+
+      <h2 id="pozisyon-buyuklugu" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">1. Pozisyon Büyüklüğü Hesaplama</h2>
+      <p>Her işlemde riskinizi kontrol altında tutmak için pozisyon büyüklüğünü doğru hesaplamalısınız:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0; font-family: var(--mono); font-size: 14px;">
+        <strong style="color: var(--green);">Formül:</strong><br>
+        Pozisyon Büyüklüğü = (Hesap Bakiyesi × Risk Yüzdesi) / (Giriş Fiyatı - Stop Loss Fiyatı)<br><br>
+        <strong style="color: var(--amber);">Örnek:</strong><br>
+        Hesap: $1000, Risk: %2, Giriş: $50000, Stop Loss: $49000<br>
+        Pozisyon = ($1000 × 0.02) / ($50000 - $49000) = $20 / $1000 = 0.02 BTC
+      </div>
+
+      <h2 id="stop-loss" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">2. Stop Loss Stratejileri</h2>
+      <p>Stop loss, kaldıraçlı trading'de hayat kurtarıcınızdır. İşte etkili stop loss stratejileri:</p>
+      
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 12px;"><strong>Sabit Yüzde Stop Loss:</strong> Her işlemde %2-3 kayıp limitini aşmayın</li>
+        <li style="margin-bottom: 12px;"><strong>ATR Tabanlı Stop Loss:</strong> Volatiliteye göre dinamik stop loss</li>
+        <li style="margin-bottom: 12px;"><strong>Destek/Direnç Stop Loss:</strong> Teknik seviyelerin altına/üstüne yerleştirin</li>
+        <li style="margin-bottom: 12px;"><strong>Trailing Stop Loss:</strong> Kar ederken stop loss'u yukarı çekin</li>
+      </ul>
+
+      <h2 id="risk-odul" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">3. Risk/Ödül Oranı</h2>
+      <p>Karlı bir trader olmak için risk/ödül oranınız minimum 1:2 olmalıdır. Yani $100 risk alıyorsanız, hedef kar $200 olmalı.</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <h4 style="color: var(--green); margin: 0 0 12px;">İdeal Risk/Ödül Oranları:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>Konservatif: 1:2 (50% başarı oranında karlı)</li>
+          <li>Dengeli: 1:3 (40% başarı oranında karlı)</li>
+          <li>Agresif: 1:4 (33% başarı oranında karlı)</li>
+        </ul>
+      </div>
+      <h2 id="cesitlendirme" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">4. Portföy Çeşitlendirmesi</h2>
+      <p>Tüm yumurtalarınızı aynı sepete koymayın. Farklı kripto paralar ve stratejiler arasında risk dağıtın:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">Maksimum %20'sini tek bir coin'e yatırın</li>
+          <li style="margin-bottom: 8px;">Farklı sektörlerden coinler seçin (DeFi, Layer 1, Meme vb.)</li>
+          <li style="margin-bottom: 8px;">Spot ve futures pozisyonlarını dengeleyin</li>
+          <li style="margin-bottom: 8px;">Stablecoin rezervi bulundurun</li>
+        </ul>
+      </div>
+
+      <h2 id="psikoloji" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">5. Psikolojik Risk Yönetimi</h2>
+      <p>En büyük düşmanınız piyasa değil, kendi duygularınızdır. İşte psikolojik tuzaklardan kaçınma yolları:</p>
+      
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 12px;"><strong>FOMO'ya kapılmayın:</strong> Kaçırdığınız fırsatlar için üzülmeyin</li>
+        <li style="margin-bottom: 12px;"><strong>Revenge Trading yapmayın:</strong> Kayıp sonrası büyük pozisyon almayın</li>
+        <li style="margin-bottom: 12px;"><strong>Planınıza sadık kalın:</strong> Duygusal kararlar almayın</li>
+        <li style="margin-bottom: 12px;"><strong>Mola verin:</strong> Sürekli ekran başında kalmayın</li>
+      </ul>
+
+      <h2 id="gunluk-limit" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">6. Günlük Risk Limitleri</h2>
+      <p>Günlük maksimum kayıp limitinizi belirleyin ve bu limite ulaştığınızda trading'i bırakın:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: var(--mono); font-size: 14px;">
+        <strong style="color: var(--amber);">Örnek Günlük Limitler:</strong><br>
+        • Maksimum kayıp: Hesabın %5'i<br>
+        • Maksimum işlem sayısı: 10 adet<br>
+        • Maksimum kaldıraç: 10x<br>
+        • Maksimum pozisyon: Hesabın %50'si
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">7. Otomatik Risk Yönetimi</h2>
+      <p>İnsan hatalarını minimize etmek için risk yönetimini otomatikleştirin:</p>
+      
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 8px;">Otomatik stop loss emirleri</li>
+        <li style="margin-bottom: 8px;">Pozisyon büyüklüğü hesaplayıcıları</li>
+        <li style="margin-bottom: 8px;">Risk/ödül oranı kontrolleri</li>
+        <li style="margin-bottom: 8px;">Günlük limit uyarıları</li>
+      </ul>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Sonuç: Hayatta Kalma Sanatı</h2>
+      <p>Kaldıraçlı trading'de başarı, büyük karlar yapmaktan çok hayatta kalmakla ilgilidir. Disiplinli risk yönetimi ile küçük kayıpları büyük kazançlara dönüştürebilirsiniz.</p>
+      
+      <div style="background: rgba(255, 171, 64, 0.1); border: 1px solid rgba(255, 171, 64, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--amber);">💡 Altın Kural:</strong> Kaybetmeyi göze alamayacağınız parayla asla trading yapmayın. Risk yönetimi, kar etmekten daha önemlidir.
+      </div>
+      
+      <div class="public-only-btn" style="background: rgba(68, 138, 255, 0.1); border: 1px solid rgba(68, 138, 255, 0.3); border-radius: 8px; padding: 20px; margin: 32px 0; text-align: center;">
+        <h3 style="color: var(--blue); margin: 0 0 12px;">Risk Yönetimi Araçlarını Keşfedin</h3>
+        <p style="margin: 0 0 16px; color: var(--t2);">TB Trading Bot'ta otomatik risk yönetimi araçlarını kullanın.</p>
+        <a href="javascript:void(0)" onclick="openAuth('register')" style="background: var(--blue); color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer;">Araçları İncele</a>
+      </div>
+
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="blog-sidebar blog-sidebar-right">
+      
+      <!-- Risk Levels -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">⚠️</span>
+          Risk Seviyeleri
+        </div>
+        <div style="space-y: 8px;">
+          <div style="padding: 8px 12px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 6px; margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--green);">DÜŞÜK RİSK</div>
+            <div style="font-size: 11px; color: var(--t3);">%1-2 pozisyon riski</div>
+          </div>
+          <div style="padding: 8px 12px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 6px; margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--amber);">ORTA RİSK</div>
+            <div style="font-size: 11px; color: var(--t3);">%3-5 pozisyon riski</div>
+          </div>
+          <div style="padding: 8px 12px; background: rgba(255, 23, 68, 0.1); border: 1px solid rgba(255, 23, 68, 0.3); border-radius: 6px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--red);">YÜKSEK RİSK</div>
+            <div style="font-size: 11px; color: var(--t3);">%5+ pozisyon riski</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Tips -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">💡</span>
+          Hızlı İpuçları
+        </div>
+        <div style="space-y: 8px;">
+          <div style="padding: 8px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--blue); margin-bottom: 8px;">
+            <div style="font-size: 12px; color: var(--text);">Asla kaybetmeyi göze alamayacağınız parayla trading yapmayın</div>
+          </div>
+          <div style="padding: 8px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--green); margin-bottom: 8px;">
+            <div style="font-size: 12px; color: var(--text);">Stop loss kullanmak zorunludur, opsiyonel değildir</div>
+          </div>
+          <div style="padding: 8px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--amber);">
+            <div style="font-size: 12px; color: var(--text);">Duygusal kararlar yerine sistematik yaklaşım benimseyin</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Tools -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🛠️</span>
+          İlgili Araçlar
+        </div>
+        <div style="space-y: 8px;">
+          <a href="javascript:void(0)" onclick="openAuth('register')" class="public-only-btn" style="display: block; padding: 10px; background: var(--s1); border-radius: 6px; text-decoration: none; color: inherit; border: 1px solid var(--b1); transition: background 0.2s; margin-bottom: 6px; cursor: pointer;" onmouseover="this.style.background='var(--b1)'" onmouseout="this.style.background='var(--s1)'">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text);">📊 Risk Hesaplayıcı</div>
+            <div style="font-size: 11px; color: var(--t3);">Pozisyon büyüklüğü hesapla</div>
+          </a>
+          <a href="javascript:void(0)" onclick="openAuth('register')" class="public-only-btn" style="display: block; padding: 10px; background: var(--s1); border-radius: 6px; text-decoration: none; color: inherit; border: 1px solid var(--b1); transition: background 0.2s; margin-bottom: 6px; cursor: pointer;" onmouseover="this.style.background='var(--b1)'" onmouseout="this.style.background='var(--s1)'">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text);">🎯 Stop Loss Hesaplayıcı</div>
+            <div style="font-size: 11px; color: var(--t3);">Optimal stop loss seviyesi</div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Risk calculator
+function calculateRisk() {
+  const balance = parseFloat(document.getElementById('balance').value) || 0;
+  const riskPercent = parseFloat(document.getElementById('risk-percent').value) || 0;
+  const maxRisk = (balance * riskPercent / 100).toFixed(2);
+  document.getElementById('max-risk').textContent = '$' + maxRisk;
+}
+
+document.getElementById('balance').addEventListener('input', calculateRisk);
+document.getElementById('risk-percent').addEventListener('input', calculateRisk);
+
+// Floating action buttons
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTOC() {
+  const sidebar = document.querySelector('.blog-sidebar-left');
+  sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+}
+
+// Smooth scroll for TOC links
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+{% endblock %}

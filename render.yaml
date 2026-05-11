@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: tb-trading-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    disk:
+      name: tb-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: DEBUG
+        value: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DB_PATH
+        value: /data/tb_database.db
+      - key: ADMIN_EMAIL
+        value: admin@tbot.com
+      - key: ADMIN_PASSWORD
+        value: Admin123!
+      - key: ALLOWED_ORIGINS
+        value: https://tb-trading-bot.onrender.com

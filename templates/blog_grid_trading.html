@@ -1,0 +1,427 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Floating particles background -->
+<div class="floating-particles">
+  <div class="particle" style="left: 12%; animation-delay: 0.5s;"></div>
+  <div class="particle" style="left: 22%; animation-delay: 2.5s;"></div>
+  <div class="particle" style="left: 32%; animation-delay: 4.5s;"></div>
+  <div class="particle" style="left: 42%; animation-delay: 6.5s;"></div>
+  <div class="particle" style="left: 52%; animation-delay: 8.5s;"></div>
+  <div class="particle" style="left: 62%; animation-delay: 10.5s;"></div>
+  <div class="particle" style="left: 72%; animation-delay: 12.5s;"></div>
+  <div class="particle" style="left: 82%; animation-delay: 14.5s;"></div>
+</div>
+
+<!-- Floating Action Buttons -->
+<div class="floating-actions">
+  <button class="floating-btn scroll-top" onclick="scrollToTop()" title="Yukarı Çık">↑</button>
+  <button class="floating-btn" onclick="toggleTOC()" title="İçindekiler">📋</button>
+</div>
+
+<div class="page active" style="min-height: 100vh; padding: 60px 0 40px; position: relative; z-index: 2;">
+  <div class="blog-container">
+    
+    <!-- Left Sidebar -->
+    <div class="blog-sidebar blog-sidebar-left">
+      
+      <!-- Grid Simulator -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🎯</span>
+          Grid Simülatörü
+        </div>
+        <div style="space-y: 12px;">
+          <div>
+            <label style="font-size: 12px; color: var(--t3); display: block; margin-bottom: 4px;">Alt Fiyat ($)</label>
+            <input type="number" id="lower-price" placeholder="48000" style="width: 100%; padding: 8px; background: var(--s1); border: 1px solid var(--b1); border-radius: 6px; color: var(--text); font-size: 14px;">
+          </div>
+          <div>
+            <label style="font-size: 12px; color: var(--t3); display: block; margin-bottom: 4px;">Üst Fiyat ($)</label>
+            <input type="number" id="upper-price" placeholder="52000" style="width: 100%; padding: 8px; background: var(--s1); border: 1px solid var(--b1); border-radius: 6px; color: var(--text); font-size: 14px;">
+          </div>
+          <div>
+            <label style="font-size: 12px; color: var(--t3); display: block; margin-bottom: 4px;">Grid Sayısı</label>
+            <input type="number" id="grid-count" placeholder="20" style="width: 100%; padding: 8px; background: var(--s1); border: 1px solid var(--b1); border-radius: 6px; color: var(--text); font-size: 14px;">
+          </div>
+          <div style="padding: 12px; background: var(--s1); border-radius: 6px; border: 1px solid var(--b1);">
+            <div style="font-size: 12px; color: var(--t3); margin-bottom: 4px;">Grid Aralığı:</div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--green);" id="grid-spacing">$0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profit Calculator -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">💰</span>
+          Kar Hesaplayıcı
+        </div>
+        <div style="padding: 12px; background: var(--s1); border-radius: 6px; border: 1px solid var(--b1); text-align: center;">
+          <div style="font-size: 12px; color: var(--t3); margin-bottom: 4px;">Tahmini Günlük Kar</div>
+          <div style="font-size: 18px; font-weight: 700; color: var(--green); font-family: var(--mono);" id="daily-profit">$0</div>
+          <div style="font-size: 11px; color: var(--t3); margin-top: 4px;">%2 volatilite varsayımı</div>
+        </div>
+      </div>
+
+      <!-- Reading Progress -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📊</span>
+          Okuma İlerlemesi
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;" id="reading-progress"></div>
+        </div>
+        <div style="font-size: 12px; color: var(--t3); margin-top: 8px;">
+          <span id="progress-text">0%</span> tamamlandı • <span id="reading-time">9 dk</span> kaldı
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="blog-main-content">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 40px;">
+      <div style="margin-bottom: 16px;">
+        <a href="/blog" style="color: var(--blue); text-decoration: none; font-size: 14px;">← Blog'a Dön</a>
+      </div>
+      <span style="background: rgba(255,255,255,.07); color: var(--green); font-size: 10px; padding: 3px 8px; border-radius: 4px; font-family: var(--mono); font-weight: 600;">PASİF GELİR</span>
+      <h1 style="font-size: 36px; font-weight: 800; margin: 16px 0 20px; letter-spacing: -0.8px; line-height: 1.2; color: #fff;">
+        Grid Trading ile Yatay Piyasada Kesintisiz Pasif Gelir
+      </h1>
+      <div style="color: var(--t2); font-size: 18px; line-height: 1.6; margin-bottom: 24px;">
+        Piyasa nereye giderse gitsin kazanç sağlayan Grid bot mantığını kurgulamak hiç bu kadar kolay olmamıştı.
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; color: var(--t3); font-size: 14px; font-family: var(--mono);">
+        <div style="width: 32px; height: 32px; border-radius: 16px; background: var(--green); color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold;">TB</div>
+        TB Ekibi • 9 dk okuma • 28 Oca 2025
+      </div>
+    </div>
+
+    <!-- Featured Image -->
+    <div style="height: 300px; background: url('/static/images/blog_grid_trading.png') center/cover; border-radius: 12px; margin-bottom: 40px;"></div>
+
+    <!-- Content -->
+    <div class="blog-content" style="color: var(--t1); line-height: 1.8; font-size: 16px;">
+      
+      <h2 id="grid-nedir" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Grid Trading Nedir?</h2>
+      <p>Grid Trading, belirli fiyat aralıklarında otomatik alım-satım emirleri yerleştiren bir stratejidir. Piyasa yatay hareket ettiğinde sürekli kar elde etmenizi sağlar. Trend yönünü tahmin etmenize gerek yoktur.</p>
+
+      <div style="background: rgba(68, 138, 255, 0.1); border: 1px solid rgba(68, 138, 255, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--blue);">💡 Temel Mantık:</strong> Düşükten al, yüksekten sat - sürekli tekrarla.
+      </div>
+
+      <h2 id="avantajlar" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Grid Stratejisinin Avantajları</h2>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;"><strong>Trend Bağımsız:</strong> Piyasa yönünü tahmin etmenize gerek yok</li>
+          <li style="margin-bottom: 8px;"><strong>Otomatik:</strong> 7/24 çalışır, sürekli takip gerektirmez</li>
+          <li style="margin-bottom: 8px;"><strong>Düşük Risk:</strong> Pozisyonlar küçük ve dağıtılmış</li>
+          <li style="margin-bottom: 8px;"><strong>Pasif Gelir:</strong> Volatiliteden sürekli kazanç</li>
+        </ul>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Grid Kurulumu</h2>
+      <p>Başarılı bir grid bot için doğru parametreleri seçmek kritiktir:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: var(--mono); font-size: 14px;">
+        <strong style="color: var(--green);">Temel Parametreler:</strong><br>
+        • <strong>Fiyat Aralığı:</strong> Alt ve üst sınır belirleme<br>
+        • <strong>Grid Sayısı:</strong> Kaç seviyede işlem yapılacağı<br>
+        • <strong>Grid Aralığı:</strong> Seviyeler arası mesafe<br>
+        • <strong>Pozisyon Büyüklüğü:</strong> Her seviyedeki işlem miktarı
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Örnek Grid Hesaplaması</h2>
+      <p>BTC için basit bir grid stratejisi kuralım:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0; font-family: var(--mono); font-size: 14px;">
+        <strong style="color: var(--amber);">Örnek Senaryo:</strong><br>
+        • Mevcut BTC Fiyatı: $50,000<br>
+        • Grid Aralığı: $48,000 - $52,000<br>
+        • Grid Sayısı: 20 seviye<br>
+        • Grid Aralığı: $200 ($4,000 / 20)<br>
+        • Her seviye: 0.01 BTC<br><br>
+        
+        <strong style="color: var(--green);">Alım Seviyeleri:</strong> $48,000, $48,200, $48,400...<br>
+        <strong style="color: var(--red);">Satım Seviyeleri:</strong> $50,200, $50,400, $50,600...
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Grid Bot Kodu</h2>
+      <p>Python ile basit bir grid bot implementasyonu:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: var(--mono); font-size: 13px; overflow-x: auto;">
+        <pre style="margin: 0; color: var(--t1);"><code>class GridBot:
+    def __init__(self, symbol, lower_price, upper_price, grid_count):
+        self.symbol = symbol
+        self.lower_price = lower_price
+        self.upper_price = upper_price
+        self.grid_count = grid_count
+        self.grid_step = (upper_price - lower_price) / grid_count
+        
+    def create_grid_orders(self):
+        buy_orders = []
+        sell_orders = []
+        
+        for i in range(self.grid_count):
+            buy_price = self.lower_price + (i * self.grid_step)
+            sell_price = buy_price + self.grid_step
+            
+            buy_orders.append({
+                'price': buy_price,
+                'quantity': 0.01,
+                'side': 'BUY'
+            })
+            
+            sell_orders.append({
+                'price': sell_price,
+                'quantity': 0.01,
+                'side': 'SELL'
+            })
+            
+        return buy_orders, sell_orders</code></pre>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Risk Yönetimi</h2>
+      <p>Grid trading'de dikkat edilmesi gereken riskler:</p>
+      
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 12px;"><strong>Trend Riski:</strong> Güçlü trend durumunda kayıp</li>
+        <li style="margin-bottom: 12px;"><strong>Aralık Dışı:</strong> Fiyat grid aralığını terk ederse</li>
+        <li style="margin-bottom: 12px;"><strong>Likidite Riski:</strong> Düşük hacimli coinlerde sorun</li>
+        <li style="margin-bottom: 12px;"><strong>Komisyon Etkisi:</strong> Sık işlem yüksek komisyon</li>
+      </ul>
+
+      <div style="background: rgba(255, 171, 64, 0.1); border: 1px solid rgba(255, 171, 64, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--amber);">⚠️ Uyarı:</strong> Grid trading yatay piyasalarda en etkilidir. Güçlü trend dönemlerinde zarar edebilirsiniz.
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Optimizasyon İpuçları</h2>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">Volatil ama trend olmayan coinleri seçin</li>
+          <li style="margin-bottom: 8px;">Grid aralığını ATR'ye göre ayarlayın</li>
+          <li style="margin-bottom: 8px;">Komisyon oranlarını hesaba katın</li>
+          <li style="margin-bottom: 8px;">Stop-loss seviyesi belirleyin</li>
+          <li style="margin-bottom: 8px;">Düzenli olarak performansı analiz edin</li>
+        </ul>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Sonuç</h2>
+      <p>Grid trading, doğru koşullarda istikrarlı pasif gelir sağlayabilen etkili bir stratejidir. Yatay piyasalarda volatiliteden faydalanarak sürekli kar elde etmenizi sağlar. Ancak trend riskini göz önünde bulundurarak dikkatli kullanılmalıdır.</p>
+      
+      <div class="public-only-btn" style="background: rgba(68, 138, 255, 0.1); border: 1px solid rgba(68, 138, 255, 0.3); border-radius: 8px; padding: 20px; margin: 32px 0; text-align: center;">
+        <h3 style="color: var(--blue); margin: 0 0 12px;">Grid Trading'i Deneyin</h3>
+        <p style="margin: 0 0 16px; color: var(--t2);">TB Trading Bot ile grid stratejinizi kurun ve optimize edin.</p>
+        <a href="javascript:void(0)" onclick="openAuth('register')" style="background: var(--blue); color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer;">Grid Bot Kur</a>
+      </div>
+
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="blog-sidebar blog-sidebar-right">
+      
+      <!-- Grid Advantages -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">✅</span>
+          Grid Avantajları
+        </div>
+        <div style="space-y: 8px;">
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--s1); border-radius: 6px; margin-bottom: 6px;">
+            <span style="color: var(--green);">✓</span>
+            <span style="font-size: 12px; color: var(--text);">Trend bağımsız</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--s1); border-radius: 6px; margin-bottom: 6px;">
+            <span style="color: var(--green);">✓</span>
+            <span style="font-size: 12px; color: var(--text);">7/24 otomatik</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--s1); border-radius: 6px; margin-bottom: 6px;">
+            <span style="color: var(--green);">✓</span>
+            <span style="font-size: 12px; color: var(--text);">Düşük risk</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; background: var(--s1); border-radius: 6px;">
+            <span style="color: var(--green);">✓</span>
+            <span style="font-size: 12px; color: var(--text);">Pasif gelir</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Market Conditions -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📊</span>
+          Piyasa Koşulları
+        </div>
+        <div style="space-y: 8px;">
+          <div style="padding: 8px 12px; background: rgba(0, 230, 118, 0.1); border: 1px solid rgba(0, 230, 118, 0.3); border-radius: 6px; margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--green);">İDEAL</div>
+            <div style="font-size: 11px; color: var(--t3);">Yatay trend, yüksek volatilite</div>
+          </div>
+          <div style="padding: 8px 12px; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 6px; margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--amber);">UYGUN</div>
+            <div style="font-size: 11px; color: var(--t3);">Hafif trend, orta volatilite</div>
+          </div>
+          <div style="padding: 8px 12px; background: rgba(255, 23, 68, 0.1); border: 1px solid rgba(255, 23, 68, 0.3); border-radius: 6px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--red);">RİSKLİ</div>
+            <div style="font-size: 11px; color: var(--t3);">Güçlü trend, düşük volatilite</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best Coins for Grid -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🪙</span>
+          Grid İçin En İyi Coinler
+        </div>
+        <div style="space-y: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: var(--s1); border-radius: 4px; margin-bottom: 4px;">
+            <span style="font-size: 12px; font-weight: 600; color: var(--text);">BTC/USDT</span>
+            <span style="font-size: 10px; color: var(--green);">Yüksek</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: var(--s1); border-radius: 4px; margin-bottom: 4px;">
+            <span style="font-size: 12px; font-weight: 600; color: var(--text);">ETH/USDT</span>
+            <span style="font-size: 10px; color: var(--green);">Yüksek</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: var(--s1); border-radius: 4px; margin-bottom: 4px;">
+            <span style="font-size: 12px; font-weight: 600; color: var(--text);">BNB/USDT</span>
+            <span style="font-size: 10px; color: var(--amber);">Orta</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 8px; background: var(--s1); border-radius: 4px;">
+            <span style="font-size: 12px; font-weight: 600; color: var(--text);">ADA/USDT</span>
+            <span style="font-size: 10px; color: var(--amber);">Orta</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Enhanced reading progress and TOC
+function updateReadingProgress() {
+  const article = document.querySelector('.blog-content');
+  const progressBar = document.getElementById('reading-progress');
+  const progressText = document.getElementById('progress-text');
+  const readingTime = document.getElementById('reading-time');
+  
+  if (!article || !progressBar) return;
+  
+  const articleTop = article.offsetTop;
+  const articleHeight = article.offsetHeight;
+  const windowHeight = window.innerHeight;
+  const scrollTop = window.pageYOffset;
+  
+  const progress = Math.min(100, Math.max(0, 
+    ((scrollTop - articleTop + windowHeight/2) / articleHeight) * 100
+  ));
+  
+  progressBar.style.width = progress + '%';
+  progressText.textContent = Math.round(progress) + '%';
+  
+  const totalReadingTime = 9;
+  const remainingTime = Math.max(0, Math.round(totalReadingTime * (100 - progress) / 100));
+  readingTime.textContent = remainingTime > 0 ? remainingTime + ' dk' : 'Tamamlandı';
+}
+
+function updateActiveTOC() {
+  const sections = document.querySelectorAll('h2[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  
+  let activeSection = null;
+  const scrollTop = window.pageYOffset + 100;
+  
+  sections.forEach(section => {
+    if (section.offsetTop <= scrollTop) {
+      activeSection = section;
+    }
+  });
+  
+  tocLinks.forEach(link => {
+    link.classList.remove('active');
+    if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+      link.classList.add('active');
+    }
+  });
+}
+
+// Grid calculator
+function calculateGrid() {
+  const lowerPrice = parseFloat(document.getElementById('lower-price').value) || 0;
+  const upperPrice = parseFloat(document.getElementById('upper-price').value) || 0;
+  const gridCount = parseFloat(document.getElementById('grid-count').value) || 0;
+  
+  if (lowerPrice && upperPrice && gridCount && upperPrice > lowerPrice) {
+    const spacing = ((upperPrice - lowerPrice) / gridCount).toFixed(2);
+    document.getElementById('grid-spacing').textContent = '$' + spacing;
+    
+    // Simple profit estimation (very rough)
+    const dailyProfit = ((upperPrice - lowerPrice) * 0.02 * gridCount * 0.001).toFixed(2);
+    document.getElementById('daily-profit').textContent = '$' + dailyProfit;
+  } else {
+    document.getElementById('grid-spacing').textContent = '$0';
+    document.getElementById('daily-profit').textContent = '$0';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Grid calculator
+  function calculateGrid() {
+    const lowerPrice = parseFloat(document.getElementById('lower-price').value) || 0;
+    const upperPrice = parseFloat(document.getElementById('upper-price').value) || 0;
+    const gridCount = parseFloat(document.getElementById('grid-count').value) || 0;
+    
+    if (lowerPrice && upperPrice && gridCount && upperPrice > lowerPrice) {
+      const spacing = ((upperPrice - lowerPrice) / gridCount).toFixed(2);
+      document.getElementById('grid-spacing').textContent = '$' + spacing;
+      
+      // Simple profit estimation (very rough)
+      const dailyProfit = ((upperPrice - lowerPrice) * 0.02 * gridCount * 0.001).toFixed(2);
+      document.getElementById('daily-profit').textContent = '$' + dailyProfit;
+    } else {
+      document.getElementById('grid-spacing').textContent = '$0';
+      document.getElementById('daily-profit').textContent = '$0';
+    }
+  }
+
+  const lowerPriceInput = document.getElementById('lower-price');
+  const upperPriceInput = document.getElementById('upper-price');
+  const gridCountInput = document.getElementById('grid-count');
+  
+  if (lowerPriceInput) lowerPriceInput.addEventListener('input', calculateGrid);
+  if (upperPriceInput) upperPriceInput.addEventListener('input', calculateGrid);
+  if (gridCountInput) gridCountInput.addEventListener('input', calculateGrid);
+});
+
+// Smooth scroll for TOC links
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Update progress and TOC on scroll
+window.addEventListener('scroll', () => {
+  updateReadingProgress();
+  updateActiveTOC();
+});
+
+window.addEventListener('load', () => {
+  updateReadingProgress();
+  updateActiveTOC();
+});
+</script>
+
+{% endblock %}

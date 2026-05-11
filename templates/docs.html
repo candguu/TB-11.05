@@ -1,0 +1,129 @@
+{% extends "layout.html" %}
+{% block content %}
+<div id="docs" class="page active">
+    <div class="page-inner">
+        <!-- Hero Section -->
+        <div class="panel" style="margin-top:20px; padding: 40px;">
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                <div style="width: 48px; height: 48px; background: var(--s2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">📚</div>
+                <div>
+                    <h1 style="font-size:28px; font-weight:700; margin:0; color: #fff;">Dokümantasyon</h1>
+                    <p style="color:var(--t2); font-size:14px; margin:4px 0 0 0;">TB Trading Bot kullanım kılavuzu</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="panel" style="margin-top:20px; padding: 30px;">
+            <h2 style="font-size:20px; font-weight:600; margin-bottom:16px; color: #fff;">Hızlı Başlangıç</h2>
+            <p style="color:var(--t2); font-size:14px; margin-bottom:20px; line-height:1.6;">
+                TB Trading Bot, Binance API ile entegre otomatik trading botu. Futures işlemlerinde OTT stratejisi kullanır.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin: 20px 0;">
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 20px;">
+                    <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #fff;">1. Hesap Oluştur</h3>
+                    <p style="color: var(--t2); font-size: 13px; line-height: 1.5;">Sisteme kayıt olun ve email doğrulamasını tamamlayın.</p>
+                </div>
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 20px;">
+                    <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #fff;">2. API</h3>
+                    <p style="color: var(--t2); font-size: 13px; line-height: 1.5;">Binance API anahtarlarınızı güvenli şekilde entegre edin.</p>
+                </div>
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 20px;">
+                    <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #fff;">3. Bot Aktifleştir</h3>
+                    <p style="color: var(--t2); font-size: 13px; line-height: 1.5;">Strateji seçin ve botu aktif hale getirin.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Setup Steps -->
+        <div class="panel" style="margin-top:20px; padding: 30px;">
+            <h2 style="font-size:20px; font-weight:600; margin-bottom:16px; color: #fff;">Kurulum Adımları</h2>
+            
+            <div style="margin-bottom: 24px;">
+                <h3 style="font-size:16px; font-weight:500; margin-bottom:8px; color: var(--t2);">Binance API Kurulumu</h3>
+                <ol style="color:var(--t2); font-size:13px; margin-left:20px; line-height:1.6;">
+                    <li>Binance > API Management > Create API</li>
+                    <li><strong>Sadece "Enable Futures"</strong> seçeneğini işaretleyin</li>
+                    <li><strong>"Enable Withdrawals" seçeneğini ASLA işaretlemeyin</strong></li>
+                    <li>API Key ve Secret Key'i kaydedin</li>
+                </ol>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <h3 style="font-size:16px; font-weight:500; margin-bottom:8px; color: var(--t2);">Bot Kurulumu</h3>
+                <ol style="color:var(--t2); font-size:13px; margin-left:20px; line-height:1.6;">
+                    <li>Dashboard > API sekmesine gidin</li>
+                    <li>API anahtarlarınızı yapıştırın</li>
+                    <li>"Test Connection" ile bağlantıyı doğrulayın</li>
+                    <li>Bot Paneli'nden strateji seçin ve aktifleştirin</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="panel" style="margin-top:20px; padding: 30px; margin-bottom: 40px;">
+            <h2 style="font-size:20px; font-weight:600; margin-bottom:16px; color: #fff;">Sık Sorulan Sorular</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; overflow: hidden;">
+                    <div style="padding: 12px 16px; cursor: pointer;" onclick="toggleFaq(this)">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <h4 style="font-size: 13px; font-weight: 500; margin: 0; color: #fff;">Bot güvenli mi?</h4>
+                            <span style="font-size: 12px; color: var(--t3);">▼</span>
+                        </div>
+                    </div>
+                    <div style="padding: 12px 16px; display: none; border-top: 1px solid var(--b1);">
+                        <p style="color: var(--t2); font-size: 12px; line-height: 1.5; margin: 0;">
+                            Evet, API anahtarınızda sadece "Futures Trading" yetkisi olmalı. "Withdrawal" yetkisi verilmemelidir.
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; overflow: hidden;">
+                    <div style="padding: 12px 16px; cursor: pointer;" onclick="toggleFaq(this)">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <h4 style="font-size: 13px; font-weight: 500; margin: 0; color: #fff;">Minimum yatırım miktarı?</h4>
+                            <span style="font-size: 12px; color: var(--t3);">▼</span>
+                        </div>
+                    </div>
+                    <div style="padding: 12px 16px; display: none; border-top: 1px solid var(--b1);">
+                        <p style="color: var(--t2); font-size: 12px; line-height: 1.5; margin: 0;">
+                            Alt limit yoktur - Binance'ın izin verdiği en düşük bakiye kadar (yaklaşık $10-20 USDT) başlayabilirsiniz. Risk yönetimi için $100+ önerilir.
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; overflow: hidden;">
+                    <div style="padding: 12px 16px; cursor: pointer;" onclick="toggleFaq(this)">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <h4 style="font-size: 13px; font-weight: 500; margin: 0; color: #fff;">7/24 çalışır mı?</h4>
+                            <span style="font-size: 12px; color: var(--t3);">▼</span>
+                        </div>
+                    </div>
+                    <div style="padding: 12px 16px; display: none; border-top: 1px solid var(--b1);">
+                        <p style="color: var(--t2); font-size: 12px; line-height: 1.5; margin: 0;">
+                            Evet, bot cloud sunucularımızda kesintisiz çalışır.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleFaq(element) {
+    const content = element.nextElementSibling;
+    const arrow = element.querySelector('span');
+    
+    if (content.style.display === 'none' || content.style.display === '') {
+        content.style.display = 'block';
+        arrow.textContent = '▲';
+    } else {
+        content.style.display = 'none';
+        arrow.textContent = '▼';
+    }
+}
+</script>
+{% endblock %}

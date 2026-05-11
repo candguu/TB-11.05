@@ -1,0 +1,424 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Floating particles background -->
+<div class="floating-particles">
+  <div class="particle" style="left: 5%; animation-delay: 0s;"></div>
+  <div class="particle" style="left: 15%; animation-delay: 1s;"></div>
+  <div class="particle" style="left: 25%; animation-delay: 2s;"></div>
+  <div class="particle" style="left: 35%; animation-delay: 3s;"></div>
+  <div class="particle" style="left: 45%; animation-delay: 4s;"></div>
+  <div class="particle" style="left: 55%; animation-delay: 5s;"></div>
+  <div class="particle" style="left: 65%; animation-delay: 6s;"></div>
+  <div class="particle" style="left: 75%; animation-delay: 7s;"></div>
+  <div class="particle" style="left: 85%; animation-delay: 8s;"></div>
+  <div class="particle" style="left: 95%; animation-delay: 9s;"></div>
+</div>
+
+<!-- Floating Action Buttons -->
+<div class="floating-actions">
+  <button class="floating-btn scroll-top" onclick="scrollToTop()" title="Yukarı Çık">↑</button>
+  <button class="floating-btn" onclick="toggleTOC()" title="İçindekiler">📋</button>
+</div>
+
+<div class="page active" style="min-height: 100vh; padding: 60px 0 40px; position: relative; z-index: 2;">
+  <div class="blog-container">
+    
+    <!-- Left Sidebar -->
+    <div class="blog-sidebar blog-sidebar-left">
+      
+      <!-- Table of Contents -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📋</span>
+          İçindekiler
+        </div>
+        <div class="toc">
+          <ul class="toc-list">
+            <li class="toc-item"><a href="#rate-limit-nedir" class="toc-link">API Rate Limit Nedir?</a></li>
+            <li class="toc-item"><a href="#binance-limitler" class="toc-link">Binance Futures API Limitleri</a></li>
+            <li class="toc-item"><a href="#optimizasyon" class="toc-link">Rate Limit Optimizasyonu</a></li>
+            <li class="toc-item"><a href="#guvenlik" class="toc-link">Güvenlik Ayarları</a></li>
+            <li class="toc-item"><a href="#takip" class="toc-link">Rate Limit Takibi</a></li>
+            <li class="toc-item"><a href="#error-handling" class="toc-link">Error Handling</a></li>
+            <li class="toc-item"><a href="#websocket" class="toc-link">WebSocket Kullanımı</a></li>
+            <li class="toc-item"><a href="#ip-whitelist" class="toc-link">IP Whitelist Ayarları</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Reading Progress -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📊</span>
+          Okuma İlerlemesi
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;" id="reading-progress"></div>
+        </div>
+        <div style="font-size: 12px; color: var(--t3); margin-top: 8px;">
+          <span id="progress-text">0%</span> tamamlandı • <span id="reading-time">6 dk</span> kaldı
+        </div>
+      </div>
+
+      <!-- API Status Monitor -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🔌</span>
+          API Durumu
+        </div>
+        <div style="space-y: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--s1); border-radius: 4px; margin-bottom: 6px;">
+            <span style="font-size: 12px; color: var(--text);">Binance API</span>
+            <span style="font-size: 10px; color: var(--green); display: flex; align-items: center; gap: 4px;">
+              <div class="pulse-enhanced" style="width: 6px; height: 6px; background: var(--green); border-radius: 50%;"></div>
+              Aktif
+            </span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--s1); border-radius: 4px; margin-bottom: 6px;">
+            <span style="font-size: 12px; color: var(--text);">Rate Limit</span>
+            <span style="font-size: 10px; color: var(--amber);">%67 Kullanım</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--s1); border-radius: 4px;">
+            <span style="font-size: 12px; color: var(--text);">Latency</span>
+            <span style="font-size: 10px; color: var(--green);">45ms</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="blog-main-content">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 40px;">
+      <div style="margin-bottom: 16px;">
+        <a href="/blog" style="color: var(--blue); text-decoration: none; font-size: 14px;">← Blog'a Dön</a>
+      </div>
+      <span style="color: var(--blue); font-size: 10px; font-weight: 600; letter-spacing: 1px; font-family: var(--mono);">API</span>
+      <h1 style="font-size: 36px; font-weight: 800; margin: 16px 0 20px; letter-spacing: -0.8px; line-height: 1.2; color: #fff;">
+        Binance API Rate Limit Kuralları ve Güvenlik Ayarları
+      </h1>
+      <div style="color: var(--t2); font-size: 18px; line-height: 1.6; margin-bottom: 24px;">
+        Binance API'sini verimli kullanmak için bilmeniz gereken rate limit kuralları, güvenlik ayarları ve optimizasyon teknikleri.
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; color: var(--t3); font-size: 14px; font-family: var(--mono);">
+        <div style="width: 32px; height: 32px; border-radius: 16px; background: var(--green); color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold;">TB</div>
+        TB Ekibi • 6 dk okuma • 10 Şub 2025
+      </div>
+    </div>
+
+    <!-- Featured Image -->
+    <div style="height: 300px; background: url('/static/images/blog_arbitrage.png') center/cover; border-radius: 12px; margin-bottom: 40px;"></div>
+
+    <!-- Content -->
+    <div class="blog-content" style="color: var(--t1); line-height: 1.8; font-size: 16px;">
+      
+      <h2 id="rate-limit-nedir" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">API Rate Limit Nedir?</h2>
+      <p>Rate limit, belirli bir zaman diliminde yapabileceğiniz API çağrısı sayısının sınırlandırılmasıdır. Binance, sunucularını korumak ve adil kullanım sağlamak için çeşitli rate limit kuralları uygular.</p>
+
+      <div style="background: rgba(255, 171, 64, 0.1); border: 1px solid rgba(255, 171, 64, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--amber);">⚠️ Önemli:</strong> Rate limit aşımı durumunda IP adresiniz geçici olarak engellenebilir. Bu nedenle limit kurallarına dikkat etmek kritiktir.
+      </div>
+
+      <h2 id="binance-limitler" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Binance Futures API Limitleri</h2>
+      <p>Binance Futures API'sinde farklı endpoint'ler için farklı limitler bulunur:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <h4 style="color: var(--green); margin: 0 0 12px;">Temel Limitler:</h4>
+        <ul style="margin: 0; padding-left: 20px; font-family: var(--mono); font-size: 14px;">
+          <li style="margin-bottom: 8px;"><strong>Genel:</strong> 2400 istek/dakika (40 istek/saniye)</li>
+          <li style="margin-bottom: 8px;"><strong>Order Endpoints:</strong> 300 istek/dakika</li>
+          <li style="margin-bottom: 8px;"><strong>Market Data:</strong> 6000 istek/dakika</li>
+          <li style="margin-bottom: 8px;"><strong>WebSocket:</strong> 10 bağlantı/IP</li>
+        </ul>
+      </div>
+
+      <h2 id="optimizasyon" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Rate Limit Optimizasyonu</h2>
+      <p>API çağrılarınızı optimize ederek limit aşımını önleyebilirsiniz:</p>
+      
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 12px;"><strong>WebSocket Kullanın:</strong> Real-time data için REST API yerine WebSocket tercih edin</li>
+        <li style="margin-bottom: 12px;"><strong>Batch İşlemler:</strong> Mümkün olduğunda toplu işlemler yapın</li>
+        <li style="margin-bottom: 12px;"><strong>Caching:</strong> Sık kullanılan verileri önbelleğe alın</li>
+        <li style="margin-bottom: 12px;"><strong>Intelligent Polling:</strong> Gereksiz API çağrılarından kaçının</li>
+      </ul>
+
+      <h2 id="guvenlik" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Güvenlik Ayarları</h2>
+      <p>API anahtarınızın güvenliğini sağlamak için şu ayarları yapın:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <h4 style="color: var(--blue); margin: 0 0 12px;">Temel Güvenlik:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">IP Whitelist aktifleştirin</li>
+          <li style="margin-bottom: 8px;">Sadece gerekli izinleri verin</li>
+          <li style="margin-bottom: 8px;">API Secret'i güvenli saklayın</li>
+          <li style="margin-bottom: 8px;">Düzenli olarak API anahtarlarını yenileyin</li>
+        </ul>
+      </div>
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Rate Limit Takibi</h2>
+      <p>API çağrılarınızı takip etmek için response header'larını kontrol edin:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: var(--mono); font-size: 13px; overflow-x: auto;">
+        <pre style="margin: 0; color: var(--t1);"><code>import requests
+
+response = requests.get('https://fapi.binance.com/fapi/v1/ticker/24hr')
+
+# Rate limit bilgilerini kontrol et
+used_weight = response.headers.get('X-MBX-USED-WEIGHT-1M')
+order_count = response.headers.get('X-MBX-ORDER-COUNT-1M')
+
+print(f"Kullanılan Weight: {used_weight}/2400")
+print(f"Order Count: {order_count}/300")</code></pre>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Error Handling</h2>
+      <p>Rate limit aşımı durumunda doğru error handling yapın:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: var(--mono); font-size: 13px; overflow-x: auto;">
+        <pre style="margin: 0; color: var(--t1);"><code>import time
+from binance.exceptions import BinanceAPIException
+
+def safe_api_call(func, *args, **kwargs):
+    try:
+        return func(*args, **kwargs)
+    except BinanceAPIException as e:
+        if e.code == -1003:  # Rate limit exceeded
+            print("Rate limit aşıldı, 60 saniye bekleniyor...")
+            time.sleep(60)
+            return func(*args, **kwargs)
+        else:
+            raise e</code></pre>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">WebSocket Kullanımı</h2>
+      <p>Real-time data için WebSocket kullanarak rate limit sorunlarından kaçının:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <h4 style="color: var(--green); margin: 0 0 12px;">WebSocket Avantajları:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">Rate limit tüketmez</li>
+          <li style="margin-bottom: 8px;">Real-time veri akışı</li>
+          <li style="margin-bottom: 8px;">Düşük latency</li>
+          <li style="margin-bottom: 8px;">Bandwidth tasarrufu</li>
+        </ul>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">IP Whitelist Ayarları</h2>
+      <p>Güvenlik için IP whitelist kullanın:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: var(--mono); font-size: 14px;">
+        <strong style="color: var(--amber);">Adımlar:</strong><br>
+        1. Binance → API Management → Edit API<br>
+        2. "Restrict access to trusted IPs only" seçeneğini aktifleştir<br>
+        3. Sunucu IP adresinizi ekle<br>
+        4. Değişiklikleri kaydet
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Best Practices</h2>
+      <p>API kullanımında dikkat edilmesi gereken noktalar:</p>
+      
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 12px;"><strong>Exponential Backoff:</strong> Hata durumunda bekleme süresini artırın</li>
+        <li style="margin-bottom: 12px;"><strong>Connection Pooling:</strong> HTTP bağlantılarını yeniden kullanın</li>
+        <li style="margin-bottom: 12px;"><strong>Monitoring:</strong> API kullanımınızı sürekli izleyin</li>
+        <li style="margin-bottom: 12px;"><strong>Fallback Strategies:</strong> API erişilemezse alternatif planınız olsun</li>
+      </ul>
+
+      <div style="background: rgba(255, 82, 82, 0.1); border: 1px solid rgba(255, 82, 82, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--red);">🚫 Yapmayın:</strong> Rate limit aşımından sonra hemen tekrar denemeyin. Bu durum IP banına yol açabilir.
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Sonuç</h2>
+      <p>Binance API'sini verimli kullanmak için rate limit kurallarını anlamak ve uygun optimizasyonları yapmak kritiktir. WebSocket kullanımı, intelligent caching ve proper error handling ile sorunsuz bir trading bot deneyimi yaşayabilirsiniz.</p>
+      
+      <div class="public-only-btn" style="background: rgba(68, 138, 255, 0.1); border: 1px solid rgba(68, 138, 255, 0.3); border-radius: 8px; padding: 20px; margin: 32px 0; text-align: center;">
+        <h3 style="color: var(--blue); margin: 0 0 12px;">API Optimizasyonu İçin</h3>
+        <p style="margin: 0 0 16px; color: var(--t2);">TB Trading Bot'ta optimize edilmiş API kullanımını deneyimleyin.</p>
+        <a href="javascript:void(0)" onclick="openAuth('register')" style="background: var(--blue); color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer;">Platformu Dene</a>
+      </div>
+
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="blog-sidebar blog-sidebar-right">
+      
+      <!-- API Tools -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🛠️</span>
+          API Araçları
+        </div>
+        <div style="space-y: 8px;">
+          <div style="padding: 12px; background: var(--s1); border-radius: 8px; border: 1px solid var(--b1); margin-bottom: 8px;">
+            <div style="font-size: 12px; color: var(--t3); margin-bottom: 4px;">Günlük Limit</div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--blue); font-family: var(--mono);">2,400 / 2,400</div>
+            <div class="progress-bar" style="margin-top: 6px;">
+              <div class="progress-fill" style="width: 67%;"></div>
+            </div>
+          </div>
+          <div style="padding: 12px; background: var(--s1); border-radius: 8px; border: 1px solid var(--b1); margin-bottom: 8px;">
+            <div style="font-size: 12px; color: var(--t3); margin-bottom: 4px;">Order Limit</div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--green); font-family: var(--mono);">45 / 300</div>
+            <div class="progress-bar" style="margin-top: 6px;">
+              <div class="progress-fill" style="width: 15%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best Practices -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">✅</span>
+          En İyi Uygulamalar
+        </div>
+        <div style="space-y: 8px;">
+          <div style="display: flex; align-items: flex-start; gap: 8px; padding: 8px; background: var(--s1); border-radius: 6px; margin-bottom: 6px;">
+            <span style="color: var(--green); font-size: 14px;">✓</span>
+            <span style="font-size: 12px; color: var(--text); line-height: 1.4;">WebSocket kullanın</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 8px; padding: 8px; background: var(--s1); border-radius: 6px; margin-bottom: 6px;">
+            <span style="color: var(--green); font-size: 14px;">✓</span>
+            <span style="font-size: 12px; color: var(--text); line-height: 1.4;">Batch işlemler yapın</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 8px; padding: 8px; background: var(--s1); border-radius: 6px; margin-bottom: 6px;">
+            <span style="color: var(--green); font-size: 14px;">✓</span>
+            <span style="font-size: 12px; color: var(--text); line-height: 1.4;">Caching kullanın</span>
+          </div>
+          <div style="display: flex; align-items: flex-start; gap: 8px; padding: 8px; background: var(--s1); border-radius: 6px;">
+            <span style="color: var(--red); font-size: 14px;">✗</span>
+            <span style="font-size: 12px; color: var(--text); line-height: 1.4;">Gereksiz polling yapmayın</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Codes -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">⚠️</span>
+          Yaygın Hata Kodları
+        </div>
+        <div style="space-y: 6px;">
+          <div style="padding: 8px; background: var(--s1); border-radius: 4px; border-left: 3px solid var(--red); margin-bottom: 6px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--red);">-1003</div>
+            <div style="font-size: 11px; color: var(--t3);">Rate limit aşıldı</div>
+          </div>
+          <div style="padding: 8px; background: var(--s1); border-radius: 4px; border-left: 3px solid var(--amber); margin-bottom: 6px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--amber);">-1021</div>
+            <div style="font-size: 11px; color: var(--t3);">Timestamp hatası</div>
+          </div>
+          <div style="padding: 8px; background: var(--s1); border-radius: 4px; border-left: 3px solid var(--blue);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--blue);">-2010</div>
+            <div style="font-size: 11px; color: var(--t3);">Yetersiz bakiye</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🔗</span>
+          Hızlı Bağlantılar
+        </div>
+        <div style="space-y: 8px;">
+          <a href="https://binance-docs.github.io/apidocs/futures/en/" target="_blank" style="display: block; padding: 10px; background: var(--s1); border-radius: 6px; text-decoration: none; color: inherit; border: 1px solid var(--b1); transition: all 0.3s; margin-bottom: 6px;" class="glow-on-hover">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text);">📚 Binance API Docs</div>
+            <div style="font-size: 11px; color: var(--t3);">Resmi dokümantasyon</div>
+          </a>
+          <a href="javascript:void(0)" onclick="openAuth('register')" class="public-only-btn breathe" style="display: block; padding: 10px; background: var(--blue); color: #fff; border-radius: 6px; text-decoration: none; font-weight: 600; text-align: center; transition: all 0.3s; cursor: pointer;">
+            🚀 API Test Et
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Enhanced reading progress tracker
+function updateReadingProgress() {
+  const article = document.querySelector('.blog-content');
+  const progressBar = document.getElementById('reading-progress');
+  const progressText = document.getElementById('progress-text');
+  const readingTime = document.getElementById('reading-time');
+  
+  if (!article || !progressBar) return;
+  
+  const articleTop = article.offsetTop;
+  const articleHeight = article.offsetHeight;
+  const windowHeight = window.innerHeight;
+  const scrollTop = window.pageYOffset;
+  
+  const progress = Math.min(100, Math.max(0, 
+    ((scrollTop - articleTop + windowHeight/2) / articleHeight) * 100
+  ));
+  
+  progressBar.style.width = progress + '%';
+  progressText.textContent = Math.round(progress) + '%';
+  
+  // Calculate remaining reading time
+  const totalReadingTime = 6; // minutes
+  const remainingTime = Math.max(0, Math.round(totalReadingTime * (100 - progress) / 100));
+  readingTime.textContent = remainingTime > 0 ? remainingTime + ' dk' : 'Tamamlandı';
+}
+
+// Enhanced TOC with active section highlighting
+function updateActiveTOC() {
+  const sections = document.querySelectorAll('h2[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  
+  let activeSection = null;
+  const scrollTop = window.pageYOffset + 100;
+  
+  sections.forEach(section => {
+    if (section.offsetTop <= scrollTop) {
+      activeSection = section;
+    }
+  });
+  
+  tocLinks.forEach(link => {
+    link.classList.remove('active');
+    if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+      link.classList.add('active');
+    }
+  });
+}
+
+// Smooth scroll for TOC links
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Floating action buttons
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTOC() {
+  const sidebar = document.querySelector('.blog-sidebar-left');
+  sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+}
+
+// Update progress and TOC on scroll
+window.addEventListener('scroll', () => {
+  updateReadingProgress();
+  updateActiveTOC();
+});
+
+window.addEventListener('load', () => {
+  updateReadingProgress();
+  updateActiveTOC();
+});
+</script>
+
+{% endblock %}

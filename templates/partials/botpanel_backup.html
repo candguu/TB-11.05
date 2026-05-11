@@ -1,0 +1,1391 @@
+<div class="dash-sub-page" id="dash-botpanel" style="display:none">
+<div id="botpanel-admin" style="display:none">
+<style>
+#botpanel-admin {
+  --tb-bg: #050505;
+  --tb-card: #0b0b0c;
+  --tb-card-2: #0f0f10;
+  --tb-border: #1f1f24;
+  --tb-border-soft: rgba(255,255,255,0.06);
+  --tb-text: #ffffff;
+  --tb-muted: #8b8b91;
+  --tb-dim: #5f6068;
+  --tb-green: #00e887;
+  --tb-red: #ff4d5e;
+  --tb-amber: #c9a75d;
+  --tb-mono: var(--mono, 'IBM Plex Mono', monospace);
+  background: var(--tb-bg);
+  color: var(--tb-text);
+  min-height: calc(100vh - 70px);
+  padding: 14px 14px 48px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#botpanel-admin * { box-sizing: border-box; }
+
+.tb-shell {
+  width: min(1640px, 100%);
+  margin: 0 auto;
+}
+
+.tb-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+
+.tb-title {
+  margin: 0;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.tb-topbar {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 420px;
+  gap: 12px;
+  align-items: stretch;
+  margin-bottom: 16px;
+}
+
+.tb-bot-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--tb-border);
+  border-radius: 10px;
+  background: var(--tb-card);
+}
+
+.tb-bot-option {
+  min-height: 42px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--tb-muted);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+}
+
+.tb-bot-option.active {
+  background: rgba(0,232,135,0.09);
+  border-color: rgba(0,232,135,0.24);
+  color: var(--tb-green);
+}
+
+.tb-bot-option.disabled {
+  cursor: not-allowed;
+  color: var(--tb-dim);
+}
+
+.tb-status-table {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid var(--tb-border);
+  border-radius: 10px;
+  background: var(--tb-card);
+}
+
+.tb-status-cell {
+  min-height: 50px;
+  padding: 10px 12px;
+  border-right: 1px solid var(--tb-border-soft);
+}
+
+.tb-status-cell:last-child {
+  border-right: 0;
+}
+
+.tb-status-k {
+  color: var(--tb-dim);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.tb-status-v {
+  color: #fff;
+  font-family: var(--tb-mono);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.tb-status-v.green { color: var(--tb-green); }
+.tb-status-v.muted { color: #d7d7dc; }
+
+.tb-compact-panel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 8px;
+  border: 1px solid var(--tb-border);
+  border-radius: 10px;
+  background: var(--tb-card);
+}
+
+.tb-compact-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.tb-btn-compact {
+  min-height: 34px;
+  padding: 7px 8px;
+  border-radius: 7px;
+  font-size: 11px;
+}
+
+.tb-mode-compact {
+  display: grid;
+  gap: 4px;
+  min-width: 112px;
+}
+
+.tb-mode-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 15px;
+  padding: 2px 7px;
+  border: 1px solid var(--tb-border);
+  border-radius: 999px;
+  color: var(--tb-muted);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .35px;
+  text-transform: uppercase;
+}
+
+.tb-mode-mini.active {
+  color: var(--tb-green);
+  border-color: rgba(0,232,135,0.24);
+  background: rgba(0,232,135,0.06);
+}
+
+.tb-mode-mini.disabled {
+  color: var(--tb-dim);
+  background: rgba(255,255,255,0.02);
+}
+
+.tb-card {
+  background: var(--tb-card);
+  border: 1px solid var(--tb-border);
+  border-radius: 10px;
+  transition: border-color .16s ease, background .16s ease;
+}
+
+.tb-card:hover {
+  border-color: #2b2b31;
+  background: #0d0d0f;
+}
+
+.tb-stat-card {
+  min-height: 98px;
+  padding: 17px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tb-label {
+  color: var(--tb-dim);
+  font-size: 10px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.tb-value {
+  color: #fff;
+  font-family: var(--tb-mono);
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.tb-value.small {
+  font-size: 15px;
+  white-space: normal;
+}
+
+.tb-value.green { color: var(--tb-green); }
+.tb-value.muted { color: #d7d7dc; }
+.tb-value.red { color: var(--tb-red); }
+
+.tb-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.tb-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--tb-border-soft);
+}
+
+.tb-card-title {
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 750;
+  margin: 0;
+}
+
+.tb-card-sub {
+  margin-top: 5px;
+  color: var(--tb-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.tb-card-body {
+  padding: 20px 22px 22px;
+}
+
+.tb-chart-card {
+  min-height: 100%;
+}
+
+.tb-chart-placeholder {
+  min-height: 420px;
+  border: 1px dashed #2a2a31;
+  border-radius: 10px;
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+    #070708;
+  background-size: 44px 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tb-chart-placeholder::before,
+.tb-chart-placeholder::after {
+  content: "";
+  position: absolute;
+  left: 9%;
+  right: 9%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+}
+
+.tb-chart-placeholder::before { top: 42%; }
+.tb-chart-placeholder::after { top: 58%; opacity: .55; }
+
+.tb-chart-mark {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  border: 1px solid #2b2b31;
+  border-radius: 10px;
+  background: #0d0d0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tb-green);
+  position: relative;
+  z-index: 1;
+}
+
+.tb-placeholder-title {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 750;
+  position: relative;
+  z-index: 1;
+}
+
+.tb-placeholder-sub {
+  color: var(--tb-muted);
+  font-size: 13px;
+  margin-top: 7px;
+  position: relative;
+  z-index: 1;
+}
+
+.tb-side-stack {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.tb-button-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.tb-emergency-zone {
+  margin-top: 4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,77,94,0.2);
+}
+
+.tb-btn {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 8px;
+  border: 1px solid var(--tb-border);
+  background: #101012;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 750;
+  font-family: 'Inter', sans-serif;
+  transition: border-color .16s ease, background .16s ease, color .16s ease, transform .16s ease;
+}
+
+.tb-btn:hover {
+  transform: translateY(-1px);
+  border-color: #34343a;
+  background: #151518;
+}
+
+.tb-btn-start {
+  background: rgba(0,232,135,0.12);
+  border-color: rgba(0,232,135,0.34);
+  color: var(--tb-green);
+}
+
+.tb-btn-stop {
+  color: #d7d7dc;
+}
+
+.tb-btn-danger {
+  background: rgba(255,77,94,0.09);
+  border-color: rgba(255,77,94,0.45);
+  color: var(--tb-red);
+}
+
+.tb-btn-emergency {
+  min-height: 46px;
+  background: rgba(255,77,94,0.13);
+  border-color: rgba(255,77,94,0.62);
+  color: #ff6b78;
+  text-transform: uppercase;
+  letter-spacing: .45px;
+}
+
+.tb-btn:disabled {
+  cursor: not-allowed;
+  transform: none;
+  opacity: .45;
+  background: #0a0a0b;
+  border-color: #202025;
+  color: var(--tb-dim);
+}
+
+.tb-mode-list {
+  display: grid;
+  gap: 10px;
+}
+
+.tb-mode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 14px;
+  border: 1px solid var(--tb-border);
+  border-radius: 9px;
+  background: #09090a;
+}
+
+.tb-mode.active {
+  border-color: rgba(0,232,135,0.26);
+  background: rgba(0,232,135,0.055);
+}
+
+.tb-mode.disabled {
+  opacity: .62;
+  cursor: not-allowed;
+}
+
+.tb-mode-title {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tb-mode-sub {
+  color: var(--tb-dim);
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.tb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--tb-border);
+  color: var(--tb-muted);
+  font-size: 10px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  white-space: nowrap;
+}
+
+.tb-chip.green {
+  color: var(--tb-green);
+  border-color: rgba(0,232,135,0.24);
+  background: rgba(0,232,135,0.07);
+}
+
+.tb-chip.locked {
+  color: #b8a56c;
+  border-color: rgba(201,167,93,0.22);
+  background: rgba(201,167,93,0.06);
+}
+
+.tb-note {
+  color: var(--tb-muted);
+  font-size: 12px;
+  line-height: 1.55;
+  margin-top: 12px;
+}
+
+.tb-decision-list,
+.tb-position-list,
+.tb-performance-list {
+  display: grid;
+  gap: 9px;
+}
+
+.tb-data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.045);
+}
+
+.tb-data-row:last-child {
+  border-bottom: 0;
+}
+
+.tb-data-k {
+  color: var(--tb-muted);
+  font-size: 12px;
+}
+
+.tb-data-v {
+  color: #fff;
+  font-family: var(--tb-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.tb-data-v.muted {
+  color: #c8c8ce;
+  font-family: 'Inter', sans-serif;
+  font-weight: 650;
+}
+
+.tb-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.tb-bot-settings-card {
+  grid-column: 1 / -1;
+}
+
+.tb-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tb-bot-settings-grid {
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  align-items: end;
+}
+
+.tb-bot-settings-grid .tb-field.full {
+  grid-column: span 2;
+}
+
+.tb-field {
+  min-width: 0;
+}
+
+.tb-field.full {
+  grid-column: 1 / -1;
+}
+
+.tb-field-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--tb-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .35px;
+  margin-bottom: 8px;
+}
+
+.tb-input,
+.tb-select,
+.tb-locked-box {
+  width: 100%;
+  min-height: 42px;
+  background: #080809;
+  border: 1px solid var(--tb-border);
+  border-radius: 8px;
+  color: #fff;
+  padding: 10px 12px;
+  font: 700 12px/1.2 var(--tb-mono);
+  outline: none;
+}
+
+.tb-select {
+  cursor: pointer;
+}
+
+.tb-input:disabled,
+.tb-select:disabled {
+  opacity: .62;
+  cursor: not-allowed;
+  color: var(--tb-dim);
+}
+
+.tb-input:focus,
+.tb-select:focus {
+  border-color: #393940;
+}
+
+.tb-locked-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tb-segmented {
+  display: grid;
+  gap: 6px;
+  padding: 3px;
+  min-height: 42px;
+  background: #080809;
+  border: 1px solid var(--tb-border);
+  border-radius: 8px;
+}
+
+.tb-segmented.two { grid-template-columns: repeat(2, 1fr); }
+.tb-segmented.three { grid-template-columns: repeat(3, 1fr); }
+
+.tb-seg {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--tb-muted);
+  font-size: 11px;
+  font-weight: 750;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  min-height: 34px;
+  padding: 7px 8px;
+  transition: background .16s ease, border-color .16s ease, color .16s ease;
+}
+
+.tb-seg.active {
+  background: rgba(0,232,135,0.09);
+  border-color: rgba(0,232,135,0.24);
+  color: var(--tb-green);
+}
+
+.tb-seg.disabled {
+  cursor: not-allowed;
+  color: var(--tb-dim);
+  background: rgba(255,255,255,0.02);
+}
+
+.tb-readonly {
+  opacity: .78;
+}
+
+.tb-lock-main {
+  display: grid;
+  gap: 3px;
+}
+
+.tb-lock-title {
+  color: #fff;
+  font-family: var(--tb-mono);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.tb-lock-sub {
+  color: var(--tb-dim);
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+}
+
+.tb-range-row {
+  display: grid;
+  grid-template-columns: 1fr 56px;
+  align-items: center;
+  gap: 10px;
+}
+
+.tb-range {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  outline: none;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(90deg, var(--tb-green) 0%, var(--tb-green) var(--tb-leverage-progress, 1.6%), #151519 var(--tb-leverage-progress, 1.6%), #151519 100%);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.tb-range::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 3px solid #050505;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(0,232,135,0.75), 0 0 18px rgba(0,232,135,0.25);
+}
+
+.tb-range::-moz-range-thumb {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 3px solid #050505;
+  background: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(0,232,135,0.75), 0 0 18px rgba(0,232,135,0.25);
+}
+
+.tb-range-value {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,232,135,0.22);
+  border-radius: 7px;
+  background: rgba(0,232,135,0.07);
+  color: var(--tb-green);
+  font-family: var(--tb-mono);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.tb-range-marks {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  margin-top: -2px;
+  color: var(--tb-dim);
+  font-family: var(--tb-mono);
+  font-size: 9px;
+}
+
+.tb-info {
+  width: 17px;
+  height: 17px;
+  border: 1px solid #36363d;
+  border-radius: 50%;
+  background: #111114;
+  color: var(--tb-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: help;
+  position: relative;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.tb-info::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%) translateY(4px);
+  width: min(300px, 76vw);
+  padding: 11px 12px;
+  border-radius: 8px;
+  border: 1px solid #2d2d34;
+  background: #101012;
+  color: #e8e8ec;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: 0 18px 45px rgba(0,0,0,.45);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity .14s ease, transform .14s ease;
+  z-index: 20;
+}
+
+.tb-info:hover::after,
+.tb-info:focus::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tb-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.tb-empty {
+  padding: 16px;
+  border: 1px solid var(--tb-border-soft);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  color: var(--tb-muted);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+.tb-table-wrap {
+  overflow-x: auto;
+}
+
+.tb-log-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tb-log-filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tb-filter-input,
+.tb-filter-select {
+  min-height: 38px;
+  background: #080809;
+  border: 1px solid var(--tb-border);
+  border-radius: 8px;
+  color: #fff;
+  padding: 9px 11px;
+  font-size: 12px;
+  outline: none;
+}
+
+.tb-filter-input {
+  width: 220px;
+}
+
+.tb-filter-select {
+  min-width: 130px;
+}
+
+.tb-log-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.tb-log-table th,
+.tb-log-table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.055);
+  text-align: left;
+}
+
+.tb-log-table th {
+  color: var(--tb-dim);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .65px;
+  text-transform: uppercase;
+}
+
+.tb-log-table td {
+  color: #dedee4;
+  white-space: nowrap;
+}
+
+.tb-log-table td:last-child {
+  text-align: right;
+}
+
+.tb-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--tb-border);
+  color: var(--tb-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+
+.tb-badge.info {
+  background: rgba(255,255,255,0.04);
+  color: #c9c9d0;
+}
+
+.tb-badge.success {
+  background: rgba(0,232,135,0.08);
+  border-color: rgba(0,232,135,0.22);
+  color: var(--tb-green);
+}
+
+.tb-badge.error {
+  background: rgba(255,77,94,0.08);
+  border-color: rgba(255,77,94,0.26);
+  color: var(--tb-red);
+}
+
+@media (max-width: 1180px) {
+  .tb-topbar {
+    grid-template-columns: 1fr;
+  }
+  .tb-status-table {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .tb-status-cell:nth-child(3) {
+    border-right: 0;
+  }
+  .tb-status-cell:nth-child(n + 4) {
+    border-top: 1px solid var(--tb-border-soft);
+  }
+  .tb-main-grid,
+  .tb-settings-grid {
+    grid-template-columns: 1fr;
+  }
+  .tb-bot-settings-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tb-bot-settings-grid .tb-field.full {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  #botpanel-admin {
+    padding: 18px 14px 38px;
+  }
+  .tb-hero {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .tb-title {
+    font-size: 26px;
+  }
+  .tb-status-table,
+  .tb-bottom-grid,
+  .tb-form-grid,
+  .tb-bot-settings-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .tb-status-cell {
+    border-right: 0;
+    border-top: 1px solid var(--tb-border-soft);
+  }
+  .tb-status-cell:first-child {
+    border-top: 0;
+  }
+  .tb-compact-panel,
+  .tb-compact-controls {
+    grid-template-columns: 1fr;
+  }
+  .tb-bot-settings-grid .tb-field.full {
+    grid-column: auto;
+  }
+  .tb-main-grid {
+    gap: 16px;
+  }
+  .tb-chart-placeholder {
+    min-height: 300px;
+  }
+  .tb-card-head,
+  .tb-card-body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+  .tb-btn {
+    min-height: 44px;
+  }
+  .tb-log-tools {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .tb-filter-input,
+  .tb-filter-select {
+    width: 100%;
+  }
+}
+</style>
+
+<div class="tb-shell">
+  <section class="tb-topbar" aria-label="TB Bot üst kontrol alanı">
+    <div class="tb-bot-switch" aria-label="Bot seçimi">
+      <button type="button" class="tb-bot-option active">TB Bot</button>
+      <button type="button" class="tb-bot-option disabled" disabled>OTT</button>
+    </div>
+
+    <div class="tb-status-table" aria-label="Bot durum tablosu">
+      <div class="tb-status-cell">
+        <div class="tb-status-k">Bot Durumu</div>
+        <div class="tb-status-v muted" id="tb-bot-state">Pasif</div>
+      </div>
+      <div class="tb-status-cell">
+        <div class="tb-status-k">Mod</div>
+        <div class="tb-status-v green">Demo</div>
+      </div>
+      <div class="tb-status-cell">
+        <div class="tb-status-k">Sembol</div>
+        <div class="tb-status-v">ETHUSDT</div>
+      </div>
+      <div class="tb-status-cell">
+        <div class="tb-status-k">Son Sinyal</div>
+        <div class="tb-status-v muted">Bekleniyor</div>
+      </div>
+      <div class="tb-status-cell">
+        <div class="tb-status-k">Günlük PnL</div>
+        <div class="tb-status-v green">$0.00</div>
+      </div>
+    </div>
+
+    <div class="tb-compact-panel">
+      <div class="tb-compact-controls" aria-label="Bot kontrol">
+        <button type="button" class="tb-btn tb-btn-start tb-btn-compact" data-tb-action="start">Başlat</button>
+        <button type="button" class="tb-btn tb-btn-stop tb-btn-compact" data-tb-action="stop">Durdur</button>
+        <button type="button" class="tb-btn tb-btn-danger tb-btn-emergency tb-btn-compact" data-tb-action="emergency">Acil</button>
+      </div>
+      <div class="tb-mode-compact" aria-label="Çalışma modu">
+        <span class="tb-mode-mini active">Demo</span>
+        <span class="tb-mode-mini disabled">Live kilitli</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="tb-main-grid">
+    <article class="tb-card tb-chart-card">
+      <div class="tb-card-head">
+        <div>
+          <h2 class="tb-card-title">ETH/USDT Grafik Alanı</h2>
+          <div class="tb-card-sub">Al / sat sinyalleri ve fiyat grafiği burada gösterilecektir.</div>
+        </div>
+        <span class="tb-chip">Placeholder</span>
+      </div>
+      <div class="tb-card-body">
+        <div class="tb-chart-placeholder" role="img" aria-label="Grafik alanı hazırlanıyor">
+          <div>
+            <div class="tb-chart-mark" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 18V6"></path>
+                <path d="M9 18V9"></path>
+                <path d="M14 18V4"></path>
+                <path d="M19 18v-7"></path>
+              </svg>
+            </div>
+            <div class="tb-placeholder-title">Grafik alanı hazırlanıyor</div>
+            <div class="tb-placeholder-sub">TB Bot sinyalleri burada gösterilecek</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <aside class="tb-side-stack">
+      <article class="tb-card">
+        <div class="tb-card-head">
+          <h2 class="tb-card-title">TB Bot Kararı</h2>
+        </div>
+        <div class="tb-card-body">
+          <div class="tb-decision-list">
+            <div class="tb-data-row"><span class="tb-data-k">Son Karar</span><span class="tb-data-v muted">Bekleniyor</span></div>
+            <div class="tb-data-row"><span class="tb-data-k">OTT Sinyali</span><span class="tb-data-v muted">Hazır değil</span></div>
+            <div class="tb-data-row"><span class="tb-data-k">Trend Filtresi</span><span class="tb-data-v muted">Bekleniyor</span></div>
+            <div class="tb-data-row"><span class="tb-data-k">ATR Durumu</span><span class="tb-data-v muted">Hesaplanıyor</span></div>
+            <div class="tb-data-row"><span class="tb-data-k">Açıklama</span><span class="tb-data-v muted">Bot henüz aktif bir işlem sinyali üretmedi.</span></div>
+          </div>
+        </div>
+      </article>
+    </aside>
+  </section>
+
+  <section class="tb-settings-grid">
+    <article class="tb-card tb-bot-settings-card">
+      <div class="tb-card-head">
+        <div>
+          <h2 class="tb-card-title">Bot Ayarları</h2>
+          <div class="tb-card-sub">TB Bot yalnızca Ethereum üzerinde çalışacak şekilde hazırlanmıştır.</div>
+        </div>
+      </div>
+      <div class="tb-card-body">
+        <div class="tb-form-grid tb-bot-settings-grid">
+          <div class="tb-field full">
+            <label class="tb-field-label">Coin / Sembol</label>
+            <div class="tb-locked-box">
+              <div class="tb-lock-main">
+                <span class="tb-lock-title">Ethereum / ETHUSDT</span>
+                <span class="tb-lock-sub">Şimdilik TB Bot yalnızca Ethereum üzerinde çalışacak şekilde ayarlanmıştır.</span>
+              </div>
+              <span class="tb-chip locked">Kilitli</span>
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label" for="tb-timeframe">Timeframe</label>
+            <select class="tb-select" id="tb-timeframe">
+              <option>5m</option>
+              <option selected>15m</option>
+              <option>1h</option>
+            </select>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label" for="tb-direction">Yön</label>
+            <select class="tb-select" id="tb-direction">
+              <option>Long + Short</option>
+              <option>Sadece Long</option>
+              <option>Sadece Short</option>
+            </select>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label" for="tb-leverage">Kaldıraç</label>
+            <div class="tb-range-row">
+              <input class="tb-range" id="tb-leverage" type="range" min="1" max="125" step="1" value="3">
+              <span class="tb-range-value" id="tb-leverage-value">3x</span>
+              <div class="tb-range-marks" aria-hidden="true">
+                <span>1x</span>
+                <span>25x</span>
+                <span>50x</span>
+                <span>75x</span>
+                <span>100x</span>
+                <span>125x</span>
+              </div>
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label" for="tb-margin">Margin Tipi</label>
+            <input class="tb-input" id="tb-margin" type="text" value="Isolated" readonly>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Mum Kapanışı Bekle <button class="tb-info" type="button" data-tooltip="Bot, sinyal oluştuğu anda değil; mum kapandıktan sonra işlem kararı verir. Bu ayar, anlık fiyat hareketlerinden kaynaklanan sahte sinyalleri azaltır.">i</button></label>
+            <div class="tb-segmented two" role="group" aria-label="Mum kapanışı bekle">
+              <button type="button" class="tb-seg disabled">Kapalı</button>
+              <button type="button" class="tb-seg active">Açık</button>
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Aynı Sinyalde Tekrar İşlem Açma <button class="tb-info" type="button" data-tooltip="Bot aynı BUY veya SELL sinyali devam ederken tekrar tekrar işlem açmaz. Yeni işlem için yeni sinyal veya yeni koşul bekler. Bu overtrade’i engeller.">i</button></label>
+            <div class="tb-segmented two" role="group" aria-label="Aynı sinyalde tekrar işlem açma">
+              <button type="button" class="tb-seg disabled">Kapalı</button>
+              <button type="button" class="tb-seg active">Açık</button>
+            </div>
+          </div>
+          <div class="tb-field full">
+            <label class="tb-field-label">Ters Sinyalde <button class="tb-info" type="button" data-tooltip="Açık pozisyon varken ters yönde sinyal oluşursa botun ne yapacağını belirler. İlk sürümde pozisyonu kapatmak, direkt ters işleme geçmekten daha kontrollüdür.">i</button></label>
+            <div class="tb-segmented three" role="group" aria-label="Ters sinyal davranışı">
+              <button type="button" class="tb-seg active">Pozisyonu Kapat</button>
+              <button type="button" class="tb-seg">Bekle</button>
+              <button type="button" class="tb-seg disabled">Ters İşleme Geçme</button>
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Emir Tipi <button class="tb-info" type="button" data-tooltip="Market emir, işlemi anlık piyasa fiyatından açar. Limit emir ise belirlenen fiyat seviyesinden işlem açmaya çalışır. Başlangıçta yalnızca Market aktif tutulur.">i</button></label>
+            <div class="tb-segmented two" role="group" aria-label="Emir tipi">
+              <button type="button" class="tb-seg active">Market</button>
+              <button type="button" class="tb-seg disabled">Limit</button>
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Kontrol Aralığı <button class="tb-info" type="button" data-tooltip="Botun piyasa verilerini ve sinyalleri ne sıklıkla kontrol edeceğini belirler. Bot 10 saniyede bir kontrol eder ama her kontrolde işlem açmaz; işlem kararı mum kapanışına göre verilir.">i</button></label>
+            <input class="tb-input" type="text" value="10 saniye" readonly>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Trend Filtresi <button class="tb-info" type="button" data-tooltip="Bot, ana trend yönüne ters işlemleri azaltmak için üst zaman dilimi trend kontrolü yapar. İlk sürümde bu ayar aktif ve kilitli tutulur.">i</button></label>
+            <div class="tb-locked-box tb-readonly">
+              <div class="tb-lock-main">
+                <span class="tb-lock-title">Aktif</span>
+                <span class="tb-lock-sub">1h trend / EMA 200</span>
+              </div>
+              <span class="tb-chip locked">Kilitli</span>
+            </div>
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Volatilite Filtresi <button class="tb-info" type="button" data-tooltip="Piyasa aşırı durgun veya aşırı oynak olduğunda botun işlem açmasını engeller. Bu filtre botu korumaya yardımcı olur.">i</button></label>
+            <div class="tb-segmented three" role="group" aria-label="Volatilite filtresi">
+              <button type="button" class="tb-seg">Kapalı</button>
+              <button type="button" class="tb-seg active">Normal</button>
+              <button type="button" class="tb-seg">Katı</button>
+            </div>
+          </div>
+          <div class="tb-field full">
+            <label class="tb-field-label">Maksimum Slippage <button class="tb-info" type="button" data-tooltip="Emir gönderildiğinde beklenen fiyat ile gerçekleşen fiyat arasındaki maksimum kabul edilebilir farktır. Live Trading için daha kritik olduğundan şimdilik gelişmiş ve pasif bir ayar olarak gösterilir.">i</button></label>
+            <input class="tb-input" type="text" value="%0.2" disabled>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="tb-card">
+      <div class="tb-card-head">
+        <h2 class="tb-card-title">Risk Yönetimi</h2>
+      </div>
+      <div class="tb-card-body">
+        <div class="tb-form-grid">
+          <div class="tb-field">
+            <label class="tb-field-label">İşlem Başı Risk <button class="tb-info" type="button" data-tooltip="Her işlemde bakiyenin en fazla ne kadarının riske edileceğini belirler. Örneğin bakiye 100 USDT ve işlem başı risk %1 ise bot bir işlemde en fazla 1 USDT kaybetmeyi hedefler.">i</button></label>
+            <input class="tb-input" type="text" value="%1">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Maksimum Günlük Zarar <button class="tb-info" type="button" data-tooltip="Botun bir gün içinde izin verilen maksimum zarar sınırıdır. Bu limite ulaşılırsa bot yeni işlem açmayı durdurur.">i</button></label>
+            <input class="tb-input" type="text" value="%3">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Günlük Hedef Kâr <button class="tb-info" type="button" data-tooltip="Bot belirlenen günlük kâr hedefine ulaşırsa yeni işlem açmayı durdurur. Kazancı korumaya yardımcı olur ve kâr sonrası overtrade riskini azaltır.">i</button></label>
+            <input class="tb-input" type="text" value="%5">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Maksimum Açık Pozisyon <button class="tb-info" type="button" data-tooltip="Aynı anda kaç açık pozisyon bulunabileceğini belirler. İlk sürümde güvenlik için 1 pozisyon önerilir.">i</button></label>
+            <input class="tb-input" type="text" value="1">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Günlük Maksimum İşlem Sayısı <button class="tb-info" type="button" data-tooltip="Botun bir gün içinde en fazla kaç işlem açabileceğini belirler. Gereksiz sık al-sat yapılmasını engeller.">i</button></label>
+            <input class="tb-input" type="text" value="5">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Arka Arkaya Zarar Limiti <button class="tb-info" type="button" data-tooltip="Bot belirlenen sayı kadar üst üste zarar ederse yeni işlem açmayı durdurur.">i</button></label>
+            <input class="tb-input" type="text" value="3">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Cooldown Süresi <button class="tb-info" type="button" data-tooltip="Bir işlemden sonra botun yeni işlem açmadan önce bekleyeceği süredir. Aynı bölgede tekrar tekrar işlem açılmasını engeller.">i</button></label>
+            <input class="tb-input" type="text" value="15 dakika">
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="tb-card">
+      <div class="tb-card-head">
+        <h2 class="tb-card-title">Stop-loss / Take-profit</h2>
+      </div>
+      <div class="tb-card-body">
+        <div class="tb-form-grid">
+          <div class="tb-field">
+            <label class="tb-field-label">Stop-loss Tipi <button class="tb-info" type="button" data-tooltip="İşlem zarara giderse botun pozisyonu hangi kurala göre kapatacağını belirler. Stop-loss zararı sınırlamak için kullanılır.">i</button></label>
+            <input class="tb-input" type="text" value="ATR Bazlı">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">ATR Çarpanı <button class="tb-info" type="button" data-tooltip="Stop-loss mesafesinin ATR değerinin kaç katı olacağını belirler. Örneğin ATR 10 ve çarpan 1.5 ise stop mesafesi yaklaşık 15 birim olur.">i</button></label>
+            <input class="tb-input" type="text" value="1.5">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Take-profit Tipi <button class="tb-info" type="button" data-tooltip="İşlem kara geçtiğinde botun pozisyonu hangi kurala göre kapatacağını belirler.">i</button></label>
+            <input class="tb-input" type="text" value="Risk/Reward">
+          </div>
+          <div class="tb-field">
+            <label class="tb-field-label">Risk/Reward Oranı <button class="tb-info" type="button" data-tooltip="Alınan riske karşı hedeflenen kazanç oranıdır. Örneğin 1:2 oranında, 1 birim risk için 2 birim kazanç hedeflenir.">i</button></label>
+            <input class="tb-input" type="text" value="1:2">
+          </div>
+          <div class="tb-field full">
+            <label class="tb-field-label">Trailing Stop <button class="tb-info" type="button" data-tooltip="Fiyat kara doğru ilerledikçe stop seviyesinin fiyatı takip etmesini sağlar. Karın korunmasına yardımcı olur.">i</button></label>
+            <input class="tb-input" type="text" value="Kapalı">
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="tb-bottom-grid">
+    <article class="tb-card">
+      <div class="tb-card-head">
+        <h2 class="tb-card-title">Açık Pozisyon</h2>
+      </div>
+      <div class="tb-card-body">
+        <div class="tb-empty">Açık pozisyon bulunmuyor.</div>
+        <div class="tb-position-list">
+          <div class="tb-data-row"><span class="tb-data-k">Sembol</span><span class="tb-data-v">ETHUSDT</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Yön</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Entry</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Anlık Fiyat</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Miktar</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Kaldıraç</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">PnL</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Stop-loss</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Take-profit</span><span class="tb-data-v muted">-</span></div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="tb-btn tb-btn-danger" type="button" disabled>Pozisyonu Kapat</button>
+        </div>
+      </div>
+    </article>
+
+    <article class="tb-card">
+      <div class="tb-card-head">
+        <h2 class="tb-card-title">Günlük Performans</h2>
+      </div>
+      <div class="tb-card-body">
+        <div class="tb-empty">Bugün henüz işlem yapılmadı.</div>
+        <div class="tb-performance-list">
+          <div class="tb-data-row"><span class="tb-data-k">Bugünkü İşlem Sayısı</span><span class="tb-data-v">0</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Kazanan İşlem</span><span class="tb-data-v green">0</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Kaybeden İşlem</span><span class="tb-data-v red">0</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Win Rate</span><span class="tb-data-v">%0</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Günlük PnL</span><span class="tb-data-v green">$0.00</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Komisyon</span><span class="tb-data-v">$0.00</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Maksimum Drawdown</span><span class="tb-data-v">$0.00</span></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <article class="tb-card">
+    <div class="tb-card-head">
+      <h2 class="tb-card-title">Bot Logları</h2>
+      <span class="tb-chip">Statik örnek veri</span>
+    </div>
+    <div class="tb-card-body">
+      <div class="tb-log-tools">
+        <div class="tb-log-filters" aria-label="Bot log filtreleri">
+          <input class="tb-filter-input" type="text" value="" placeholder="Loglarda ara" aria-label="Loglarda ara">
+          <select class="tb-filter-select" aria-label="Kategori filtresi">
+            <option>Tüm kategoriler</option>
+            <option>Analiz</option>
+            <option>Sistem</option>
+          </select>
+          <select class="tb-filter-select" aria-label="Durum filtresi">
+            <option>Tüm durumlar</option>
+            <option>Bilgi</option>
+            <option>Pasif</option>
+            <option>Hata</option>
+          </select>
+        </div>
+        <span class="tb-chip">Frontend hazır</span>
+      </div>
+      <div class="tb-table-wrap">
+        <table class="tb-log-table">
+          <thead>
+            <tr>
+              <th>Saat</th>
+              <th>Sembol</th>
+              <th>Kategori</th>
+              <th>Sinyal</th>
+              <th>Karar</th>
+              <th>Açıklama</th>
+              <th>Durum</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>14:15</td>
+              <td>ETHUSDT</td>
+              <td>Analiz</td>
+              <td>BEKLE</td>
+              <td>İşlem açılmadı</td>
+              <td>Sinyal bekleniyor</td>
+              <td><span class="tb-badge info">Pasif</span></td>
+            </tr>
+            <tr>
+              <td>14:30</td>
+              <td>ETHUSDT</td>
+              <td>Sistem</td>
+              <td>-</td>
+              <td>Hazır</td>
+              <td>Binance Demo Trading modu aktif</td>
+              <td><span class="tb-badge success">Bilgi</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </article>
+</div>
+
+<script>
+(function initTbBotPanel() {
+  const root = document.getElementById('botpanel-admin');
+  if (!root) return;
+
+  const stateEl = root.querySelector('#tb-bot-state');
+  const chipEl = root.querySelector('#tb-control-chip');
+  const leverage = root.querySelector('#tb-leverage');
+  const leverageValue = root.querySelector('#tb-leverage-value');
+
+  function setVisualState(label, tone) {
+    if (stateEl) {
+      stateEl.textContent = label;
+      stateEl.classList.toggle('green', tone === 'green');
+      stateEl.classList.toggle('red', tone === 'red');
+      stateEl.classList.toggle('muted', tone !== 'green' && tone !== 'red');
+    }
+    if (chipEl) {
+      chipEl.textContent = label;
+      chipEl.classList.toggle('green', tone === 'green');
+      chipEl.classList.toggle('locked', tone === 'red');
+    }
+  }
+
+  root.querySelectorAll('[data-tb-action]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const action = button.getAttribute('data-tb-action');
+      if (action === 'start') setVisualState('Demo Hazır', 'green');
+      if (action === 'stop') setVisualState('Pasif', 'muted');
+      if (action === 'emergency') setVisualState('Acil Durduruldu', 'red');
+    });
+  });
+
+  if (leverage && leverageValue) {
+    const updateLeverage = () => {
+      leverageValue.textContent = leverage.value + 'x';
+      const min = Number(leverage.min || 1);
+      const max = Number(leverage.max || 125);
+      const value = Number(leverage.value || min);
+      const pct = ((value - min) / (max - min)) * 100;
+      leverage.style.setProperty('--tb-leverage-progress', pct + '%');
+    };
+    leverage.addEventListener('input', updateLeverage);
+    updateLeverage();
+  }
+})();
+</script>
+</div>
+</div>

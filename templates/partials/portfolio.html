@@ -1,0 +1,294 @@
+<div class="dash-sub-page" id="dash-portfolio" style="display:none">
+    <canvas class="particle-canvas" id="portfolio-particle-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0"></canvas>
+    <div class="dash-inner" style="max-width:1400px;margin:0 auto;padding-top:0;position:relative;z-index:1">
+        
+        <!-- Mevcut Varlıklar - Pie Chart + Tablo (Portföy başlığı burada) -->
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;margin-bottom:24px">
+            <div style="padding:20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between">
+                <h2 style="font-size:28px;font-weight:700;color:#fff;margin:0;letter-spacing:-0.5px">Portföy</h2>
+                <div style="display:flex;align-items:center;gap:6px" id="pf-api-status-compact">
+                    <span style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px">API Durumu:</span>
+                    <span id="pf-api-status-icon" style="font-size:14px;filter:drop-shadow(0 0 4px rgba(255,255,255,0.2))">⏳</span>
+                </div>
+            </div>
+            <div style="padding:16px">
+                <div style="display:grid;grid-template-columns:360px 1fr;gap:24px;align-items:start">
+                    <!-- Pie Chart -->
+                    <div style="position:relative;position:sticky;top:20px">
+                        <canvas id="pf-assets-pie-chart" width="360" height="360"></canvas>
+                        <div id="pf-pie-center-text" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
+                            <div style="font-size:12px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">Toplam Değer</div>
+                            <div id="pf-pie-total-value" style="font-size:28px;font-weight:700;color:#fff;font-family:var(--mono)">$0.00</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Asset List -->
+                    <div id="pf-assets-list" style="display:grid;gap:6px;max-height:750px;overflow-y:auto;padding-right:8px">
+                        <div style="padding:40px;text-align:center;color:rgba(255,255,255,0.3)">Veri yok</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Açık Pozisyonlar -->
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;margin-bottom:24px" id="pf-positions-section">
+            <div style="padding:20px;border-bottom:1px solid rgba(255,255,255,0.06)">
+                <h3 style="font-size:16px;font-weight:700;color:#fff;margin:0">Açık Pozisyonlar</h3>
+            </div>
+            <div style="overflow-x:auto" id="pf-positions-container">
+                <div id="pf-positions-content">
+                    <div style="padding:40px;text-align:center;color:var(--t3)">Açık pozisyon yok</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- P&L Cards with Candlestick Charts -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+            <!-- Günlük P&L (24 Saatlik Mumlar) -->
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;position:relative;overflow:hidden">
+                <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px">Günlük P&L</div>
+                <div id="pf-daily-pnl" style="font-size:32px;font-weight:700;color:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-1px;margin-bottom:4px">—</div>
+                <div id="pf-daily-change" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);margin-bottom:12px">—</div>
+                <canvas id="pf-daily-chart" width="280" height="60" style="width:100%;height:60px"></canvas>
+            </div>
+            
+            <!-- Haftalık P&L (7 Günlük Mumlar) -->
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;position:relative;overflow:hidden">
+                <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px">Haftalık P&L</div>
+                <div id="pf-weekly-pnl" style="font-size:32px;font-weight:700;color:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-1px;margin-bottom:4px">—</div>
+                <div id="pf-weekly-change" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);margin-bottom:12px">—</div>
+                <canvas id="pf-weekly-chart" width="280" height="60" style="width:100%;height:60px"></canvas>
+            </div>
+            
+            <!-- Toplam P&L (Tüm Zamanlar) -->
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;position:relative;overflow:hidden">
+                <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px">Toplam P&L</div>
+                <div id="pf-monthly-pnl" style="font-size:32px;font-weight:700;color:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-1px;margin-bottom:4px">—</div>
+                <div id="pf-monthly-change" style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);margin-bottom:12px">—</div>
+                <canvas id="pf-monthly-chart" width="280" height="60" style="width:100%;height:60px"></canvas>
+            </div>
+        </div>
+
+        <!-- İşlem Geçmişi -->
+        <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;margin-bottom:24px">
+            <div style="padding:20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+                <h3 style="font-size:16px;font-weight:700;color:#fff;margin:0">İşlem Geçmişi</h3>
+                <div style="display:flex;gap:8px">
+                    <select id="pf-trades-symbol" onchange="loadTradeHistory()"
+                        style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;outline:none">
+                        <option value="">Tüm Semboller</option>
+                        <option value="BTCUSDT">BTC/USDT</option>
+                        <option value="ETHUSDT">ETH/USDT</option>
+                        <option value="SOLUSDT">SOL/USDT</option>
+                        <option value="BNBUSDT">BNB/USDT</option>
+                        <option value="XRPUSDT">XRP/USDT</option>
+                    </select>
+                    <select id="pf-trades-period" onchange="loadTradeHistory()"
+                        style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;outline:none">
+                        <option value="all">Tüm Zamanlar</option>
+                        <option value="today">Bugün</option>
+                        <option value="week">Bu Hafta</option>
+                        <option value="month">Bu Ay</option>
+                    </select>
+                </div>
+            </div>
+            <div style="max-height:450px;overflow-y:auto">
+                <table style="width:100%;border-collapse:collapse">
+                    <thead style="position:sticky;top:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);z-index:1">
+                        <tr>
+                            <th style="padding:14px 20px;text-align:left;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Tarih</th>
+                            <th style="padding:14px 20px;text-align:left;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Sembol</th>
+                            <th style="padding:14px 20px;text-align:center;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Yön</th>
+                            <th style="padding:14px 20px;text-align:right;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Fiyat</th>
+                            <th style="padding:14px 20px;text-align:right;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Miktar</th>
+                            <th style="padding:14px 20px;text-align:right;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Toplam</th>
+                            <th style="padding:14px 20px;text-align:right;font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px">Komisyon</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pf-trades-body">
+                        <tr>
+                            <td colspan="7" style="padding:60px 20px;text-align:center;color:rgba(255,255,255,0.3);font-size:14px">Veri yok</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Toplam Komisyon -->
+            <div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.01);display:flex;justify-content:flex-end;align-items:center;gap:12px">
+                <span style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.6px">Toplam Komisyon:</span>
+                <span id="pf-total-commission" style="font-size:16px;font-weight:700;color:#f6465d;font-family:var(--mono)">$0.00</span>
+            </div>
+        </div>
+
+        <!-- Reports Grid -->
+        <div style="margin-bottom:24px">
+            
+            <!-- Performans Raporu - Kapsamlı, Gruplandırılmış -->
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden">
+                <div style="padding:20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center">
+                    <h3 style="font-size:18px;font-weight:700;color:#fff;margin:0">Performans Raporu</h3>
+                    <!-- Tarih Filtresi -->
+                    <select id="pf-report-period" onchange="filterReportByPeriod(this.value)" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;outline:none">
+                        <option value="all">Tüm Zamanlar</option>
+                        <option value="today">Bugün</option>
+                        <option value="week">Son 7 Gün</option>
+                        <option value="month">Son 30 Gün</option>
+                    </select>
+                </div>
+                <div style="padding:24px">
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+                        
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <!-- GRUP 1: İşlem İstatistikleri -->
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Toplam İşlem</span>
+                            <span id="pf-total-trades" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Kazanan İşlem</span>
+                            <span id="pf-total-wins" style="font-weight:700;font-size:18px;color:#10b981">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Kaybeden İşlem</span>
+                            <span id="pf-total-losses" style="font-weight:700;font-size:18px;color:#ef4444">—</span>
+                        </div>
+                        
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <!-- GRUP 2: Başarı & Karlılık -->
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Başa Baş İşlem</span>
+                            <span id="pf-total-breakeven" style="font-weight:700;font-size:18px;color:rgba(255,255,255,0.7)">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;position:relative">
+                            <div style="display:flex;align-items:center;gap:6px">
+                                <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Kazanma Oranı</span>
+                                <span class="info-icon" data-tooltip="Kazanan işlem sayısı / Toplam işlem sayısı. %50'nin üzeri iyi kabul edilir." style="cursor:help;color:rgba(255,255,255,0.4);font-size:12px;width:16px;height:16px;border:1px solid rgba(255,255,255,0.3);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700">i</span>
+                            </div>
+                            <span id="pf-win-rate" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;position:relative">
+                            <div style="display:flex;align-items:center;gap:6px">
+                                <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Profit Factor</span>
+                                <span class="info-icon" data-tooltip="Brüt Kar / Brüt Zarar. 1'in üzeri karlı, 2+ mükemmel kabul edilir." style="cursor:help;color:rgba(255,255,255,0.4);font-size:12px;width:16px;height:16px;border:1px solid rgba(255,255,255,0.3);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700">i</span>
+                            </div>
+                            <span id="pf-profit-factor" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                        
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <!-- GRUP 3: Ortalamalar & Oranlar -->
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Ort. Kazanç</span>
+                            <span id="pf-avg-win" style="font-weight:700;font-size:18px;color:#10b981">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Ort. Kayıp</span>
+                            <span id="pf-avg-loss" style="font-weight:700;font-size:18px;color:#ef4444">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;position:relative">
+                            <div style="display:flex;align-items:center;gap:6px">
+                                <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Risk/Ödül Oranı</span>
+                                <span class="info-icon" data-tooltip="Ort. Kazanç / Ort. Kayıp. 1.5+ ideal kabul edilir." style="cursor:help;color:rgba(255,255,255,0.4);font-size:12px;width:16px;height:16px;border:1px solid rgba(255,255,255,0.3);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700">i</span>
+                            </div>
+                            <span id="pf-risk-reward" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                        
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <!-- GRUP 4: Uç Noktalar & Risk -->
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">En Büyük Kazanç</span>
+                            <span id="pf-max-win" style="font-weight:700;font-size:18px;color:#10b981">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">En Büyük Kayıp</span>
+                            <span id="pf-max-loss" style="font-weight:700;font-size:18px;color:#ef4444">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;position:relative">
+                            <div style="display:flex;align-items:center;gap:6px">
+                                <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Maks. Düşüş (MDD)</span>
+                                <span class="info-icon" data-tooltip="En yüksek noktadan en düşük noktaya olan maksimum kayıp yüzdesi. Risk yönetimi için kritik." style="cursor:help;color:rgba(255,255,255,0.4);font-size:12px;width:16px;height:16px;border:1px solid rgba(255,255,255,0.3);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700">i</span>
+                            </div>
+                            <span id="pf-max-drawdown" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                        
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <!-- GRUP 5: Finansal Özet -->
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Toplam Hacim</span>
+                            <span id="pf-total-volume" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Toplam Komisyon</span>
+                            <span id="pf-total-commission-report" style="font-weight:700;font-size:18px;color:#f6465d">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Net P&L (Toplam)</span>
+                            <span id="pf-net-pnl-total" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                        
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <!-- GRUP 6: Günlük Kapanış (Vurgulu Satır) -->
+                        <!-- ═══════════════════════════════════════════════════════════ -->
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Açık Pozisyon</span>
+                            <span id="pf-open-positions-count" style="font-weight:700;font-size:18px;color:#60a5fa">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Ortalama Kaldıraç</span>
+                            <span id="pf-avg-leverage" style="font-weight:700;font-size:18px;color:#fbbf24">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Bugün Hacim</span>
+                            <span id="pf-daily-volume" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:8px;grid-column:span 3">
+                            <span style="color:rgba(255,255,255,0.6);font-size:14px;font-weight:500">Toplam P&L</span>
+                            <span id="pf-total-pnl-bottom" style="font-weight:700;font-size:18px;color:#fff">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tooltip Styles -->
+        <style>
+            .info-icon:hover::after {
+                content: attr(data-tooltip);
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                margin-bottom: 8px;
+                padding: 8px 12px;
+                background: rgba(0, 0, 0, 0.95);
+                color: #fff;
+                font-size: 12px;
+                font-weight: 500;
+                border-radius: 6px;
+                white-space: nowrap;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                max-width: 250px;
+                white-space: normal;
+                text-align: center;
+                line-height: 1.4;
+            }
+            .info-icon:hover::before {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                margin-bottom: 2px;
+                border: 6px solid transparent;
+                border-top-color: rgba(0, 0, 0, 0.95);
+                z-index: 1000;
+            }
+        </style>
+
+    </div>
+</div>

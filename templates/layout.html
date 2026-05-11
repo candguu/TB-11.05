@@ -1,0 +1,504 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TB Trading Bot</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+
+  <link rel="stylesheet" href="/static/css/styles.css?v=mobile-fix">
+  <link rel="stylesheet" href="/static/css/admin-dashboard.css">
+  <link rel="stylesheet" href="/static/css/binance-style.css?v=2">
+  <link rel="stylesheet" href="/static/css/botpanel-premium.css?v=tb-active-demo-v2-20260511">
+  <link rel="icon" type="image/png" href="/static/logo/yeni_logo_cropped.png">
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+     NAV
+══════════════════════════════════════════ -->
+  <nav>
+    <div class="logo" onclick="switchTab('home')" style="display:flex;align-items:center;cursor:pointer">
+      <img src="/static/logo/logo-beyaz.png" alt="Trading Bot Logo" style="height:180px;width:auto;object-fit:contain">
+    </div>
+
+    <!-- Navigation Container -->
+    <div id="nav-container">
+      <!-- Default: Public Navigation -->
+      <div id="nav-tabs">
+        <a href="/" class="nav-tab" data-i18n="nav_home">Ana Sayfa</a>
+        <a href="/markets" class="nav-tab" data-i18n="nav_markets">Piyasalar</a>
+        <a href="/blog" class="nav-tab" data-i18n="nav_blog">Blog</a>
+        <a href="/strateji" class="nav-tab" data-i18n="nav_strategy">Strateji</a>
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div id="nav-right">
+      <button class="btn btn-ghost" onclick="openAuth('login')" id="login-btn">Giriş Yap</button>
+      <button class="btn btn-primary" onclick="openAuth('register')" id="register-btn">Kayıt Ol</button>
+      
+      <!-- Balance Display (Admin only, hidden by default) -->
+      <div id="nav-balance" style="display:none;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:6px 12px;cursor:default;transition:background 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.07)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+          <span style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.6px;line-height:1">Bakiye</span>
+          <span id="nav-balance-val" style="font-size:14px;font-weight:700;color:#ffffff;font-family:'Inter',sans-serif;letter-spacing:-0.3px;line-height:1">$ 0.00</span>
+        </div>
+      </div>
+
+      <!-- Notification Button (Hidden by default) -->
+
+      <button class="notif-btn" onclick="toggleNotif()" id="notif-btn" style="display:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+        <span class="notif-count" id="notif-count">3</span>
+      </button>
+      
+      <!-- User Menu (Hidden by default) -->
+      <div class="user-pill" onclick="toggleUserMenu()" id="user-pill" style="display:none">
+        <div class="user-avatar" id="nav-avatar">A</div>
+        <div>
+          <div class="user-pill-name" id="nav-username">Loading...</div>
+          <div class="user-pill-role" id="nav-role">—</div>
+        </div>
+      </div>
+      
+      <button class="hamburger" onclick="toggleMobile()">☰</button>
+    </div>
+  </nav>
+  </nav>
+
+  <!-- Kullanıcı dropdown -->
+  <div class="user-dropdown" id="user-dropdown">
+    <div class="dd-item" onclick="switchDash('account')"><span class="dd-icon">👤</span>Hesabım</div>
+    <div class="dd-item" onclick="switchDash('portfolio')"><span class="dd-icon">💼</span>Portföy <span class="cs-badge" style="font-size:11px;color:var(--t3)">(Yakında)</span></div>
+    <div class="dd-item" onclick="switchDash('apiset')"><span class="dd-icon">🔌</span>API <span class="cs-badge" style="font-size:11px;color:var(--t3)">(Yakında)</span></div>
+    <div class="dd-item" onclick="switchDash('settings')"><span class="dd-icon">⚙️</span>Ayarlar</div>
+    <div class="dd-item danger" onclick="doLogout()"><span class="dd-icon">→</span>Çıkış Yap</div>
+  </div>
+
+  <!-- Notification Panel -->
+  <div class="notif-panel" id="notif-panel">
+    <div class="np-head">
+      <div class="np-title" data-i18n="notif_title">Bildirimler</div>
+      <div class="np-mark" onclick="markNotifRead()" data-i18n="notif_mark_read">Tümünü Okundu İşaretle</div>
+    </div>
+    <div class="np-body" id="notif-body">
+      <div class="np-item unread">
+        <div class="np-item-inner">
+          <div class="np-dot"></div>
+          <div>
+            <div class="np-item-msg" data-i18n="notif_welcome">Hoş geldiniz! Hesabınız başarıyla oluşturuldu.</div>
+            <div class="np-item-time" data-i18n="notif_time_2min">2 dakika önce</div>
+          </div>
+        </div>
+      </div>
+      <div class="np-item unread">
+        <div class="np-item-inner">
+          <div class="np-dot"></div>
+          <div>
+            <div class="np-item-msg" data-i18n="notif_api_keys">API anahtarlarınızı bağlamayı unutmayın.</div>
+            <div class="np-item-time" data-i18n="notif_time_5min">5 dakika önce</div>
+          </div>
+        </div>
+      </div>
+      <div class="np-item unread">
+        <div class="np-item-inner">
+          <div class="np-dot"></div>
+          <div>
+            <div class="np-item-msg" data-i18n="notif_security">Güvenlik ayarlarınızı kontrol edin.</div>
+            <div class="np-item-time" data-i18n="notif_time_10min">10 dakika önce</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div id="mobile-public">
+      <a href="/" class="nav-tab {% if request.path == '/' %}active{% endif %}" onclick="closeMobile()">Ana Sayfa</a>
+      <a href="/markets" class="nav-tab {% if request.path == '/markets' %}active{% endif %}" onclick="closeMobile()">Piyasalar</a>
+      <a href="/blog" class="nav-tab {% if request.path == '/blog' %}active{% endif %}" onclick="closeMobile()">Blog</a>
+      <a href="/strateji" class="nav-tab {% if request.path == '/strateji' %}active{% endif %}" onclick="closeMobile()">Strateji</a>
+      <div style="height:8px"></div>
+      <button class="btn btn-ghost" style="width:100%" onclick="openAuth('login');closeMobile()">Giriş Yap</button>
+      <button class="btn btn-primary" style="width:100%;text-align:center"
+        onclick="openAuth('register');closeMobile()">Kayıt Ol</button>
+    </div>
+    <div id="mobile-private-admin" style="display:none">
+      <button class="nav-tab" onclick="switchDash('markets2');closeMobile()">Piyasalar</button>
+      <button class="nav-tab" onclick="switchDash('botpanel');closeMobile()">Bot Paneli</button>
+      <button class="nav-tab" onclick="switchDash('strategy');closeMobile()">Strateji</button>
+      <button class="nav-tab" onclick="switchDash('logs');closeMobile()">Loglar</button>
+      <button class="nav-tab" onclick="switchDash('futures');closeMobile()">Futures</button>
+      <button class="nav-tab" onclick="switchDash('portfolio');closeMobile()">Portföy</button>
+      <button class="nav-tab" onclick="switchDash('apiset');closeMobile()">API</button>
+      <div style="height:8px"></div>
+      <button class="nav-tab danger" onclick="doLogout();closeMobile()">Çıkış Yap</button>
+    </div>
+    <div id="mobile-private-user" style="display:none">
+      <a href="/" class="nav-tab" onclick="closeMobile()">Ana Sayfa</a>
+      <a href="/markets" class="nav-tab" onclick="closeMobile()">Piyasalar</a>
+      <a href="/blog" class="nav-tab" onclick="closeMobile()">Blog</a>
+      <a href="/strateji" class="nav-tab" onclick="closeMobile()">Strateji</a>
+      <button class="nav-tab" onclick="switchDash('botpanel');closeMobile()">Trading Bot</button>
+      <div style="height:8px"></div>
+      <button class="btn btn-ghost" style="width:100%" onclick="doLogout();closeMobile()">Çıkış Yap</button>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════
+     PUBLIC PAGES
+══════════════════════════════════════════ -->
+
+  <!-- HOME -->
+  {% block content %}
+  {% endblock %}
+
+  <!-- ══════════════════════════════════════════
+     AUTH MODAL
+  ══════════════════════════════════════════ -->
+  <div class="modal-ov" id="authModal" onclick="handleMOvClick(event)">
+    <div class="auth-modal">
+      <!-- Modal Header -->
+      <div class="modal-head">
+        <div class="modal-logo">
+          <div class="modal-lm">TB</div>
+          <span class="modal-ln">Trading Bot</span>
+        </div>
+        <button class="modal-close" onclick="closeAuth()">✕</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="auth-tabs-row" id="auth-tabs-row">
+        <button class="atab active" id="atab-login" onclick="switchAtab('login')">Giriş Yap</button>
+        <button class="atab" id="atab-register" onclick="switchAtab('register')">Kayıt Ol</button>
+      </div>
+
+      <div class="auth-body">
+
+        <!-- ─── LOGIN PANEL ─── -->
+        <div class="apanel active" id="apanel-login">
+          <div class="awelcome-t">Tekrar Hoş Geldiniz!</div>
+          <div class="awelcome-s">Hesabınıza giriş yapın</div>
+
+          <div class="form-group">
+            <label class="form-label">E-posta</label>
+            <input type="email" class="form-input" id="li-email" placeholder="example@email.com"
+              onkeydown="if(event.key==='Enter')doLogin()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Şifre</label>
+            <div class="pw-wrap">
+              <input type="password" class="form-input" id="li-pass" placeholder="••••••••"
+                onkeydown="if(event.key==='Enter')doLogin()">
+              <button class="toggle-pw-btn"
+                onclick="const i=document.getElementById('li-pass');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'👁‍🗨'">👁</button>
+            </div>
+          </div>
+
+          <div style="text-align:right;margin:-8px 0 12px;">
+            <a onclick="switchAtab('forgot')" style="color:var(--blue);font-size:13px;cursor:pointer;">Şifremi Unuttum</a>
+          </div>
+
+          <button class="btn-full" id="li-btn" onclick="doLogin()">Giriş Yap</button>
+
+          <!-- Doğrulanmamış hesap uyarısı -->
+          <div id="li-not-verified"
+            style="display:none;margin-top:14px;background:rgba(255,171,64,.08);border:1px solid rgba(255,171,64,.2);border-radius:10px;padding:14px 16px;">
+            <p style="color:#ffcc80;font-size:13px;margin:0 0 10px;">Hesabınız henüz doğrulanmamış. Doğrulama mailini tekrar gönderelim mi?</p>
+            <button onclick="resendVerification()"
+              style="background:var(--amber);color:#000;font-weight:600;font-size:12px;padding:8px 16px;border-radius:7px;border:none;cursor:pointer;"
+              id="resend-btn-li">Tekrar Gönder</button>
+          </div>
+
+          <div class="auth-footer-txt">
+            Hesabınız yok mu? <a onclick="switchAtab('register')">Kayıt olun</a>
+          </div>
+        </div>
+
+        <!-- ─── ŞİFREMİ UNUTTUM ─── -->
+        <div class="apanel" id="apanel-forgot">
+
+          <!-- Step 1: E-posta gir -->
+          <div id="fp-step1">
+            <div style="text-align:center;margin-bottom:24px;">
+              <div style="font-size:32px;margin-bottom:12px;">🔐</div>
+              <div class="awelcome-t">Şifremi Unuttum</div>
+              <div class="awelcome-s">E-posta adresinize 6 haneli kod göndereceğiz</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">E-posta Adresiniz</label>
+              <input type="email" class="form-input" id="fp-email" placeholder="ornek@email.com"
+                onkeydown="if(event.key==='Enter')fpSendCode()">
+            </div>
+            <button class="btn-full" id="fp-btn1" onclick="fpSendCode()">Kod Gönder</button>
+            <div class="auth-footer-txt">
+              <a onclick="switchAtab('login')" style="color:var(--t2);">← Giriş ekranına dön</a>
+            </div>
+          </div>
+
+          <!-- Step 2: Kod gir -->
+          <div id="fp-step2" style="display:none;">
+            <div style="text-align:center;margin-bottom:24px;">
+              <div style="font-size:32px;margin-bottom:12px;">📬</div>
+              <div class="awelcome-t">Kodu Girin</div>
+              <div class="awelcome-s" id="fp-step2-sub">E-postanıza gönderilen 6 haneli kodu girin</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Doğrulama Kodu</label>
+              <input type="text" class="form-input" id="fp-code" placeholder="000000" maxlength="6"
+                style="font-size:28px;letter-spacing:12px;text-align:center;font-family:var(--mono);"
+                onkeydown="if(event.key==='Enter')fpVerifyCode()">
+            </div>
+            <button class="btn-full" id="fp-btn2" onclick="fpVerifyCode()">Kodu Doğrula</button>
+            <div class="auth-footer-txt">
+              <a onclick="fpSendCode()" style="color:var(--blue);font-size:13px;cursor:pointer;">Kodu tekrar gönder</a>
+              &nbsp;·&nbsp;
+              <a onclick="switchAtab('login')" style="color:var(--t2);">İptal</a>
+            </div>
+          </div>
+
+          <!-- Step 3: Yeni şifre -->
+          <div id="fp-step3" style="display:none;">
+            <div style="text-align:center;margin-bottom:24px;">
+              <div style="font-size:32px;margin-bottom:12px;">✨</div>
+              <div class="awelcome-t">Yeni Şifre</div>
+              <div class="awelcome-s">Güçlü bir şifre belirleyin</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Yeni Şifre</label>
+              <div class="pw-wrap">
+                <input type="password" class="form-input" id="fp-newpass" placeholder="En az 8 karakter">
+                <button class="toggle-pw-btn"
+                  onclick="const i=document.getElementById('fp-newpass');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'👁‍🗨'">👁</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Şifre Tekrar</label>
+              <input type="password" class="form-input" id="fp-newpass2" placeholder="Şifrenizi tekrar girin">
+            </div>
+            <button class="btn-full" id="fp-btn3" onclick="fpResetPassword()">Şifremi Güncelle</button>
+          </div>
+
+          <!-- Step 4: Başarılı -->
+          <div id="fp-step4" style="display:none;text-align:center;padding:20px 0;">
+            <div
+              style="width:64px;height:64px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px;">
+              ✓</div>
+            <div class="awelcome-t" style="color:var(--green);">Şifre Güncellendi!</div>
+            <div class="awelcome-s">Yeni şifrenizle giriş yapabilirsiniz.</div>
+            <button class="btn-full" style="margin-top:24px;" onclick="switchAtab('login')">Giriş Yap</button>
+          </div>
+
+        </div>
+
+        <!-- ─── REGISTER PANEL ─── -->
+        <div class="apanel" id="apanel-register">
+          <div id="reg-form">
+            <div class="awelcome-t">Hesap Oluştur</div>
+            <div class="awelcome-s">Ücretsiz hesabınızı oluşturun</div>
+
+            <div class="form-row2">
+              <div class="form-group">
+                <label class="form-label">Ad</label>
+                <input type="text" class="form-input" id="ri-first" placeholder="Adınız">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Soyad</label>
+                <input type="text" class="form-input" id="ri-last" placeholder="Soyadınız">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">E-posta</label>
+              <input type="email" class="form-input" id="ri-email" placeholder="ornek@email.com"
+                oninput="validateEmailInput(this)">
+              <div id="ri-email-hint" style="font-size:12px;margin-top:4px;display:none;"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Telefon (opsiyonel)</label>
+              <input type="tel" class="form-input" id="ri-phone" placeholder="+90 5XX XXX XX XX">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Şifre</label>
+              <div class="pw-wrap">
+                <input type="password" class="form-input" id="ri-pass" placeholder="En az 8 karakter"
+                  oninput="updateStrength(this.value);checkPassMatch()">
+                <button class="toggle-pw-btn"
+                  onclick="const i=document.getElementById('ri-pass');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'👁‍🗨'">👁</button>
+              </div>
+              <div class="str-bar">
+                <div class="str-fill" id="str-fill"></div>
+              </div>
+              <div class="str-lbl" id="str-lbl" style="color:var(--t3)"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Şifre Tekrar</label>
+              <input type="password" class="form-input" id="ri-pass2" placeholder="Şifrenizi tekrar girin"
+                oninput="checkPassMatch()">
+              <div id="ri-pass-match" style="font-size:12px;margin-top:4px;"></div>
+            </div>
+
+            <div style="margin-bottom:20px;display:flex;align-items:flex-start;gap:10px;position:relative;z-index:10">
+              <input type="checkbox" id="ri-terms" style="width:20px;height:20px;min-width:20px;min-height:20px;margin-top:2px;cursor:pointer;flex-shrink:0;accent-color:#3861fb;position:relative;z-index:11;opacity:1;visibility:visible;pointer-events:auto">
+              <label for="ri-terms" style="font-size:13px;color:var(--t3);line-height:1.6;cursor:pointer;flex:1;position:relative;z-index:10">
+                <a href="/kullanim-sartlari" target="_blank" style="color:var(--t2);text-decoration:underline" onclick="event.stopPropagation()">Kullanım Şartları</a>'nı ve 
+                <a href="/gizlilik-politikasi" target="_blank" style="color:var(--t2);text-decoration:underline" onclick="event.stopPropagation()">Gizlilik Politikası</a>'nı kabul ediyorum
+              </label>
+            </div>
+
+            <button class="btn-full" id="ri-btn" onclick="doRegister()">Ücretsiz Hesap Oluştur</button>
+
+            <div class="auth-footer-txt">
+              Zaten hesabınız var mı? <a onclick="switchAtab('login')">Giriş yapın</a>
+            </div>
+          </div>
+
+          <!-- Registration Success -->
+          <div class="success-box" id="reg-success" style="display:none;">
+            <div style="text-align:center;padding:20px 0;">
+              <div style="font-size:48px;margin-bottom:16px;">📬</div>
+              <div class="success-t" style="font-size:20px;font-weight:800;margin-bottom:10px;">Neredeyse Tamam!</div>
+              <div style="color:var(--t2);font-size:14px;line-height:1.7;margin-bottom:20px;">
+                <strong style="color:#fff;" id="reg-email-display"></strong> adresine doğrulama maili gönderdik.<br>
+                Maildeki linke tıklayarak hesabınızı aktifleştirin.
+              </div>
+              <div
+                style="background:rgba(68,138,255,.08);border:1px solid rgba(68,138,255,.2);border-radius:10px;padding:14px;margin-bottom:20px;">
+                <p style="color:#90caf9;font-size:12px;margin:0;">📌 Mail gelmezse spam klasörünü kontrol edin.</p>
+              </div>
+              <button onclick="closeAuth()"
+                style="background:var(--b2);color:var(--t2);font-weight:600;font-size:14px;padding:12px 28px;border-radius:10px;border:none;cursor:pointer;">Tamam</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     GLOBAL FOOTER
+  ══════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="font-size:24px; font-weight:900; color:#fff; letter-spacing:-1px;">TB</div>
+      </div>
+      <div class="footer-links">
+        <a href="/docs" class="fl">Dokümantasyon</a>
+        <a href="/api-referans" class="fl">API Referansı</a>
+        <a href="/blog" class="fl">Blog</a>
+        <a href="/strateji" class="fl">Strateji</a>
+        <a href="/destek" class="fl">Destek</a>
+      </div>
+      <div class="footer-copy">© 2026 TB Trading Bot</div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════════
+     TOAST NOTIFICATION
+  ══════════════════════════════════════════ -->
+  <div class="toast" id="toast">
+    <span class="toast-ico" id="toast-ico">ℹ</span>
+    <span class="toast-msg" id="toast-msg"></span>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     PASSWORD CHANGE MODAL
+  ══════════════════════════════════════════ -->
+  <div class="modal-ov" id="passwordChangeModal" onclick="if(event.target===this)closePasswordModal()">
+    <div class="auth-modal" style="max-width:480px">
+      <!-- Modal Header -->
+      <div class="modal-head">
+        <div class="modal-logo">
+          <div class="modal-lm">🔐</div>
+          <span class="modal-ln">Şifre Değiştir</span>
+        </div>
+        <button class="modal-close" onclick="closePasswordModal()">✕</button>
+      </div>
+
+      <div class="auth-body">
+        
+        <!-- Şifre Değiştirme Formu -->
+        <div class="apanel active" id="pw-form">
+          <div style="text-align:center;margin-bottom:24px">
+            <div style="font-size:32px;margin-bottom:12px">🔐</div>
+            <div class="awelcome-t">Şifrenizi Değiştirin</div>
+            <div class="awelcome-s">Güvenliğiniz için mevcut şifrenizi girin</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Mevcut Şifre</label>
+            <div class="pw-wrap">
+              <input type="password" class="form-input" id="pw-current" placeholder="Mevcut şifreniz">
+              <button class="toggle-pw-btn"
+                onclick="const i=document.getElementById('pw-current');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'👁‍🗨'">👁</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Yeni Şifre</label>
+            <div class="pw-wrap">
+              <input type="password" class="form-input" id="pw-new" placeholder="En az 6 karakter"
+                oninput="updatePasswordStrength(this.value)">
+              <button class="toggle-pw-btn"
+                onclick="const i=document.getElementById('pw-new');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'👁‍🗨'">👁</button>
+            </div>
+            <div class="str-bar">
+              <div class="str-fill" id="pw-str-fill"></div>
+            </div>
+            <div class="str-lbl" id="pw-str-lbl" style="color:var(--t3)"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Yeni Şifre Tekrar</label>
+            <input type="password" class="form-input" id="pw-new2" placeholder="Şifrenizi tekrar girin"
+              oninput="checkPasswordMatch()"
+              onkeydown="if(event.key==='Enter')changePasswordSubmit()">
+            <div id="pw-pass-match" style="font-size:12px;margin-top:4px"></div>
+          </div>
+
+          <button class="btn-full" id="pw-submit-btn" onclick="changePasswordSubmit()">Şifremi Değiştir</button>
+          
+          <div class="auth-footer-txt">
+            <a onclick="closePasswordModal()" style="color:var(--t2);cursor:pointer">İptal</a>
+          </div>
+        </div>
+
+        <!-- Başarılı -->
+        <div class="apanel" id="pw-success" style="display:none;text-align:center;padding:20px 0">
+          <div style="width:64px;height:64px;background:rgba(0,230,118,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px">✓</div>
+          <div class="awelcome-t" style="color:var(--green)">Şifre Değiştirildi!</div>
+          <div class="awelcome-s">Yeni şifreniz başarıyla kaydedildi.</div>
+          <button class="btn-full" style="margin-top:24px" onclick="closePasswordModal()">Tamam</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Core App Logic -->
+  <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="/static/js/app.js?v=tb-active-demo-v2-20260511"></script>
+  <script src="/static/js/markets-enhanced.js"></script>
+  <script src="/static/js/portfolio.js?v=20260318-2"></script>
+  <script src="/static/js/portfolio-pie-chart.js?v=20260318-8"></script>
+  <script src="/static/js/pnl-mini-charts.js?v=20260318"></script>
+  <script src="/static/js/close-position-modal.js"></script>
+    <script src="/static/js/binance-trading-minimal.js?v=18"></script>
+  <script src="/static/js/api-keys.js"></script>
+</body>
+
+</html>
+

@@ -1,0 +1,412 @@
+{% extends "layout.html" %}
+{% block content %}
+<!-- Floating particles background -->
+<div class="floating-particles">
+  <div class="particle" style="left: 3%; animation-delay: 0s;"></div>
+  <div class="particle" style="left: 13%; animation-delay: 1s;"></div>
+  <div class="particle" style="left: 23%; animation-delay: 2s;"></div>
+  <div class="particle" style="left: 33%; animation-delay: 3s;"></div>
+  <div class="particle" style="left: 43%; animation-delay: 4s;"></div>
+  <div class="particle" style="left: 53%; animation-delay: 5s;"></div>
+  <div class="particle" style="left: 63%; animation-delay: 6s;"></div>
+  <div class="particle" style="left: 73%; animation-delay: 7s;"></div>
+  <div class="particle" style="left: 83%; animation-delay: 8s;"></div>
+  <div class="particle" style="left: 93%; animation-delay: 9s;"></div>
+</div>
+
+<!-- Floating Action Buttons -->
+<div class="floating-actions">
+  <button class="floating-btn scroll-top" onclick="scrollToTop()" title="Yukarı Çık">↑</button>
+  <button class="floating-btn" onclick="toggleTOC()" title="İçindekiler">📋</button>
+</div>
+
+<div class="page active" style="min-height: 100vh; padding: 60px 0 40px; position: relative; z-index: 2;">
+  <div class="blog-container">
+    
+    <!-- Left Sidebar -->
+    <div class="blog-sidebar blog-sidebar-left">
+      
+      <!-- Table of Contents -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📋</span>
+          İçindekiler
+        </div>
+        <div class="toc">
+          <ul class="toc-list">
+            <li class="toc-item"><a href="#testnet-nedir" class="toc-link">Testnet Nedir ve Neden Önemli?</a></li>
+            <li class="toc-item"><a href="#hesap-olusturma" class="toc-link">Testnet Hesabı Oluşturma</a></li>
+            <li class="toc-item"><a href="#api-key" class="toc-link">Test API Anahtarı Oluşturma</a></li>
+            <li class="toc-item"><a href="#python-config" class="toc-link">Python Bot Konfigürasyonu</a></li>
+            <li class="toc-item"><a href="#test-bakiye" class="toc-link">Test Bakiyesi Alma</a></li>
+            <li class="toc-item"><a href="#test-stratejisi" class="toc-link">Bot Test Stratejisi</a></li>
+            <li class="toc-item"><a href="#sinirlamalar" class="toc-link">Testnet Sınırlamaları</a></li>
+            <li class="toc-item"><a href="#mainnet-gecis" class="toc-link">Mainnet'e Geçiş</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Reading Progress -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📊</span>
+          Okuma İlerlemesi
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;" id="reading-progress"></div>
+        </div>
+        <div style="font-size: 12px; color: var(--t3); margin-top: 8px;">
+          <span id="progress-text">0%</span> tamamlandı • <span id="reading-time">7 dk</span> kaldı
+        </div>
+      </div>
+
+      <!-- Testnet Status -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🌐</span>
+          Testnet Durumu
+        </div>
+        <div style="space-y: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--s1); border-radius: 4px; margin-bottom: 6px;">
+            <span style="font-size: 12px; color: var(--text);">Binance Testnet</span>
+            <span style="font-size: 10px; color: var(--green); display: flex; align-items: center; gap: 4px;">
+              <div class="pulse-enhanced" style="width: 6px; height: 6px; background: var(--green); border-radius: 50%;"></div>
+              Online
+            </span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--s1); border-radius: 4px; margin-bottom: 6px;">
+            <span style="font-size: 12px; color: var(--text);">Test Bakiyesi</span>
+            <span style="font-size: 10px; color: var(--blue);">10,000 USDT</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; background: var(--s1); border-radius: 4px;">
+            <span style="font-size: 12px; color: var(--text);">Latency</span>
+            <span style="font-size: 10px; color: var(--green);">23ms</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="blog-main-content">
+    
+    <!-- Header -->
+    <div style="margin-bottom: 40px;">
+      <div style="margin-bottom: 16px;">
+        <a href="/blog" style="color: var(--blue); text-decoration: none; font-size: 14px;">← Blog'a Dön</a>
+      </div>
+      <span style="background: var(--bg2); color: var(--blue); font-size: 10px; padding: 3px 8px; border-radius: 4px; font-family: var(--mono); font-weight: 600;">TESTNET</span>
+      <h1 style="font-size: 36px; font-weight: 800; margin: 16px 0 20px; letter-spacing: -0.8px; line-height: 1.2; color: #fff;">
+        Binance Futures Testnet'te Bot Geliştirme: İlk Adımlar
+      </h1>
+      <div style="color: var(--t2); font-size: 18px; line-height: 1.6; margin-bottom: 24px;">
+        Sermayenizi riske atmadan stratejilerinizi canlı borsa verisiyle nasıl test edersiniz? Detaylar bu rehberimizde.
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; color: var(--t3); font-size: 14px; font-family: var(--mono);">
+        <div style="width: 32px; height: 32px; border-radius: 16px; background: var(--green); color: #000; display: flex; align-items: center; justify-content: center; font-weight: bold;">TB</div>
+        TB Ekibi • 7 dk okuma • 1 Şub 2025
+      </div>
+    </div>
+
+    <!-- Featured Image -->
+    <div style="height: 300px; background: url('/static/images/blog_testnet.png') center/cover; border-radius: 12px; margin-bottom: 40px;"></div>
+
+    <!-- Content -->
+    <div class="blog-content" style="color: var(--t1); line-height: 1.8; font-size: 16px;">
+      
+      <h2 id="testnet-nedir" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Testnet Nedir ve Neden Önemli?</h2>
+      <p>Binance Futures Testnet, gerçek piyasa verilerini kullanarak ancak sahte para ile işlem yapmanızı sağlayan bir test ortamıdır. Bu sayede stratejilerinizi gerçek para kaybetme riski olmadan test edebilirsiniz.</p>
+
+      <div style="background: rgba(68, 138, 255, 0.1); border: 1px solid rgba(68, 138, 255, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--blue);">💡 Önemli:</strong> Testnet'te yaptığınız işlemler gerçek değildir, ancak piyasa verileri canlı verilerle aynıdır.
+      </div>
+
+      <h2 id="hesap-olusturma" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Testnet Hesabı Oluşturma</h2>
+      <p>Binance Futures Testnet'e erişim için ayrı bir hesap oluşturmanız gerekir:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0; font-family: var(--mono); font-size: 14px;">
+        <strong style="color: var(--green);">Adımlar:</strong><br>
+        1. demo.binance.com adresine gidin<br>
+        2. "Register" butonuna tıklayın<br>
+        3. E-posta ile kayıt olun<br>
+        4. E-posta doğrulamasını tamamlayın<br>
+        5. Giriş yapın ve test bakiyenizi alın
+      </div>
+
+      <h2 id="api-key" style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Test API Anahtarı Oluşturma</h2>
+      <p>Bot geliştirmek için Testnet API anahtarı oluşturun:</p>
+      
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 8px;">Testnet hesabınıza giriş yapın</li>
+        <li style="margin-bottom: 8px;">API Management bölümüne gidin</li>
+        <li style="margin-bottom: 8px;">Yeni API anahtarı oluşturun</li>
+        <li style="margin-bottom: 8px;">Futures trading iznini aktifleştirin</li>
+      </ul>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Python Bot Konfigürasyonu</h2>
+      <p>Botunuzu Testnet'e bağlamak için endpoint'leri değiştirin:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0; font-family: var(--mono); font-size: 13px; overflow-x: auto;">
+        <pre style="margin: 0; color: var(--t1);"><code>from binance.client import Client
+
+# Testnet konfigürasyonu
+client = Client(
+    api_key='your_testnet_api_key',
+    api_secret='your_testnet_secret',
+    testnet=True  # Bu parametre önemli!
+)
+
+# Testnet endpoint'leri
+# REST API: https://demo.binance.com
+# WebSocket: wss://stream.binancefuture.com</code></pre>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Test Bakiyesi Alma</h2>
+      <p>Testnet'te işlem yapmak için test bakiyesi almanız gerekir:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">Testnet arayüzünde "Get Test Funds" butonuna tıklayın</li>
+          <li style="margin-bottom: 8px;">10,000 USDT test bakiyesi alın</li>
+          <li style="margin-bottom: 8px;">Bakiye biterse tekrar alabilirsiniz</li>
+          <li style="margin-bottom: 8px;">Test bakiyesi gerçek değildir</li>
+        </ul>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Bot Test Stratejisi</h2>
+      <p>Testnet'te botunuzu sistematik olarak test edin:</p>
+      
+      <div style="background: var(--s1); border: 1px solid var(--b1); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <h4 style="color: var(--amber); margin: 0 0 12px;">Test Aşamaları:</h4>
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;"><strong>1. Bağlantı Testi:</strong> API bağlantısını kontrol edin</li>
+          <li style="margin-bottom: 8px;"><strong>2. Veri Çekme:</strong> Market data alımını test edin</li>
+          <li style="margin-bottom: 8px;"><strong>3. Küçük İşlemler:</strong> Minimal pozisyonlarla başlayın</li>
+          <li style="margin-bottom: 8px;"><strong>4. Strateji Testi:</strong> Tam stratejinizi çalıştırın</li>
+          <li style="margin-bottom: 8px;"><strong>5. Performans Analizi:</strong> Sonuçları değerlendirin</li>
+        </ul>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Testnet Sınırlamaları</h2>
+      <p>Testnet kullanırken dikkat edilmesi gereken noktalar:</p>
+      
+      <ul style="margin: 16px 0; padding-left: 20px;">
+        <li style="margin-bottom: 12px;"><strong>Likidite Farkı:</strong> Testnet'te likidite mainnet'ten farklı olabilir</li>
+        <li style="margin-bottom: 12px;"><strong>Slippage:</strong> Gerçek piyasada slippage daha yüksek olabilir</li>
+        <li style="margin-bottom: 12px;"><strong>Psikolojik Faktör:</strong> Gerçek para olmadığı için duygusal tepkiler farklıdır</li>
+        <li style="margin-bottom: 12px;"><strong>Network Latency:</strong> Testnet bazen daha yavaş olabilir</li>
+      </ul>
+
+      <div style="background: rgba(255, 171, 64, 0.1); border: 1px solid rgba(255, 171, 64, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
+        <strong style="color: var(--amber);">⚠️ Uyarı:</strong> Testnet'te başarılı olan bir strateji mainnet'te farklı sonuçlar verebilir. Gerçek ortama geçerken küçük pozisyonlarla başlayın.
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Mainnet'e Geçiş</h2>
+      <p>Testnet'te yeterince test ettikten sonra gerçek ortama geçiş yapın:</p>
+      
+      <div style="background: var(--s2); border: 1px solid var(--b1); border-radius: 8px; padding: 20px; margin: 16px 0;">
+        <ul style="margin: 0; padding-left: 20px;">
+          <li style="margin-bottom: 8px;">Gerçek Binance hesabında API anahtarı oluşturun</li>
+          <li style="margin-bottom: 8px;">Bot kodunda testnet=False yapın</li>
+          <li style="margin-bottom: 8px;">Küçük pozisyonlarla başlayın</li>
+          <li style="margin-bottom: 8px;">Performansı yakından takip edin</li>
+        </ul>
+      </div>
+
+      <h2 style="color: #fff; font-size: 24px; font-weight: 700; margin: 32px 0 16px;">Sonuç</h2>
+      <p>Testnet, bot geliştirme sürecinin vazgeçilmez bir parçasıdır. Gerçek para kaybetmeden stratejilerinizi test etmenizi sağlar. Ancak testnet'teki başarının mainnet'te de devam edeceğini garanti etmez - her zaman dikkatli olun.</p>
+      
+      <div class="public-only-btn" style="background: rgba(68, 138, 255, 0.1); border: 1px solid rgba(68, 138, 255, 0.3); border-radius: 8px; padding: 20px; margin: 32px 0; text-align: center;">
+        <h3 style="color: var(--blue); margin: 0 0 12px;">Güvenli Bot Geliştirme</h3>
+        <p style="margin: 0 0 16px; color: var(--t2);">TB Trading Bot ile testnet entegrasyonunu deneyimleyin.</p>
+        <a href="javascript:void(0)" onclick="openAuth('register')" style="background: var(--blue); color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; cursor: pointer;">Test Ortamını Dene</a>
+      </div>
+
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="blog-sidebar blog-sidebar-right">
+      
+      <!-- Testnet vs Mainnet -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">⚖️</span>
+          Testnet vs Mainnet
+        </div>
+        <div style="space-y: 8px;">
+          <div style="padding: 10px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--green); margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--green);">Testnet Avantajları</div>
+            <div style="font-size: 11px; color: var(--t3); line-height: 1.4;">• Ücretsiz test • Risk yok • Canlı veri</div>
+          </div>
+          <div style="padding: 10px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--amber); margin-bottom: 8px;">
+            <div style="font-size: 12px; font-weight: 600; color: var(--amber);">Testnet Sınırları</div>
+            <div style="font-size: 11px; color: var(--t3); line-height: 1.4;">• Farklı likidite • Psikoloji yok • Latency farkı</div>
+          </div>
+          <div style="padding: 10px; background: var(--s1); border-radius: 6px; border-left: 3px solid var(--blue);">
+            <div style="font-size: 12px; font-weight: 600; color: var(--blue);">Mainnet Gerçeklik</div>
+            <div style="font-size: 11px; color: var(--t3); line-height: 1.4;">• Gerçek para • Gerçek psikoloji • Gerçek sonuçlar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Checklist -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">✅</span>
+          Test Kontrol Listesi
+        </div>
+        <div style="space-y: 6px;">
+          <label style="display: flex; align-items: center; gap: 8px; padding: 6px; background: var(--s1); border-radius: 4px; cursor: pointer; margin-bottom: 4px;">
+            <input type="checkbox" style="accent-color: var(--green);">
+            <span style="font-size: 12px; color: var(--text);">API bağlantısı test edildi</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; padding: 6px; background: var(--s1); border-radius: 4px; cursor: pointer; margin-bottom: 4px;">
+            <input type="checkbox" style="accent-color: var(--green);">
+            <span style="font-size: 12px; color: var(--text);">Market data alımı çalışıyor</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; padding: 6px; background: var(--s1); border-radius: 4px; cursor: pointer; margin-bottom: 4px;">
+            <input type="checkbox" style="accent-color: var(--green);">
+            <span style="font-size: 12px; color: var(--text);">Test emirleri başarılı</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; padding: 6px; background: var(--s1); border-radius: 4px; cursor: pointer; margin-bottom: 4px;">
+            <input type="checkbox" style="accent-color: var(--green);">
+            <span style="font-size: 12px; color: var(--text);">Risk yönetimi aktif</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; padding: 6px; background: var(--s1); border-radius: 4px; cursor: pointer;">
+            <input type="checkbox" style="accent-color: var(--green);">
+            <span style="font-size: 12px; color: var(--text);">Performans analizi yapıldı</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">🔗</span>
+          Testnet Bağlantıları
+        </div>
+        <div style="space-y: 8px;">
+          <a href="https://demo.binance.com" target="_blank" style="display: block; padding: 10px; background: var(--s1); border-radius: 6px; text-decoration: none; color: inherit; border: 1px solid var(--b1); transition: all 0.3s; margin-bottom: 6px;" class="glow-on-hover">
+            <div style="font-size: 13px; font-weight: 600; color: var(--text);">🌐 Binance Testnet</div>
+            <div style="font-size: 11px; color: var(--t3);">Test ortamına giriş</div>
+          </a>
+          <a href="javascript:void(0)" onclick="openAuth('register')" class="public-only-btn breathe" style="display: block; padding: 10px; background: var(--blue); color: #fff; border-radius: 6px; text-decoration: none; font-weight: 600; text-align: center; transition: all 0.3s; cursor: pointer;">
+            🚀 Bot Test Et
+          </a>
+        </div>
+      </div>
+
+      <!-- Test Results -->
+      <div class="sidebar-widget">
+        <div class="widget-title">
+          <span class="widget-icon">📊</span>
+          Test Sonuçları
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number pulse-enhanced">156</div>
+            <div class="stat-label">Test İşlem</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number pulse-enhanced" style="animation-delay: 0.5s;">89%</div>
+            <div class="stat-label">Başarı Oranı</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number pulse-enhanced" style="animation-delay: 1s;">45ms</div>
+            <div class="stat-label">Avg Latency</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number pulse-enhanced" style="animation-delay: 1.5s;">7d</div>
+            <div class="stat-label">Test Süresi</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Enhanced reading progress and TOC
+function updateReadingProgress() {
+  const article = document.querySelector('.blog-content');
+  const progressBar = document.getElementById('reading-progress');
+  const progressText = document.getElementById('progress-text');
+  const readingTime = document.getElementById('reading-time');
+  
+  if (!article || !progressBar) return;
+  
+  const articleTop = article.offsetTop;
+  const articleHeight = article.offsetHeight;
+  const windowHeight = window.innerHeight;
+  const scrollTop = window.pageYOffset;
+  
+  const progress = Math.min(100, Math.max(0, 
+    ((scrollTop - articleTop + windowHeight/2) / articleHeight) * 100
+  ));
+  
+  progressBar.style.width = progress + '%';
+  progressText.textContent = Math.round(progress) + '%';
+  
+  const totalReadingTime = 7;
+  const remainingTime = Math.max(0, Math.round(totalReadingTime * (100 - progress) / 100));
+  readingTime.textContent = remainingTime > 0 ? remainingTime + ' dk' : 'Tamamlandı';
+}
+
+function updateActiveTOC() {
+  const sections = document.querySelectorAll('h2[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  
+  let activeSection = null;
+  const scrollTop = window.pageYOffset + 100;
+  
+  sections.forEach(section => {
+    if (section.offsetTop <= scrollTop) {
+      activeSection = section;
+    }
+  });
+  
+  tocLinks.forEach(link => {
+    link.classList.remove('active');
+    if (activeSection && link.getAttribute('href') === '#' + activeSection.id) {
+      link.classList.add('active');
+    }
+  });
+}
+
+// Smooth scroll for TOC links
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const targetId = this.getAttribute('href').substring(1);
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Floating action buttons
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTOC() {
+  const sidebar = document.querySelector('.blog-sidebar-left');
+  sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
+}
+
+// Update progress and TOC on scroll
+window.addEventListener('scroll', () => {
+  updateReadingProgress();
+  updateActiveTOC();
+});
+
+window.addEventListener('load', () => {
+  updateReadingProgress();
+  updateActiveTOC();
+});
+</script>
+
+{% endblock %}

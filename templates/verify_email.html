@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="page active" style="min-height:100vh;display:flex;align-items:center;justify-content:center;">
+  <div style="width:100%;max-width:480px;padding:24px;">
+
+    <!-- Loading State -->
+    <div id="state-loading" style="text-align:center;">
+      <div style="width:64px;height:64px;border:3px solid var(--b2);border-top-color:var(--blue);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 24px;"></div>
+      <h2 style="font-size:22px;font-weight:700;margin-bottom:8px;">E-posta Doğrulanıyor</h2>
+      <p style="color:var(--t2);">Lütfen bekleyin...</p>
+    </div>
+
+    <!-- Success State -->
+    <div id="state-success" style="display:none;text-align:center;background:var(--s1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:48px 32px;">
+      <div style="width:72px;height:72px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;">✓</div>
+      <h2 style="font-size:24px;font-weight:800;color:var(--green);margin-bottom:12px;">Hesabınız Aktifleştirildi!</h2>
+      <p style="color:var(--t2);font-size:15px;line-height:1.7;margin-bottom:32px;" id="success-msg">
+        E-posta adresiniz başarıyla doğrulandı. Artık tüm özelliklere erişebilirsiniz.
+      </p>
+      <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:16px 20px;margin-bottom:28px;">
+        <p style="color:#69f0ae;font-size:13px;margin:0;">🎉 Otomatik olarak giriş yapılıyor...</p>
+      </div>
+      <button onclick="window.location.href='/dashboard'" style="background:linear-gradient(135deg,#448aff,#00e676);color:#000;font-weight:700;font-size:14px;padding:14px 32px;border-radius:12px;border:none;cursor:pointer;width:100%;">
+        Dashboard'a Git →
+      </button>
+    </div>
+
+    <!-- Error State -->
+    <div id="state-error" style="display:none;text-align:center;background:var(--s1);border:1px solid rgba(136,136,136,.2);border-radius:20px;padding:48px 32px;">
+      <div style="width:72px;height:72px;background:rgba(136,136,136,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;">✕</div>
+      <h2 style="font-size:24px;font-weight:800;color:var(--red);margin-bottom:12px;">Doğrulama Başarısız</h2>
+      <p style="color:var(--t2);font-size:15px;line-height:1.7;margin-bottom:32px;" id="error-msg">
+        Bu link geçersiz veya süresi dolmuş olabilir.
+      </p>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:var(--s2);border:1px solid var(--b1);border-radius:12px;padding:20px;">
+          <p style="color:var(--t2);font-size:13px;margin-bottom:12px;">Yeni doğrulama linki almak için e-posta adresinizi girin:</p>
+          <input type="email" id="resend-email" placeholder="ornek@email.com"
+            style="width:100%;background:var(--s3);border:1px solid var(--b2);border-radius:8px;padding:12px 16px;color:#fff;font-size:14px;margin-bottom:10px;box-sizing:border-box;">
+          <button onclick="resendVerification()" id="resend-btn"
+            style="background:var(--blue);color:#fff;font-weight:600;font-size:14px;padding:12px 24px;border-radius:8px;border:none;cursor:pointer;width:100%;">
+            Yeni Link Gönder
+          </button>
+        </div>
+        <a href="/" style="color:var(--t2);font-size:13px;text-decoration:none;">← Ana Sayfaya Dön</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+const TOKEN = "{{ token }}";
+const API   = window.location.origin + "/api";
+
+async function verifyEmail() {
+  if (!TOKEN) {
+    showError("Geçersiz doğrulama linki. Token bulunamadı.");
+    return;
+  }
+  try {
+    const res  = await fetch(API + "/auth/verify-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: TOKEN })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      // Token'ı kaydet, otomatik giriş
+      if (data.token) {
+        localStorage.setItem("tb_token", data.token);
+        localStorage.setItem("tb_user", JSON.stringify(data.user));
+      }
+      showSuccess(data.message || "E-posta adresiniz doğrulandı!");
+      setTimeout(() => { window.location.href = "/dashboard"; }, 2500);
+    } else {
+      showError(data.error || "Doğrulama başarısız.");
+    }
+  } catch (e) {
+    showError("Sunucuya bağlanılamadı. Lütfen tekrar deneyin.");
+  }
+}
+
+async function resendVerification() {
+  const email = document.getElementById("resend-email").value.trim();
+  if (!email) { document.getElementById("resend-email").style.borderColor = "var(--red)"; return; }
+  const btn = document.getElementById("resend-btn");
+  btn.textContent = "Gönderiliyor..."; btn.disabled = true;
+  try {
+    const res  = await fetch(API + "/auth/resend-verification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    btn.textContent = res.ok ? "✓ Gönderildi!" : "Hata";
+    btn.style.background = res.ok ? "var(--green)" : "var(--red)";
+    btn.style.color = "#000";
+    if (!res.ok && data.error) alert(data.error);
+  } catch (e) {
+    btn.textContent = "Bağlantı hatası";
+  }
+}
+
+function showSuccess(msg) {
+  document.getElementById("state-loading").style.display = "none";
+  document.getElementById("state-success").style.display = "block";
+  if (msg) document.getElementById("success-msg").textContent = msg;
+}
+
+function showError(msg) {
+  document.getElementById("state-loading").style.display = "none";
+  document.getElementById("state-error").style.display = "block";
+  if (msg) document.getElementById("error-msg").textContent = msg;
+}
+
+verifyEmail();
+</script>
+{% endblock %}

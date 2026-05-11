@@ -1,0 +1,450 @@
+<div class="dash-sub-page" id="dash-botpanel" style="display:none">
+<div id="botpanel-admin" style="display:none">
+<link rel="stylesheet" href="/static/css/botpanel-premium.css">
+<div class="tb-shell">
+
+  <!-- ═══ COMMAND BAR ═══ -->
+  <section class="tb-command-bar">
+    <div class="tb-cmd-left">
+      <h1>TB Bot</h1>
+      <p>Binance Demo Trading üzerinde çalışan otomatik analiz ve işlem kontrol paneli</p>
+    </div>
+    <div class="tb-cmd-right">
+      <span class="tb-cmd-badge demo"><span class="dot"></span>Demo Mode</span>
+      <span class="tb-cmd-badge status" id="tb-cmd-status"><span class="dot"></span>Pasif</span>
+      <div class="tb-cmd-actions">
+        <button type="button" class="tb-btn tb-btn-start" data-tb-action="start">▶ Başlat</button>
+        <button type="button" class="tb-btn tb-btn-stop" data-tb-action="stop">■ Durdur</button>
+        <button type="button" class="tb-btn tb-btn-danger tb-btn-emergency" data-tb-action="emergency">⚠ Acil Durdur</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ STATUS STRIP ═══ -->
+  <section class="tb-status-strip" aria-label="Bot durum bilgileri">
+    <div class="tb-status-cell">
+      <div class="tb-status-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v4m0 12v4m-10-10h4m12 0h4"/></svg>Bot Durumu</div>
+      <div class="tb-status-v muted" id="tb-bot-state">Pasif</div>
+      <div class="tb-status-sub">Sinyal bekleniyor</div>
+    </div>
+    <div class="tb-status-cell">
+      <div class="tb-status-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Çalışma Modu</div>
+      <div class="tb-status-v green">Demo</div>
+      <div class="tb-status-sub">Binance Testnet</div>
+    </div>
+    <div class="tb-status-cell">
+      <div class="tb-status-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Aktif Sembol</div>
+      <div class="tb-status-v">ETHUSDT</div>
+      <div class="tb-status-sub">Ethereum / Tether</div>
+    </div>
+    <div class="tb-status-cell">
+      <div class="tb-status-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Son Sinyal</div>
+      <div class="tb-status-v muted">Bekleniyor</div>
+      <div class="tb-status-sub">Henüz sinyal yok</div>
+    </div>
+    <div class="tb-status-cell">
+      <div class="tb-status-k"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 010 7H6"/></svg>Günlük PnL</div>
+      <div class="tb-status-v green">$0.00</div>
+      <div class="tb-status-sub">Bugünkü toplam</div>
+    </div>
+  </section>
+
+  <!-- ═══ MAIN GRID: CHART + INSIGHT ═══ -->
+  <section class="tb-main-grid">
+    <article class="tb-card tb-chart-card">
+      <div class="tb-card-head">
+        <div><h2 class="tb-card-title">ETH/USDT Grafik Alanı</h2><div class="tb-card-sub">Al / sat sinyalleri ve fiyat grafiği burada gösterilecektir.</div></div>
+        <span class="tb-chip">Placeholder</span>
+      </div>
+      <div class="tb-card-body">
+        <div class="tb-terminal-chart">
+          <div class="tb-chart-toolbar">
+            <div class="tb-chart-symbol">
+              <span class="tb-symbol-main">ETHUSDT</span>
+              <span class="tb-symbol-price" id="tb-chart-price">-</span>
+            </div>
+            <div class="tb-chart-legend" aria-label="Grafik legend">
+              <span><i class="tb-legend-dot candle"></i>Mum</span>
+              <span><i class="tb-legend-dot ott"></i>OTT</span>
+              <span><i class="tb-legend-dot mavg"></i>MAvg / VAR</span>
+              <span><i class="tb-legend-dot ema"></i>1h EMA 200</span>
+              <button type="button" class="tb-legend-toggle" data-tb-layer="raw"><i class="tb-legend-dot raw"></i>OTT Raw Signals</button>
+              <span><i class="tb-legend-dot bot"></i>Bot Signals</span>
+            </div>
+            <div class="tb-chart-timeframes">
+              <span class="tb-range-label">Range</span>
+              <button type="button" class="tb-tf" data-tb-days="7">7G</button>
+              <button type="button" class="tb-tf active" data-tb-days="30">30G</button>
+              <button type="button" class="tb-tf" data-tb-days="90">90G</button>
+            </div>
+          </div>
+          <div id="tb-bot-chart" class="tb-chart-canvas" aria-label="ETHUSDT profesyonel trading grafigi">
+            <div class="tb-chart-loading" id="tb-chart-loading">Grafik yukleniyor...</div>
+          </div>
+          <div class="tb-chart-footer">
+            <span id="tb-chart-trend">1h Trend: Bekleniyor</span>
+            <span id="tb-chart-updated">Son guncelleme: -</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <aside class="tb-side-stack">
+      <!-- Signal Intelligence Card -->
+      <article class="tb-card">
+        <div class="tb-signal-hero">
+          <div class="tb-signal-label">Son Karar</div>
+          <div class="tb-signal-value" id="tb-current-decision">Bekleniyor</div>
+        </div>
+        <div class="tb-card-body">
+          <div class="tb-decision-list">
+            <div class="tb-data-row"><span class="tb-data-k">Son Bot Sinyali</span><span class="tb-data-v muted" id="tb-last-bot-signal">Bekleniyor</span></div>
+            <div class="tb-data-row"><span class="tb-data-k">OTT Raw Sinyal</span><span class="tb-data-v muted" id="tb-ott-raw">Hazır değil</span></div>
+            <div class="tb-data-row"><span class="tb-data-k">Trend Filtresi</span><span class="tb-data-v muted" id="tb-trend-filter">Bekleniyor</span></div>
+            <div class="tb-data-row"><span class="tb-data-k">Risk Kontrolü</span><span class="tb-data-v muted" id="tb-risk-check">Hesaplanıyor</span></div>
+            <div class="tb-data-row"><span class="tb-data-k">Pozisyon Durumu</span><span class="tb-data-v muted" id="tb-pos-check">Bekleniyor</span></div>
+          </div>
+          <div class="tb-data-desc" id="tb-decision-reason">Bot henüz aktif bir işlem sinyali üretmedi.</div>
+        </div>
+      </article>
+      <!-- Mode Card -->
+      <article class="tb-card">
+        <div class="tb-card-head"><h2 class="tb-card-title">Çalışma Modu</h2></div>
+        <div class="tb-card-body">
+          <div class="tb-mode-list">
+            <div class="tb-mode active"><div><div class="tb-mode-title">Demo Trading</div><div class="tb-mode-sub">Binance Testnet üzerinde sanal işlem</div></div><span class="tb-chip green">Aktif</span></div>
+            <div class="tb-mode disabled"><div><div class="tb-mode-title">Live Trading</div><div class="tb-mode-sub">Gerçek hesap ile canlı işlem</div></div><span class="tb-chip locked">Kilitli</span></div>
+          </div>
+        </div>
+      </article>
+    </aside>
+  </section>
+
+  <!-- ═══ BOT SETTINGS ═══ -->
+  <section class="tb-settings-section">
+    <section class="tb-settings-grid">
+      <article class="tb-card tb-bot-settings-card">
+        <div class="tb-card-head" style="align-items: flex-start;">
+          <div>
+            <h2 class="tb-card-title">⚙ Bot Ayarları</h2>
+            <div class="tb-card-sub">TB Bot yalnızca Ethereum üzerinde çalışacak şekilde hazırlanmıştır.</div>
+            <div style="margin-top: 8px;">
+              <span class="tb-chip" id="tb-profile-chip" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">Manuel Değiştirildi</span>
+            </div>
+          </div>
+          <button type="button" class="tb-btn tb-btn-outline" id="btn-apply-recommended" style="font-size: 11px; padding: 6px 10px;">Önerilen Ayarları Uygula</button>
+        </div>
+        <div class="tb-card-body">
+          <div class="tb-form-grid tb-bot-settings-grid">
+            <div class="tb-field full">
+              <label class="tb-field-label">Coin / Sembol</label>
+              <div class="tb-locked-box"><div class="tb-lock-main"><span class="tb-lock-title">Ethereum / ETHUSDT</span><span class="tb-lock-sub">Şimdilik TB Bot yalnızca Ethereum üzerinde çalışacak şekilde ayarlanmıştır.</span></div><span class="tb-chip locked">Kilitli</span></div>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label" for="tb-timeframe">Timeframe</label>
+              <select class="tb-select" id="tb-timeframe"><option>5m</option><option selected>15m</option><option>1h</option></select>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label" for="tb-direction">Yön</label>
+              <select class="tb-select" id="tb-direction"><option>Long + Short</option><option>Sadece Long</option><option>Sadece Short</option></select>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label" for="tb-leverage">Kaldıraç</label>
+              <div class="tb-range-row">
+                <input class="tb-range" id="tb-leverage" type="range" min="1" max="125" step="1" value="3">
+                <span class="tb-range-value" id="tb-leverage-value">3x</span>
+                <div class="tb-range-marks"><span>1x</span><span>25x</span><span>50x</span><span>75x</span><span>100x</span><span>125x</span></div>
+              </div>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label" for="tb-margin">Margin Tipi</label>
+              <input class="tb-input" id="tb-margin" type="text" value="Isolated" readonly>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label">Mum Kapanışı Bekle <button class="tb-info" type="button" data-tooltip="Bot, sinyal oluştuğu anda değil; mum kapandıktan sonra işlem kararı verir. Bu ayar, anlık fiyat hareketlerinden kaynaklanan sahte sinyalleri azaltır.">i</button></label>
+              <div class="tb-segmented two"><button type="button" class="tb-seg disabled">Kapalı</button><button type="button" class="tb-seg active">Açık</button></div>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label">Aynı Sinyalde Tekrar <button class="tb-info" type="button" data-tooltip="Bot aynı BUY veya SELL sinyali devam ederken tekrar tekrar işlem açmaz. Yeni işlem için yeni sinyal veya yeni koşul bekler.">i</button></label>
+              <div class="tb-segmented two"><button type="button" class="tb-seg disabled">Kapalı</button><button type="button" class="tb-seg active">Açık</button></div>
+            </div>
+            <div class="tb-field full">
+              <label class="tb-field-label">Ters Sinyalde <button class="tb-info" type="button" data-tooltip="Açık pozisyon varken ters yönde sinyal oluşursa botun ne yapacağını belirler. İlk sürümde pozisyonu kapatmak daha kontrollüdür.">i</button></label>
+              <div class="tb-segmented three"><button type="button" class="tb-seg active">Pozisyonu Kapat</button><button type="button" class="tb-seg">Bekle</button><button type="button" class="tb-seg disabled">Ters İşleme Geçme</button></div>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label">Emir Tipi <button class="tb-info" type="button" data-tooltip="Market emir, işlemi anlık piyasa fiyatından açar. Limit emir ise belirlenen fiyat seviyesinden işlem açmaya çalışır.">i</button></label>
+              <div class="tb-segmented two"><button type="button" class="tb-seg active">Market</button><button type="button" class="tb-seg disabled">Limit</button></div>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label">Kontrol Aralığı <button class="tb-info" type="button" data-tooltip="Botun piyasa verilerini ve sinyalleri ne sıklıkla kontrol edeceğini belirler.">i</button></label>
+              <input class="tb-input" type="text" value="10 saniye" readonly>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label">Trend Filtresi <button class="tb-info" type="button" data-tooltip="Bot, ana trend yönüne ters işlemleri azaltmak için üst zaman dilimi trend kontrolü yapar.">i</button></label>
+              <div class="tb-locked-box tb-readonly"><div class="tb-lock-main"><span class="tb-lock-title">Aktif</span><span class="tb-lock-sub">1h trend / EMA 200</span></div><span class="tb-chip locked">Kilitli</span></div>
+            </div>
+            <div class="tb-field">
+              <label class="tb-field-label">Volatilite Filtresi <button class="tb-info" type="button" data-tooltip="Piyasa aşırı durgun veya aşırı oynak olduğunda botun işlem açmasını engeller.">i</button></label>
+              <div class="tb-segmented three"><button type="button" class="tb-seg">Kapalı</button><button type="button" class="tb-seg active">Normal</button><button type="button" class="tb-seg">Katı</button></div>
+            </div>
+            <div class="tb-field full">
+              <label class="tb-field-label">Maksimum Slippage <button class="tb-info" type="button" data-tooltip="Emir gönderildiğinde beklenen fiyat ile gerçekleşen fiyat arasındaki maksimum kabul edilebilir fark.">i</button></label>
+              <input class="tb-input" id="tb-max-slippage" type="text" value="%0.2">
+            </div>
+            
+            <div class="tb-field">
+              <label class="tb-field-label">Emir Denemesi <button class="tb-info" type="button" data-tooltip="Limit emir kullanılırsa botun en fazla kaç kez fiyat denemesi yapacağı.">i</button></label>
+              <input class="tb-input" id="tb-max-retries" type="number" value="3">
+            </div>
+            
+            <div class="tb-field">
+              <label class="tb-field-label">Denemeler Arası Bekleme (sn) <button class="tb-info" type="button" data-tooltip="İki emir denemesi arasında geçecek saniye.">i</button></label>
+              <input class="tb-input" id="tb-retry-delay" type="number" value="2">
+            </div>
+            
+            <div class="tb-field">
+              <label class="tb-field-label">Fiyat Fazla Kaçarsa <button class="tb-info" type="button" data-tooltip="Fiyat sinyal seviyesinden kabul edilebilir sınırdan fazla uzaklaşırsa işlem iptal edilsin mi?">i</button></label>
+              <div class="tb-segmented two"><button type="button" class="tb-seg" id="tb-cancel-price-moves-false">Devam Et</button><button type="button" class="tb-seg active" id="tb-cancel-price-moves-true">İşlemi İptal Et</button></div>
+            </div>
+            
+            <div class="tb-field">
+              <label class="tb-field-label">Aynı Mumda Tekrar Deneme <button class="tb-info" type="button" data-tooltip="Eğer işlem reddedilir veya iptal edilirse, bot aynı 15m mumu içinde tekrar işlem açmayı denesin mi?">i</button></label>
+              <div class="tb-segmented two"><button type="button" class="tb-seg active" id="tb-retry-candle-false">Kapalı</button><button type="button" class="tb-seg" id="tb-retry-candle-true">Açık</button></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Risk Yönetimi -->
+      <!-- Risk Yönetimi -->
+      <article class="tb-card">
+        <div class="tb-card-head"><div><h2 class="tb-card-title">🛡 Risk Yönetimi</h2><div class="tb-card-sub">Sermayeyi korumak için risk parametreleri</div></div></div>
+        <div class="tb-card-body">
+          <div class="tb-form-grid">
+            <div class="tb-field"><label class="tb-field-label">İşlem Başı Risk <button class="tb-info" type="button" data-tooltip="Her işlemde bakiyenin en fazla ne kadarının riske edileceğini belirler.">i</button></label><input class="tb-input" id="tb-risk-per-trade" type="text" value="%1"></div>
+            <div class="tb-field"><label class="tb-field-label">Maks. Günlük Zarar <button class="tb-info" type="button" data-tooltip="Botun bir gün içinde izin verilen maksimum zarar sınırıdır.">i</button></label><input class="tb-input" id="tb-max-daily-loss" type="text" value="%3"></div>
+            <div class="tb-field"><label class="tb-field-label">Günlük Hedef Kâr <button class="tb-info" type="button" data-tooltip="Bot belirlenen günlük kâr hedefine ulaşırsa yeni işlem açmayı durdurur.">i</button></label><input class="tb-input" id="tb-daily-profit-target" type="text" value="%5"></div>
+            <div class="tb-field"><label class="tb-field-label">Maks. Açık Pozisyon <button class="tb-info" type="button" data-tooltip="Aynı anda kaç açık pozisyon bulunabileceğini belirler.">i</button></label><input class="tb-input" id="tb-max-positions" type="text" value="1"></div>
+            <div class="tb-field"><label class="tb-field-label">Günlük Maks. İşlem <button class="tb-info" type="button" data-tooltip="Botun bir gün içinde en fazla kaç işlem açabileceğini belirler.">i</button></label><input class="tb-input" id="tb-max-daily-trades" type="text" value="5"></div>
+            <div class="tb-field"><label class="tb-field-label">Arka Arkaya Zarar <button class="tb-info" type="button" data-tooltip="Bot belirlenen sayı kadar üst üste zarar ederse yeni işlem açmayı durdurur.">i</button></label><input class="tb-input" id="tb-cons-loss" type="text" value="3"></div>
+            <div class="tb-field full"><label class="tb-field-label">Cooldown Süresi <button class="tb-info" type="button" data-tooltip="Bir işlemden sonra botun yeni işlem açmadan önce bekleyeceği süre.">i</button></label><input class="tb-input" id="tb-cooldown" type="text" value="15 dakika"></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Stop-loss / Take-profit -->
+      <article class="tb-card">
+        <div class="tb-card-head"><div><h2 class="tb-card-title">🎯 Stop-loss / Take-profit</h2><div class="tb-card-sub">Kâr alma ve zarar durdurma ayarları</div></div></div>
+        <div class="tb-card-body">
+          <div class="tb-form-grid">
+            <div class="tb-field"><label class="tb-field-label">Stop-loss Tipi <button class="tb-info" type="button" data-tooltip="İşlem zarara giderse botun pozisyonu hangi kurala göre kapatacağını belirler.">i</button></label><input class="tb-input" type="text" value="ATR Bazlı" readonly></div>
+            <div class="tb-field"><label class="tb-field-label">ATR Çarpanı <button class="tb-info" type="button" data-tooltip="Stop-loss mesafesinin ATR değerinin kaç katı olacağını belirler.">i</button></label><input class="tb-input" id="tb-atr-mult" type="text" value="1.5"></div>
+            <div class="tb-field"><label class="tb-field-label">Take-profit Tipi <button class="tb-info" type="button" data-tooltip="İşlem kara geçtiğinde botun pozisyonu hangi kurala göre kapatacağını belirler.">i</button></label><input class="tb-input" type="text" value="Risk/Reward" readonly></div>
+            <div class="tb-field"><label class="tb-field-label">Risk/Reward Oranı <button class="tb-info" type="button" data-tooltip="Alınan riske karşı hedeflenen kazanç oranıdır.">i</button></label><input class="tb-input" id="tb-rr-ratio" type="text" value="1:2"></div>
+            <div class="tb-field full"><label class="tb-field-label">Trailing Stop <button class="tb-info" type="button" data-tooltip="Fiyat kara doğru ilerledikçe stop seviyesinin fiyatı takip etmesini sağlar.">i</button></label>
+              <div class="tb-segmented two"><button type="button" class="tb-seg active" id="tb-ts-false">Kapalı</button><button type="button" class="tb-seg" id="tb-ts-true">Açık</button></div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Bot Davranış Özeti -->
+      <article class="tb-card" style="margin-top: 16px;">
+        <div class="tb-card-head"><div><h2 class="tb-card-title">📝 Bot Davranış Kuralları</h2></div></div>
+        <div class="tb-card-body">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 13px; color: var(--t2);">
+            <div style="background: rgba(0,230,118,0.05); border: 1px solid rgba(0,230,118,0.1); padding: 12px; border-radius: 8px;">
+              <strong style="color: var(--green); display: block; margin-bottom: 8px;">🟢 BUY Sinyali (Long):</strong>
+              <ul style="margin: 0; padding-left: 16px;">
+                <li>OTT BUY oluşur.</li>
+                <li>1H trend BULLISH onaylar.</li>
+                <li>Risk limiti ve pozisyon limitleri uygunsa LONG açılır.</li>
+              </ul>
+            </div>
+            <div style="background: rgba(255,23,68,0.05); border: 1px solid rgba(255,23,68,0.1); padding: 12px; border-radius: 8px;">
+              <strong style="color: var(--red); display: block; margin-bottom: 8px;">🔴 SELL Sinyali (Short):</strong>
+              <ul style="margin: 0; padding-left: 16px;">
+                <li>OTT SELL oluşur.</li>
+                <li>1H trend BEARISH onaylar.</li>
+                <li>Risk limiti ve pozisyon limitleri uygunsa SHORT açılır.</li>
+              </ul>
+            </div>
+          </div>
+          <div style="margin-top: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; font-size: 13px; color: var(--t2);">
+            <strong style="color: #fff;">🔄 Ters Sinyal (Açık Pozisyon Varken):</strong><br>
+            Açık pozisyon varken ters yönde sinyal gelirse bot <strong style="color: var(--gold);">önce mevcut pozisyonu kapatır</strong>. İlk sürümde direkt ters yöne işlem açmak (Reverse Trade) önerilmez.
+          </div>
+        </div>
+      </article>
+    </section>
+  </section>
+
+  <!-- ═══ POSITION + PERFORMANCE ═══ -->
+  <section class="tb-bottom-grid">
+    <article class="tb-card">
+      <div class="tb-card-head"><h2 class="tb-card-title">📊 Açık Pozisyon</h2></div>
+      <div class="tb-card-body">
+        <div class="tb-empty"><span class="tb-empty-icon">📭</span>Açık pozisyon bulunmuyor.</div>
+        <div class="tb-position-list">
+          <div class="tb-data-row"><span class="tb-data-k">Sembol</span><span class="tb-data-v">ETHUSDT</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Yön</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Entry</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Anlık Fiyat</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Miktar</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Kaldıraç</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">PnL</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Stop-loss</span><span class="tb-data-v muted">-</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Take-profit</span><span class="tb-data-v muted">-</span></div>
+        </div>
+        <div style="margin-top:18px"><button class="tb-btn tb-btn-danger" type="button" disabled>Pozisyonu Kapat</button></div>
+      </div>
+    </article>
+
+    <article class="tb-card">
+      <div class="tb-card-head"><h2 class="tb-card-title">📈 Günlük Performans</h2></div>
+      <div class="tb-card-body">
+        <div class="tb-empty"><span class="tb-empty-icon">📋</span>Bugün henüz işlem yapılmadı.</div>
+        <div class="tb-performance-list">
+          <div class="tb-data-row"><span class="tb-data-k">Bugünkü İşlem Sayısı</span><span class="tb-data-v">0</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Kazanan İşlem</span><span class="tb-data-v green">0</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Kaybeden İşlem</span><span class="tb-data-v red">0</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Win Rate</span><span class="tb-data-v">%0</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Günlük PnL</span><span class="tb-data-v green">$0.00</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Komisyon</span><span class="tb-data-v">$0.00</span></div>
+          <div class="tb-data-row"><span class="tb-data-k">Maksimum Drawdown</span><span class="tb-data-v">$0.00</span></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ═══ BOT LOGS ═══ -->
+  <article class="tb-card tb-log-section">
+    <div class="tb-card-head">
+      <h2 class="tb-card-title">📋 Bot Logları</h2>
+      <span class="tb-chip">Statik örnek veri</span>
+    </div>
+    <div class="tb-card-body">
+      <div class="tb-log-tools">
+        <div class="tb-log-filters">
+          <input class="tb-filter-input" type="text" placeholder="Loglarda ara..." aria-label="Loglarda ara">
+          <select class="tb-filter-select" aria-label="Kategori"><option>Tüm kategoriler</option><option>Analiz</option><option>Sistem</option><option>İşlem</option></select>
+          <select class="tb-filter-select" aria-label="Durum"><option>Tüm durumlar</option><option>Bilgi</option><option>Pasif</option><option>Hata</option><option>Başarılı</option></select>
+        </div>
+        <span class="tb-chip">Frontend hazır</span>
+      </div>
+      <div class="tb-table-wrap">
+        <table class="tb-log-table">
+          <thead><tr><th>Saat</th><th>Sembol</th><th>Kategori</th><th>Sinyal</th><th>Karar</th><th>Açıklama</th><th>Durum</th></tr></thead>
+          <tbody>
+            <tr><td>14:45</td><td>ETHUSDT</td><td>İşlem</td><td>BUY</td><td>Pozisyon açıldı</td><td>OTT + Trend onaylı long sinyal</td><td><span class="tb-badge success">Başarılı</span></td></tr>
+            <tr><td>14:30</td><td>ETHUSDT</td><td>Analiz</td><td>BUY</td><td>Sinyal doğrulandı</td><td>Trend filtresi ve ATR uyumlu</td><td><span class="tb-badge success">Bilgi</span></td></tr>
+            <tr><td>14:15</td><td>ETHUSDT</td><td>Analiz</td><td>BEKLE</td><td>İşlem açılmadı</td><td>Sinyal bekleniyor</td><td><span class="tb-badge info">Pasif</span></td></tr>
+            <tr><td>14:00</td><td>ETHUSDT</td><td>Sistem</td><td>-</td><td>Kontrol</td><td>Periyodik piyasa taraması tamamlandı</td><td><span class="tb-badge info">Bilgi</span></td></tr>
+            <tr><td>13:45</td><td>ETHUSDT</td><td>Sistem</td><td>-</td><td>Hazır</td><td>Binance Demo Trading modu aktif</td><td><span class="tb-badge success">Bilgi</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </article>
+
+</div>
+
+<script>
+(function initTbBotPanel() {
+  const root = document.getElementById('botpanel-admin');
+  if (!root) return;
+  const stateEl = root.querySelector('#tb-bot-state');
+  const cmdStatus = root.querySelector('#tb-cmd-status');
+  const leverage = root.querySelector('#tb-leverage');
+  const leverageValue = root.querySelector('#tb-leverage-value');
+
+  function setVisualState(label, tone) {
+    if (stateEl) {
+      stateEl.textContent = label;
+      stateEl.className = 'tb-status-v ' + (tone === 'green' ? 'green' : tone === 'red' ? 'red' : 'muted');
+    }
+    if (cmdStatus) {
+      cmdStatus.className = 'tb-cmd-badge status ' + (tone === 'green' ? 'active' : tone === 'red' ? 'stopped' : '');
+      cmdStatus.innerHTML = '<span class="dot"></span>' + label;
+    }
+  }
+
+  root.querySelectorAll('[data-tb-action]').forEach(function(btn) {
+    btn.addEventListener('click', async function() {
+      var a = btn.getAttribute('data-tb-action');
+      if (a === 'start') {
+        const res = await fetch('/api/tb-bot/start', { method: 'POST', headers: { Authorization: 'Bearer ' + AUTH.token } });
+        if (res.ok) setVisualState('Çalışıyor', 'green');
+      }
+      if (a === 'stop') {
+        const res = await fetch('/api/tb-bot/stop', { method: 'POST', headers: { Authorization: 'Bearer ' + AUTH.token } });
+        if (res.ok) setVisualState('Durduruldu', 'muted');
+      }
+      if (a === 'emergency') {
+        const res = await fetch('/api/tb-bot/emergency-stop', { method: 'POST', headers: { Authorization: 'Bearer ' + AUTH.token } });
+        if (res.ok) setVisualState('Acil Durduruldu', 'red');
+      }
+    });
+  });
+
+  if (leverage && leverageValue) {
+    var updateLeverage = function() {
+      leverageValue.textContent = leverage.value + 'x';
+      var min = Number(leverage.min || 1), max = Number(leverage.max || 125), val = Number(leverage.value || min);
+      leverage.style.setProperty('--tb-leverage-progress', ((val - min) / (max - min)) * 100 + '%');
+    };
+    leverage.addEventListener('input', updateLeverage);
+    updateLeverage();
+  }
+
+  const btnApplyReq = document.getElementById('btn-apply-recommended');
+  if (btnApplyReq) {
+    btnApplyReq.addEventListener('click', async function() {
+      try {
+        btnApplyReq.textContent = "Uygulanıyor...";
+        const res = await fetch('/api/tb-bot/apply-recommended', { method: 'POST', headers: { Authorization: 'Bearer ' + AUTH.token } });
+        if (res.ok) {
+          showToast('success', 'Önerilen ayarlar uygulandı!');
+          const chip = document.getElementById('tb-profile-chip');
+          if (chip) {
+            chip.textContent = "Önerilen Profil Aktif";
+            chip.style.background = "rgba(0,230,118,0.1)";
+            chip.style.borderColor = "rgba(0,230,118,0.2)";
+            chip.style.color = "var(--green)";
+          }
+        }
+      } catch (e) {
+        showToast('error', 'Hata oluştu');
+      } finally {
+        btnApplyReq.textContent = "Önerilen Ayarları Uygula";
+      }
+    });
+  }
+
+  // Polling for Status/Logs
+  setInterval(async () => {
+    if (document.getElementById('dash-botpanel')?.style.display !== 'none' && !document.hidden) {
+      try {
+        const res = await fetch('/api/tb-bot/status', { headers: { Authorization: 'Bearer ' + AUTH.token } });
+        if (res.ok) {
+          const d = await res.json();
+          if (d.bot_enabled) setVisualState('Çalışıyor', 'green');
+          else if (d.state && d.state.emergency_stopped) setVisualState('Acil Durduruldu', 'red');
+          else setVisualState('Durduruldu', 'muted');
+          
+          if (d.state) {
+            const decEl = document.getElementById('tb-current-decision');
+            if (decEl && d.state.current_decision) decEl.textContent = d.state.current_decision;
+            
+            const lsEl = document.getElementById('tb-last-bot-signal');
+            if (lsEl && d.state.last_signal) lsEl.textContent = d.state.last_signal;
+          }
+        }
+      } catch (e) {}
+    }
+  }, 10000);
+})();
+</script>
+</div>
+</div>
